@@ -1,6 +1,24 @@
-﻿  main.cpp
+﻿  Enemy.cpp
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,40): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,40): warning C4244:         with
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,40): warning C4244:         [
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,40): warning C4244:             T=float
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,40): warning C4244:         ]
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,28): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,28): warning C4244:         with
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,28): warning C4244:         [
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,28): warning C4244:             T=float
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Enemy.cpp(39,28): warning C4244:         ]
+  Entity.cpp
+  Game.cpp
+  Physics.cpp
+  Player.cpp
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Player.cpp(106,12): warning C4244: 'return' : conversion de 'const int' en 'float', perte possible de données
+  Renderer.cpp
+  ThreadManager.cpp
   Génération de code en cours
-  Previous IPDB not found, fall back to full compilation.
-  All 4 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  30 of 34 functions (88.2%) were compiled, the rest were copied from previous compilation.
+    30 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Fin de la génération du code
   Projet Zelda-Like 2D.vcxproj -> C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\x64\Release\Projet Zelda-Like 2D.exe

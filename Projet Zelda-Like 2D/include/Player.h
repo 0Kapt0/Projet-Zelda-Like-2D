@@ -14,6 +14,7 @@ private:
 	Vector2f position;
 
 	int health;
+	float speed;
 
 	Texture texture;
 	vector<IntRect> frames;

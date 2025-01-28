@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "../include/Enemy.h"
 
 Enemy::Enemy(float x, float y, float _speed)
     : position(x, y), speed(_speed), animationTimer(0.0f), frameDuration(0.1f), currentFrame(0), totalFrames(1) {
