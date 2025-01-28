@@ -9,7 +9,7 @@ Player::Player() : speed(50.0f), position(100.0f, 100.0f), health(100), currentF
     playerShape.setSize({ 32, 32 });
     playerShape.setPosition(position);
 
-    setTexture("assets/props/player/player_anim.png", 16, 19, 4, 0.1f);
+    setTexture("assets/player/player_anim.png", 16, 19, 4, 0.1f);
 
 }
 

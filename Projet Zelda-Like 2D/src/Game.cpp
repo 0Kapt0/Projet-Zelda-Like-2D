@@ -22,6 +22,7 @@ void Game::run() {
 
         float updateTime = clock.restart().asSeconds();
 
+        player.update(updateTime, window, player.getPosition());
 
         if (player.getHealth() <= 0) {
         }
