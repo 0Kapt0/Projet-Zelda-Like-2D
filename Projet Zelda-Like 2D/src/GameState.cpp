@@ -5,7 +5,7 @@ GameState::GameState(RenderWindow& window, Player& player)
 }
 
 void GameState::handleInput() {
-    player.handleInput();
+    /*player.handleInput();*/
 }
 
 void GameState::update(float deltaTime) {

@@ -15,6 +15,10 @@ class Game {
 private:
     RenderWindow window;
     Player player;
+    Texture backgroundTexture;
+
+    Sprite backgroundSprite;
+    void loadBackground();
 
     unique_ptr<State> currentState;
 

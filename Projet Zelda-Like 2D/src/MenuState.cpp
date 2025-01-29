@@ -29,43 +29,11 @@ void MenuState::initMenu() {
     for (auto& option : menuOptions) {
         option.setFillColor(Color::White);
     }
-
-    if (selectedItemIndex >= 0 && selectedItemIndex < menuOptions.size()) {
-        menuOptions[selectedItemIndex].setFillColor(Color::Red);
-    }
 }
 
 void MenuState::handleInput() {
-    if (Keyboard::isKeyPressed(Keyboard::Up)) {
-        if (selectedItemIndex > 0) {
-            menuOptions[selectedItemIndex].setFillColor(Color::White);
-            selectedItemIndex--;
-            menuOptions[selectedItemIndex].setFillColor(Color::Red);
-        }
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Down)) {
-        if (selectedItemIndex < menuOptions.size() - 1) {
-            menuOptions[selectedItemIndex].setFillColor(Color::White);
-            selectedItemIndex++;
-            menuOptions[selectedItemIndex].setFillColor(Color::Red);
-        }
-    }
-
-    if (Keyboard::isKeyPressed(Keyboard::Enter) && selectedItemIndex != -1) {
-        switch (selectedItemIndex) {
-        case 0:
-            cout << "Start Game Selected" << endl;
-            break;
-        case 1:
-            cout << "Options Selected" << endl;
-            break;
-        case 2:
-            window.close();
-            break;
-        }
-    }
-
     Vector2i mousePos = Mouse::getPosition(window);
+
     bool mouseOverOption = false;
 
     for (int i = 0; i < menuOptions.size(); ++i) {
@@ -75,7 +43,17 @@ void MenuState::handleInput() {
 
             if (Mouse::isButtonPressed(Mouse::Left)) {
                 selectedItemIndex = i;
-                break;
+                switch (selectedItemIndex) {
+                case 0:
+                    cout << "Start Game Selected" << endl;
+                    break;
+                case 1:
+                    cout << "Options Selected" << endl;
+                    break;
+                case 2:
+                    window.close();
+                    break;
+                }
             }
         }
         else {
@@ -83,12 +61,13 @@ void MenuState::handleInput() {
         }
     }
 
-    if (!mouseOverOption && selectedItemIndex != -1) {
-        menuOptions[selectedItemIndex].setFillColor(Color::Red);
+    if (!mouseOverOption) {
+        selectedItemIndex = -1;
     }
 }
 
 void MenuState::update(float deltaTime) {
+
 }
 
 void MenuState::draw() {
@@ -96,5 +75,4 @@ void MenuState::draw() {
     for (auto& option : menuOptions) {
         window.draw(option);
     }
-    window.display();
 }

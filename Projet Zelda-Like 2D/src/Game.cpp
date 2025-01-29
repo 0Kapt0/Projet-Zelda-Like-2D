@@ -9,7 +9,16 @@ Game::Game()
     player() {
     window.setFramerateLimit(60);
 
+    loadBackground();
+
     currentState = make_unique<MenuState>(window);
+}
+
+void Game::loadBackground() {
+    if (!backgroundTexture.loadFromFile("assets/backgrounds/test.png")) {
+        cerr << "Erreur de chargement du background !" << endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
 }
 
 void Game::run() {
@@ -32,6 +41,7 @@ void Game::run() {
         }
 
         window.clear();
+        window.draw(backgroundSprite);
         currentState->draw();
         window.display();
     }
