@@ -7,6 +7,7 @@
 #include "State.h"
 #include "MenuState.h"
 #include "GameState.h"
+#include "Map.h"
 
 using namespace sf;
 using namespace std;
@@ -16,10 +17,6 @@ private:
     RenderWindow window;
     Player player;
     Texture backgroundTexture;
-
-    //temporaire pour test
-    Sprite backgroundSprite;
-    void loadBackground();
 
     unique_ptr<State> currentState;
 

@@ -8,19 +8,8 @@ Game::Game()
     : window(VideoMode(920, 720), "Escape the Dungeon"),
     player() {
     window.setFramerateLimit(60);
-    
-    //temporaire pour test
-    loadBackground();
 
     currentState = make_unique<MenuState>(window);
-}
-
-//temporaire pour test
-void Game::loadBackground() {
-    if (!backgroundTexture.loadFromFile("assets/backgrounds/test.png")) {
-        cerr << "Erreur de chargement du background !" << endl;
-    }
-    backgroundSprite.setTexture(backgroundTexture);
 }
 
 void Game::run() {
@@ -44,8 +33,6 @@ void Game::run() {
 
         window.clear();
 
-        //temporaire pour test
-        window.draw(backgroundSprite);
         currentState->draw();
         window.display();
     }
