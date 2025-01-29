@@ -7,14 +7,14 @@ using namespace std;
 
 Player::Player() : speed(50.0f), position(100.0f, 100.0f), health(100) {
     if (!playerTexture.loadFromFile("assets/player/player_anim.png")) {
-        cerr << "Erreur : Impossible de charger la texture du joueur !" << endl;
+        cerr << "Texture don't charged !" << endl;
     }
     else {
-        cout << "Texture du joueur chargée avec succès !" << endl;
+        cout << "Texture charged" << endl;
     }
 
     setTexture(playerTexture, 16, 19, 4, 0.1f);
-    shape.setSize(Vector2f(16, 19));  // On adapte la taille du sprite à celle d’un frame
+    shape.setSize(Vector2f(16, 19));
     shape.setPosition(position);
 }
 
