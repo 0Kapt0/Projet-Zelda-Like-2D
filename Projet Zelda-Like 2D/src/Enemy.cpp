@@ -23,22 +23,6 @@ void Enemy::setPosition(const Vector2f& newPosition) {
     shape.setPosition(position);
 }
 
-//void Enemy::setTexture(const std::string& textureFile, int frameWidth, int frameHeight, int _totalFrames, float _frameDuration) {
-//    if (!texture.loadFromFile(textureFile)) {
-//        cerr << "Failed to load texture: " << textureFile << endl;
-//        return;
-//    }
-//
-//    shape.setSize(Vector2f(frameWidth, frameHeight));
-//    shape.setTexture(&texture);
-//
-//    frameRect = IntRect(0, 0, frameWidth, frameHeight);
-//    shape.setTextureRect(frameRect);
-//
-//    totalFrames = _totalFrames;
-//    frameDuration = _frameDuration;
-//}
-
 
 void Enemy::draw(RenderWindow& window) {
     window.draw(shape);

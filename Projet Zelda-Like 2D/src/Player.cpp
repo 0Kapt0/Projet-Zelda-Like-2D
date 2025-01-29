@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-Player::Player() : speed(50.0f), position(100.0f, 100.0f), health(100), currentFrame(0), elapsedTime(0.0f) {
+Player::Player() : speed(50.0f), position(100.0f, 100.0f), health(100), currentFrame(0), elapsedTime(0.f) {
     playerShape.setSize({ 32, 32 });
     playerShape.setPosition(position);
 
