@@ -10,7 +10,6 @@ using namespace std;
 class MenuState : public State {
 private:
     vector<Text> menuOptions;
-    int selectedItemIndex;
     Font font;
 
     void initMenu();
@@ -19,7 +18,7 @@ private:
 public:
     MenuState(RenderWindow& window);
 
-    int getSelectedItemIndex() const { return selectedItemIndex; }
+    int selectedItemIndex;
 
     void update(float deltaTime) override;
     void draw() override;

@@ -1,7 +1,6 @@
 ﻿  Game.cpp
-C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Game.cpp(31,26): error C2248: 'MenuState::selectedItemIndex' : impossible d'accéder à private membre déclaré(e) dans la classe 'MenuState'
-      C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\include\MenuState.h(13,9):
-      voir la déclaration de 'MenuState::selectedItemIndex'
-      C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\include\MenuState.h(10,7):
-      voir la déclaration de 'MenuState'
-  
+  Génération de code en cours
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 273 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Fin de la génération du code
+  Projet Zelda-Like 2D.vcxproj -> C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\x64\Release\Projet Zelda-Like 2D.exe

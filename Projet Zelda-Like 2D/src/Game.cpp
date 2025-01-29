@@ -19,16 +19,14 @@ void Game::run() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-
             currentState->handleInput();
         }
 
         float updateTime = clock.restart().asSeconds();
-
         currentState->update(updateTime);
 
         if (auto menuState = dynamic_cast<MenuState*>(currentState.get())) {
-            if (menuState->getSelectedItemIndex() == 0) {
+            if (menuState->selectedItemIndex == 0) {
                 changeState(make_unique<GameState>(window, player));
             }
         }
@@ -38,10 +36,6 @@ void Game::run() {
         window.display();
     }
 }
-
-
-
-
 
 
 void Game::changeState(unique_ptr<State> newState) {

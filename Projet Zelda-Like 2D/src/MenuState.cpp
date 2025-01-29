@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 MenuState::MenuState(RenderWindow& window)
-    : State(window), selectedItemIndex(0) {
+    : State(window), selectedItemIndex(-1) {
     if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
         cerr << "Erreur de chargement de la police" << endl;
     }
@@ -26,7 +26,13 @@ void MenuState::initMenu() {
     quit.setPosition(100, 200);
     menuOptions.push_back(quit);
 
-    menuOptions[selectedItemIndex].setFillColor(Color::Red);
+    for (auto& option : menuOptions) {
+        option.setFillColor(Color::White);
+    }
+
+    if (selectedItemIndex >= 0 && selectedItemIndex < menuOptions.size()) {
+        menuOptions[selectedItemIndex].setFillColor(Color::Red);
+    }
 }
 
 void MenuState::handleInput() {
@@ -37,7 +43,6 @@ void MenuState::handleInput() {
             menuOptions[selectedItemIndex].setFillColor(Color::Red);
         }
     }
-
     if (Keyboard::isKeyPressed(Keyboard::Down)) {
         if (selectedItemIndex < menuOptions.size() - 1) {
             menuOptions[selectedItemIndex].setFillColor(Color::White);
@@ -46,7 +51,7 @@ void MenuState::handleInput() {
         }
     }
 
-    if (Keyboard::isKeyPressed(Keyboard::Enter)) {
+    if (Keyboard::isKeyPressed(Keyboard::Enter) && selectedItemIndex != -1) {
         switch (selectedItemIndex) {
         case 0:
             cout << "Start Game Selected" << endl;
@@ -58,6 +63,28 @@ void MenuState::handleInput() {
             window.close();
             break;
         }
+    }
+
+    Vector2i mousePos = Mouse::getPosition(window);
+    bool mouseOverOption = false;
+
+    for (int i = 0; i < menuOptions.size(); ++i) {
+        if (menuOptions[i].getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+            menuOptions[i].setFillColor(Color::Red);
+            mouseOverOption = true;
+
+            if (Mouse::isButtonPressed(Mouse::Left)) {
+                selectedItemIndex = i;
+                break;
+            }
+        }
+        else {
+            menuOptions[i].setFillColor(Color::White);
+        }
+    }
+
+    if (!mouseOverOption && selectedItemIndex != -1) {
+        menuOptions[selectedItemIndex].setFillColor(Color::Red);
     }
 }
 
