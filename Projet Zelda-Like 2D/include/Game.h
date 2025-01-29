@@ -3,8 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "Entity.h"
 #include "Player.h"
+#include "State.h"
+#include "MenuState.h"
 
 using namespace sf;
 using namespace std;
@@ -14,10 +15,13 @@ private:
     RenderWindow window;
     Player player;
 
+    State* currentState;
+
     Clock clock;
 public:
     Game();
     void run();
+    void changeState(State* newState);
 };
 
 #endif

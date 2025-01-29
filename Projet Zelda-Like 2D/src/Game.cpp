@@ -8,6 +8,8 @@ Game::Game()
     : window(VideoMode(920, 720), "Escape the Dungeon"),
     player() {
     window.setFramerateLimit(60);
+
+    currentState = new MenuState(window);
 }
 
 void Game::run() {
@@ -30,4 +32,9 @@ void Game::run() {
         window.display();
 
     }
+}
+
+void Game::changeState(State* newState) {
+    delete currentState;
+    currentState = newState;
 }
