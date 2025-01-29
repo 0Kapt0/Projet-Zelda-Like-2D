@@ -11,18 +11,18 @@ using namespace std;
 class Entity {
 protected:
     RectangleShape shape;
-    Texture texture;
     vector<IntRect> frames;
     int currentFrame;
     float frameTime;
     float elapsedTime;
+
 public:
     Entity();
     virtual ~Entity() {}
 
     bool intersects(const Entity& other) const;
 
-    void setTexture(const string& textureFile, int frameWidth, int frameHeight, int totalFrames, float frameDuration);
+    void setTexture(Texture& tex, int frameWidth, int frameHeight, int totalFrames, float frameDuration);
     void animate(float deltaTime);
 
     virtual void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) = 0;
@@ -30,4 +30,3 @@ public:
 };
 
 #endif
-

@@ -2,22 +2,18 @@
 
 Entity::Entity() : currentFrame(0), elapsedTime(0.0f), frameTime(0.1f) {}
 
-void Entity::setTexture(const string& textureFile, int frameWidth, int frameHeight, int totalFrames, float _frameTime) {
-    if (!texture.loadFromFile(textureFile)) {
-        cerr << "Failed to load texture: " << textureFile << endl;
-        return;
-    }
-
+void Entity::setTexture(Texture& tex, int frameWidth, int frameHeight, int totalFrames, float _frameTime) {
+    shape.setTexture(&tex);
     shape.setSize(Vector2f(frameWidth, frameHeight));
-    shape.setTexture(&texture);
+    shape.setTextureRect(IntRect(0, 0, frameWidth, frameHeight));
 
     frames.clear();
     for (int i = 0; i < totalFrames; ++i) {
-        frames.push_back(IntRect(i * frameWidth, 0, frameWidth, frameHeight));
+        frames.emplace_back(i * frameWidth, 0, frameWidth, frameHeight);
     }
 
-    shape.setTextureRect(frames[currentFrame]);
     frameTime = _frameTime;
+    shape.setTextureRect(frames[currentFrame]);
 }
 
 void Entity::animate(float deltaTime) {
@@ -28,11 +24,6 @@ void Entity::animate(float deltaTime) {
         shape.setTextureRect(frames[currentFrame]);
     }
 }
-
-void Entity::draw(RenderWindow& window) {
-    window.draw(shape);
-}
-
 
 bool Entity::intersects(const Entity& other) const {
     return shape.getGlobalBounds().intersects(other.shape.getGlobalBounds());

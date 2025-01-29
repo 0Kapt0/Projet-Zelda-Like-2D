@@ -8,25 +8,14 @@ using namespace sf;
 using namespace std;
 
 class Enemy : public Entity {
-protected:
+private:
     Vector2f position;
-
-    RectangleShape shape;
-    Texture texture;
-
     float speed;
 
-    IntRect frameRect;
-    float animationTimer;
-    float frameDuration;
-    int currentFrame;
-    int totalFrames;
-
 public:
-    Enemy(float x, float y, float speed);
+    Enemy(float x, float y, float _speed);
 
     void setPosition(const Vector2f& newPosition);
-
     const RectangleShape& getShape() const;
     Vector2f getPosition() const;
 

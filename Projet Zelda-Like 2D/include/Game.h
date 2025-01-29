@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "Entity.h"
 #include "Player.h"
 
 using namespace sf;
@@ -13,6 +14,7 @@ private:
     RenderWindow window;
     Player player;
 
+    Clock clock;
 public:
     Game();
     void run();

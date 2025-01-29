@@ -11,8 +11,6 @@ Game::Game()
 }
 
 void Game::run() {
-    Clock clock;
-
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {

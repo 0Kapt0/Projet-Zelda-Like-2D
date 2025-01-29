@@ -1,12 +1,24 @@
 #include "../include/Enemy.h"
 
 Enemy::Enemy(float x, float y, float _speed)
-    : position(x, y), speed(_speed), animationTimer(0.0f), frameDuration(0.1f), currentFrame(0), totalFrames(1) {
+    : position(x, y), speed(_speed) {
+
     shape.setPosition(position);
 }
 
 void Enemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
     animate(deltaTime);
+    position.x += speed * deltaTime;
+
+    Vector2u windowSize = window.getSize();
+    if (position.x < 0) position.x = 0;
+    if (position.x > windowSize.x - shape.getSize().x) position.x = windowSize.x - shape.getSize().x;
+
+    shape.setPosition(position);
+}
+
+void Enemy::setPosition(const Vector2f& newPosition) {
+    position = newPosition;
     shape.setPosition(position);
 }
 
@@ -17,12 +29,6 @@ const RectangleShape& Enemy::getShape() const {
 Vector2f Enemy::getPosition() const {
     return position;
 }
-
-void Enemy::setPosition(const Vector2f& newPosition) {
-    position = newPosition;
-    shape.setPosition(position);
-}
-
 
 void Enemy::draw(RenderWindow& window) {
     window.draw(shape);
