@@ -1,6 +1,5 @@
 #ifndef ENEMY_H
 #define ENEMY_H
-
 #include "Entity.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -27,7 +26,6 @@ public:
     Enemy(float x, float y, float speed);
 
     void setPosition(const Vector2f& newPosition);
-    void setTexture(const std::string& textureFile, int frameWidth, int frameHeight, int _totalFrames, float _frameDuration);
 
     const RectangleShape& getShape() const;
     Vector2f getPosition() const;

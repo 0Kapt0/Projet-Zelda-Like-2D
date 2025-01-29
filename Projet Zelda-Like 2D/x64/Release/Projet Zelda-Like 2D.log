@@ -1,8 +1,6 @@
 ﻿  main.cpp
   Game.cpp
-  Génération de code en cours
-  3 of 149 functions ( 2.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Fin de la génération du code
-  Projet Zelda-Like 2D.vcxproj -> C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\x64\Release\Projet Zelda-Like 2D.exe
+  Player.cpp
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Player.cpp(8,73): error C2614: 'Player' : initialisation de membre non conforme : 'currentFrame' n'est ni une base ni un membre
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Player.cpp(8,90): error C2614: 'Player' : initialisation de membre non conforme : 'elapsedTime' n'est ni une base ni un membre
+C:\Users\lmakarof\source\repos\Projet Zelda-Like 2D\Projet Zelda-Like 2D\src\Player.cpp(85,12): warning C4244: 'return' : conversion de 'const int' en 'float', perte possible de données

@@ -36,8 +36,6 @@ public:
 	void setSpeed(float newSpeed);
 
 	void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) override;
-
-	void setTexture(const string& textureFile, int frameWidth, int frameHeight, int totalFrames, float frameDuration);
 	void draw(RenderWindow& window) override;
 };
 

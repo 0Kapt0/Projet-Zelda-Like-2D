@@ -13,22 +13,6 @@ Player::Player() : speed(50.0f), position(100.0f, 100.0f), health(100), currentF
 
 }
 
-void Player::setTexture(const string& textureFile, int frameWidth, int frameHeight, int totalFrames, float frameDuration) {
-    if (!texture.loadFromFile(textureFile)) {
-        cerr << "Failed to load texture: " << textureFile << endl;
-        return;
-    }
-
-    for (int i = 0; i < totalFrames; ++i) {
-        frames.push_back(IntRect(i * frameWidth, 0, frameWidth, frameHeight));
-    }
-
-    playerShape.setTexture(&texture);
-    playerShape.setTextureRect(frames[currentFrame]);
-
-    frameTime = frameDuration;
-}
-
 void Player::handleInput() {
     Vector2f mouv(0.0f, 0.0f);
 
@@ -58,12 +42,7 @@ void Player::handleInput() {
 void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
     handleInput();
 
-    elapsedTime += deltaTime;
-    if (elapsedTime >= frameTime) {
-        elapsedTime = 0.0f;
-        currentFrame = (currentFrame + 1) % frames.size();
-        playerShape.setTextureRect(frames[currentFrame]);
-    }
+    animate(deltaTime);
 
     Vector2u windowSize = window.getSize();
     float maxX = static_cast<float>(windowSize.x) - playerShape.getSize().x;
