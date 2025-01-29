@@ -13,11 +13,9 @@ private:
     int health;
     float speed;
     Texture playerTexture;
-
-    void handleInput();
-
 public:
     Player();
+    void handleInput();
 
     Vector2f getPosition() const;
     float getSpeed() const;

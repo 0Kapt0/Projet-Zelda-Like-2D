@@ -9,32 +9,41 @@ Game::Game()
     player() {
     window.setFramerateLimit(60);
 
-    currentState = new MenuState(window);
+    currentState = make_unique<MenuState>(window);
 }
 
 void Game::run() {
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
+            if (event.type == Event::Closed) {
                 window.close();
+            }
+
+            currentState->handleInput();
         }
 
         float updateTime = clock.restart().asSeconds();
 
-        player.update(updateTime, window, player.getPosition());
+        currentState->update(updateTime);
 
-        if (player.getHealth() <= 0) {
+        if (auto menuState = dynamic_cast<MenuState*>(currentState.get())) {
+            if (menuState->getSelectedItemIndex() == 0) {
+                changeState(make_unique<GameState>(window, player));
+            }
         }
 
         window.clear();
-        player.draw(window);
+        currentState->draw();
         window.display();
-
     }
 }
 
-void Game::changeState(State* newState) {
-    delete currentState;
-    currentState = newState;
+
+
+
+
+
+void Game::changeState(unique_ptr<State> newState) {
+    currentState = move(newState);
 }

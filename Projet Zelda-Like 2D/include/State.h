@@ -3,14 +3,16 @@
 
 #include <SFML/Graphics.hpp>
 
+using namespace sf;
+using namespace std;
+
 class State {
 protected:
-    sf::RenderWindow& window;
+    RenderWindow& window;
 
 public:
-    State(sf::RenderWindow& window) : window(window) {}
+    State(RenderWindow& window) : window(window) {}
     virtual ~State() {}
-
     virtual void handleInput() = 0;
     virtual void update(float deltaTime) = 0;
     virtual void draw() = 0;

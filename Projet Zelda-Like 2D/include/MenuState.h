@@ -2,24 +2,28 @@
 #define MENUSTATE_H
 
 #include "State.h"
-#include <vector>
 #include <SFML/Graphics.hpp>
+
+using namespace sf;
+using namespace std;
 
 class MenuState : public State {
 private:
-    std::vector<sf::Text> menuOptions;
-    sf::Font font;
+    vector<Text> menuOptions;
     int selectedItemIndex;
-
-public:
-    MenuState(sf::RenderWindow& window);
-    virtual ~MenuState() {}
-
-    void handleInput() override;
-    void update(float deltaTime) override;
-    void draw() override;
+    Font font;
 
     void initMenu();
+    void handleInput();
+
+public:
+    MenuState(RenderWindow& window);
+
+    int getSelectedItemIndex() const { return selectedItemIndex; }
+
+    void update(float deltaTime) override;
+    void draw() override;
 };
 
 #endif
+

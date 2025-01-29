@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "State.h"
 #include "MenuState.h"
+#include "GameState.h"
 
 using namespace sf;
 using namespace std;
@@ -15,13 +16,14 @@ private:
     RenderWindow window;
     Player player;
 
-    State* currentState;
+    unique_ptr<State> currentState;
 
     Clock clock;
+
 public:
     Game();
     void run();
-    void changeState(State* newState);
+    void changeState(unique_ptr<State> newState);
 };
 
 #endif
