@@ -17,6 +17,7 @@ private:
     Player player;
     Texture backgroundTexture;
 
+    //temporaire pour test
     Sprite backgroundSprite;
     void loadBackground();
 
