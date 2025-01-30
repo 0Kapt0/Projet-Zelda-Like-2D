@@ -24,9 +24,9 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
 void Player::handleInput(float deltaTime) {
     Vector2f mouv(0.0f, 0.0f);
 
-    if (Keyboard::isKeyPressed(Keyboard::Q)) mouv.x -= 1.0f;
+    if (Keyboard::isKeyPressed(Keyboard::Q) || Keyboard::isKeyPressed(Keyboard::A)) mouv.x -= 1.0f;
     if (Keyboard::isKeyPressed(Keyboard::D)) mouv.x += 1.0f;
-    if (Keyboard::isKeyPressed(Keyboard::Z)) mouv.y -= 1.0f;
+    if (Keyboard::isKeyPressed(Keyboard::Z) || Keyboard::isKeyPressed(Keyboard::W)) mouv.y -= 1.0f;
     if (Keyboard::isKeyPressed(Keyboard::S)) mouv.y += 1.0f;
 
     if (mouv.x != 0 || mouv.y != 0) {
