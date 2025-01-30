@@ -30,6 +30,7 @@ void Entity::animate(float deltaTime) {
             }
             else {
                 isAttacking = false;
+                currentFrame = 0;
             }
         }
         else {
@@ -39,6 +40,7 @@ void Entity::animate(float deltaTime) {
         shape.setTextureRect(frames[currentFrame]);
     }
 }
+
 
 
 
