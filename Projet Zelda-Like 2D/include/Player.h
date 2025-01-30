@@ -17,12 +17,11 @@ private:
     Texture playerRun;
     Texture playerIdle;
     Texture playerAttack1;
+    Texture playerAttack2;
 
     View cameraView;
 
     bool isMoving;
-    bool isAttacking = false;
-
 public:
     Player();
 

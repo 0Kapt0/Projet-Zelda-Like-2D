@@ -26,10 +26,17 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
         cout << "Texture player_attack1 loaded" << endl;
     }
 
+    if (!playerAttack2.loadFromFile("assets/player/player_attack2.png")) {
+        cerr << "Texture player_attack2 not loaded!" << endl;
+    }
+    else {
+        cout << "Texture player_attack2 loaded" << endl;
+    }
+
     setTexture(playerIdle, 32, 32, 8, 0.1f);
     shape.setSize(Vector2f(32, 32));
     shape.setPosition(position);
-    shape.setOrigin(shape.getSize().x/2, shape.getSize().y / 2);
+    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 
 
     cameraView.setSize(400, 300);
@@ -68,6 +75,7 @@ void Player::playerAttack() {
 
 
 
+
 void Player::playerWalk() {
     if (isAttacking) return;
 
@@ -83,11 +91,9 @@ void Player::playerWalk() {
 
 void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
     handleInput(deltaTime);
-    animate(deltaTime);
-    if (!isAttacking) {
-        playerWalk();
-    }
     playerAttack();
+    playerWalk();
+    animate(deltaTime);
 
     shape.setPosition(position);
 
