@@ -27,7 +27,7 @@ void Game::run() {
 
         if (auto menuState = dynamic_cast<MenuState*>(currentState.get())) {
             if (menuState->selectedItemIndex == 0) {
-                changeState(make_unique<GameState>(window, player));
+                changeState(make_unique<GameState>(window, player, 1));
             }
         }
 

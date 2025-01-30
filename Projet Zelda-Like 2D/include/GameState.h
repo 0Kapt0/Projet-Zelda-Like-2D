@@ -16,8 +16,9 @@ private:
 
     Map map;
     Map fence;
+    int gameState;
 public:
-    GameState(RenderWindow& window, Player& player);
+    GameState(RenderWindow& window, Player& player, int gameState);
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
