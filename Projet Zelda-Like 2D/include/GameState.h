@@ -15,6 +15,7 @@ private:
     Player& player;
 
     Map map;
+    Map fence;
 public:
     GameState(RenderWindow& window, Player& player);
     void handleInput() override;

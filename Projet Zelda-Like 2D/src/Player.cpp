@@ -39,7 +39,7 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 
 
-    cameraView.setSize(400, 300);
+    cameraView.setSize(320, 320);
     cameraView.setCenter(position);
 }
 
@@ -69,6 +69,7 @@ void Player::playerAttack() {
     if (Keyboard::isKeyPressed(Keyboard::J) && !isAttacking) {
         isAttacking = true;
         currentFrame = 0;
+        speed = 100;
         setTexture(playerAttack1, 64, 32, 4, 0.1f);
     }
 }
@@ -80,6 +81,7 @@ void Player::playerWalk() {
     if (isAttacking) return;
 
     if (isMoving) {
+        speed = 150.f;
         setTexture(playerRun, 32, 32, 8, 0.1f);
     }
     else {

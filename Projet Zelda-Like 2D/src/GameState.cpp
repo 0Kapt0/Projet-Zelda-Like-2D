@@ -5,11 +5,10 @@ using namespace std;
 
 
 GameState::GameState(RenderWindow& window, Player& player)
-    : State(window), player(player), map("assets/maps/map.txt", "assets/tilesets/tiles.png", 32) {
+    : State(window), player(player), map("assets/maps/map.txt", "assets/tilesets/tiles.png", 32), fence("assets/maps/fence.txt", "assets/tilesets/fence.png", 32) {
 }
 
 void GameState::handleInput() {
-    /*player.handleInput();*/
 }
 
 void GameState::update(float deltaTime) {
@@ -18,5 +17,6 @@ void GameState::update(float deltaTime) {
 
 void GameState::draw() {
     map.draw(window);
+    /*fence.draw(window);*/
     player.draw(window);
 }
