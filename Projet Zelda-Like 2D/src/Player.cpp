@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
-    if (!playerTexture.loadFromFile("assets/player/player_run.png")) {
+    if (!playerTexture.loadFromFile("assets/player/player_idle.png")) {
         cerr << "Texture not loaded!" << endl;
     }
     else {
