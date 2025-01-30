@@ -1,33 +1,35 @@
 ﻿  main.cpp
-  Enemy.cpp
-  Entity.cpp
-  Game.cpp
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Game.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
-  GameState.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Game.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'main.cpp')
   
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+  Enemy.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/Enemy.cpp')
   
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+  Entity.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/Entity.cpp')
   
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Game.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+  Game.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Game.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/Game.cpp')
   
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\State.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+  GameState.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\State.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/GameState.cpp')
   
+  Map.cpp
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Map.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+  (compiler le fichier source 'src/Map.cpp')
+  
   MenuState.cpp
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\State.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\State.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/MenuState.cpp')
   
-  Physics.cpp
   Player.cpp
-C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+C:\Users\ldomingues\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\include\Entity.h(4,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
   (compiler le fichier source 'src/Player.cpp')
   
   Renderer.cpp
-  State.cpp
   ThreadManager.cpp
   Génération de code en cours...
