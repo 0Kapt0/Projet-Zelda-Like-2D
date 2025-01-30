@@ -10,10 +10,18 @@ class Player : public Entity {
 private:
     Vector2f position;
     Vector2f velocity;
+
     int health;
     float speed;
-    Texture playerTexture;
+
+    Texture playerRun;
+    Texture playerIdle;
+    Texture playerAttack1;
+
     View cameraView;
+
+    bool isMoving;
+    bool isAttacking = false;
 
 public:
     Player();
@@ -21,6 +29,8 @@ public:
     Vector2f getPosition() const;
     float getSpeed() const;
     float getHealth() const;
+    void playerWalk();
+    void playerAttack();
 
     void setPosition(const Vector2f& newPosition);
     void setSpeed(float newSpeed);

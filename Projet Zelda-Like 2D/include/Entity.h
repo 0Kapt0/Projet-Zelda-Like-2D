@@ -15,6 +15,8 @@ protected:
     int currentFrame;
     float frameTime;
     float elapsedTime;
+    int totalFrames;
+    bool isAttacking;
 
 public:
     Entity();
@@ -24,6 +26,7 @@ public:
 
     void setTexture(Texture& tex, int frameWidth, int frameHeight, int totalFrames, float frameDuration);
     void animate(float deltaTime);
+    void attack() { isAttacking = true; currentFrame = 0; }
 
     virtual void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) = 0;
     virtual void draw(RenderWindow& window) = 0;
