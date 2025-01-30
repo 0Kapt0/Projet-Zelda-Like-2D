@@ -80,6 +80,7 @@ void Player::playerWalk() {
 }
 
 
+
 void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
     handleInput(deltaTime);
     animate(deltaTime);
