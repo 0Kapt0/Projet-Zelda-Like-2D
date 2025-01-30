@@ -33,3 +33,8 @@
 
 # Ignorer le .vs
 .vs/
+*.tlog
+*.iobj
+*.log
+*.ipdb
+*.pdb
