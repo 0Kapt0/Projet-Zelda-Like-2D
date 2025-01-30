@@ -5,15 +5,15 @@ using namespace sf;
 using namespace std;
 
 Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
-    if (!playerTexture.loadFromFile("assets/player/player_anim.png")) {
+    if (!playerTexture.loadFromFile("assets/player/player_idle.png")) {
         cerr << "Texture not loaded!" << endl;
     }
     else {
         cout << "Texture loaded" << endl;
     }
 
-    setTexture(playerTexture, 16, 19, 4, 0.1f);
-    shape.setSize(Vector2f(16, 19));
+    setTexture(playerTexture, 32, 32, 8, 0.1f);
+    shape.setSize(Vector2f(32, 32));
     shape.setPosition(position);
     shape.setOrigin(shape.getSize().x/2, shape.getSize().y / 2);
 

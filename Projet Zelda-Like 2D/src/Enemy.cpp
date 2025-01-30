@@ -1,5 +1,8 @@
 #include "../include/Enemy.h"
 
+using namespace sf;
+using namespace std;
+
 Enemy::Enemy(float x, float y, float _speed)
     : position(x, y), speed(_speed) {
 
