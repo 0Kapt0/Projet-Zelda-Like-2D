@@ -1,6 +1,6 @@
 #include "../include/Entity.h"
 
-Entity::Entity() : currentFrame(0), elapsedTime(0.0f), frameTime(0.1f), isAttacking(false) {}
+Entity::Entity() : currentFrame(0), elapsedTime(0.0f), frameTime(0.1f), totalFrames(0), isAttacking(false) {}
 
 void Entity::setTexture(Texture& tex, int frameWidth, int frameHeight, int _totalFrames, float _frameTime) {
     shape.setTexture(&tex);
