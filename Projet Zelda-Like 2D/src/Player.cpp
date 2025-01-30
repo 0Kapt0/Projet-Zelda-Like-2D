@@ -15,6 +15,7 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
     setTexture(playerTexture, 32, 32, 8, 0.1f);
     shape.setSize(Vector2f(32, 32));
     shape.setPosition(position);
+    shape.setOrigin(shape.getSize().x/2, shape.getSize().y / 2);
 
 
     cameraView.setSize(400, 300);
