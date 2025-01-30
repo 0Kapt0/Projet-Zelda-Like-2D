@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace sf;
 
@@ -18,6 +19,12 @@ private:
     Texture playerIdle;
     Texture playerAttack1;
     Texture playerAttack2;
+
+    SoundBuffer footstepBuffer;
+    Sound footstepSound;
+    Clock footstepClock;
+    float footstepCooldown;
+    void playFootstep();
 
     View cameraView;
 
