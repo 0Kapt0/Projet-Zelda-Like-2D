@@ -60,10 +60,12 @@ void Player::handleInput(float deltaTime) {
 
 void Player::playerAttack() {
     if (Keyboard::isKeyPressed(Keyboard::J) && !isAttacking) {
-        attack();
+        isAttacking = true;
+        currentFrame = 0;
         setTexture(playerAttack1, 64, 32, 4, 0.1f);
     }
 }
+
 
 
 void Player::playerWalk() {
