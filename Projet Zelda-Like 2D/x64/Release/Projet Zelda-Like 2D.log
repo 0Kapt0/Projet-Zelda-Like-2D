@@ -1,8 +1,8 @@
 ﻿  Player.cpp
-C:\Users\Lorenzo\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\src\Player.cpp(81,12): warning C4244: 'return': conversion from 'const int' to 'float', possible loss of data
-  Generating code
-  2 of 546 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
+C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\src\Player.cpp(81,12): warning C4244: 'return' : conversion de 'const int' en 'float', perte possible de données
+  Génération de code en cours
+  1 of 547 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  Projet Zelda-Like 2D.vcxproj -> C:\Users\Lorenzo\Source\Repos\0Kapt0\Projet-Zelda-Like-2D\x64\Release\Projet Zelda-Like 2D.exe
+    1 functions had inline decision re-evaluated but remain unchanged
+  Fin de la génération du code
+  Projet Zelda-Like 2D.vcxproj -> C:\Users\lmakarof\source\repos\0Kapt0\Projet-Zelda-Like-2D\x64\Release\Projet Zelda-Like 2D.exe
