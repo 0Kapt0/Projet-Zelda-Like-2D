@@ -21,15 +21,23 @@ private:
     array<SoundBuffer, 6> footstepBuffers;
     array<Sound, 6> footsteps;
     Clock footstepClock;
+    Clock dashClock;
 
     Texture playerRun;
     Texture playerIdle;
+    Texture playerDeath;
+    Texture playerDash;
     Texture playerAttack1;
     Texture playerAttack2;
 
     View cameraView;
 
     bool isMoving;
+    bool isDying;
+    bool playerDead;
+    void playFootstep();
+    void playerDie();
+    void handleDeath();
 public:
     Player();
 
@@ -38,7 +46,9 @@ public:
     float getHealth() const;
     void playerWalk();
     void playerAttack();
-    void playFootstep();
+    void dash();
+    bool isDashing;
+
 
     void setPosition(const Vector2f& newPosition);
     void setSpeed(float newSpeed);
