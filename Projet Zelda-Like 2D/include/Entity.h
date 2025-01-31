@@ -24,6 +24,7 @@ public:
     virtual ~Entity() {}
 
     bool intersects(const Entity& other) const;
+    RectangleShape& getShape() { return shape; }
 
     void moveShape(float offsetX, float offsetY);
     void setTexture(Texture& tex, int frameWidth, int frameHeight, int totalFrames, float frameDuration);

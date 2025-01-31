@@ -17,11 +17,11 @@ DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIn
         cerr << "Error loading text scroll sound\n";
     }
     textSound.setBuffer(textBuffer);
-    textSound.setVolume(50);
+    textSound.setVolume(20);
 
     //Set up dialogue box
     box.setSize(Vector2f(width, height));
-    box.setFillColor(Color(0, 0, 0, 200));
+    box.setFillColor(Color(0, 0, 0, 255));
     box.setOutlineThickness(1);
     box.setOutlineColor(Color::White);
 
@@ -130,6 +130,17 @@ void DialogueBox::advanceDialogue() {
     }
 }
 
+int DialogueBox::getCurrentDialogueIndex() const {
+    return currentDialogue;
+}
+
+int DialogueBox::getDialogueSize() const {
+    return dialogues.size();
+}
+
+bool DialogueBox::isCurrentlyTyping() const {
+    return isTyping;
+}
 
 void DialogueBox::draw(RenderWindow& window) {
     window.draw(box);

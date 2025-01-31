@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "Player.h"
+#include "Merchant.h"
 #include "Map.h"
 #include "DialogueBox.h"
 #include <SFML/Graphics.hpp>
@@ -14,6 +15,7 @@ using namespace std;
 class GameState : public State {
 private:
     Player& player;
+    Merchant merchant;
 
     DialogueBox dialogue;
     Clock textCD;

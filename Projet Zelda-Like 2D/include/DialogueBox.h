@@ -33,6 +33,10 @@ public:
     void update();
     void advanceDialogue();
     void draw(RenderWindow& window);
+
+    int getCurrentDialogueIndex() const;
+    int getDialogueSize() const;
+    bool isCurrentlyTyping() const;
 };
 
 #endif
