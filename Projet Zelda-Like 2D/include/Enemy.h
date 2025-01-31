@@ -19,7 +19,7 @@ public:
     const RectangleShape& getShape() const;
     Vector2f getPosition() const;
 
-    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) override;
+    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
     virtual ~Enemy() {}

@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <SFML/Graphics.hpp>
+#include "Map.h"
 #include <iostream>
 #include <vector>
 
@@ -28,7 +29,7 @@ public:
     void animate(float deltaTime);
     void attack() { isAttacking = true; currentFrame = 0; }
 
-    virtual void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) = 0;
+    virtual void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) = 0;
     virtual void draw(RenderWindow& window) = 0;
 };
 
