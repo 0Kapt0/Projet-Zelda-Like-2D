@@ -74,10 +74,10 @@ Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerD
         cout << "Texture player_attack1 loaded" << endl;
     }
 
-    shape.setPosition(position);
-    shape.setOrigin(50, 2);
     playerSize = { 16, 28 };
+    moveShape(8, 14);
     hitbox.setSize({ 16, 28 });
+    hitbox.setOrigin(0, 0);
     hitbox.setFillColor(Color::Color(255, 0, 0, 150));
 
     cameraView.setSize(426.67f, 320);
@@ -113,11 +113,7 @@ void Player::handleInput(float deltaTime, Map& map) {
     if (map.isWalkable(newPositionY, playerSize)) {
         position.y = newPositionY.y;
     }
-
     shape.setPosition(position);
-
-
-    //position += velocity * deltaTime;
 }
 
 void Player::playerAttack() {
@@ -125,7 +121,7 @@ void Player::playerAttack() {
         isAttacking = true;
         currentFrame = 0;
         speed = 100;
-        setTexture(playerAttack1, 64, 32, 4, 0.1f, 8, 14);
+        setTexture(playerAttack1, 64, 32, 4, 0.1f);
         int index = rand() % 2;
         swordSwing[index].play();
     }
@@ -151,7 +147,7 @@ void Player::dash() {
     }
 
     if (isDashing) {
-        setTexture(playerDash, 32, 32, 8, 0.1f, 8, 14);
+        setTexture(playerDash, 32, 32, 8, 0.1f);
         if (dashClock.getElapsedTime().asSeconds() > 0.2f) {
             isDashing = false;
             speed /= 2.5f;
@@ -173,7 +169,7 @@ void Player::playerDie() {
     }
 
     if (currentFrame < 13) {
-        setTexture(playerDeath, 32, 32, 14, 0.1f, 8, 14);
+        setTexture(playerDeath, 32, 32, 14, 0.1f);
         if (cameraView.getSize().x > 200.f) {
             cameraView.zoom(0.75f);
         }
@@ -191,11 +187,11 @@ void Player::playerWalk() {
 
     if (isMoving && !isDashing) {
         speed = 150.f;
-        setTexture(playerRun, 32, 32, 8, 0.1f, 8, 14);
+        setTexture(playerRun, 32, 32, 8, 0.1f);
         playFootstep();
     }
     else if (!isDashing) {
-        setTexture(playerIdle, 32, 32, 8, 0.1f, 8, 14);
+        setTexture(playerIdle, 32, 32, 8, 0.1f);
     }
 }
 
