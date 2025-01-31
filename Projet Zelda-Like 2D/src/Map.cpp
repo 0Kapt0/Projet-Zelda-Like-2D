@@ -2,8 +2,8 @@
 #include <fstream>
 #include <iostream>
 
-Map::Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues)
-    : tileSize(tileSize), blockedTileValues(blockedTileValues) {
+Map::Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues)
+    : tileSize(tileSize), blockedTileValues(blockedTileValues), blockedItemValues(blockedItemValues) {
     if (!tileSet.loadFromFile(tilesetPath)) {
         cerr << "Erreur de chargement du tileset principal" << endl;
     }
@@ -24,7 +24,6 @@ void Map::loadFromFile(const string& filename) {
 
     string line;
     int y = 0;
-    int blocked = 0;
     bool readingItems = false;
 
     while (getline(file, line)) {
@@ -40,9 +39,14 @@ void Map::loadFromFile(const string& filename) {
 
         while (ss >> tile) {
             row.push_back(tile);
-            if (find(blockedTileValues.begin(), blockedTileValues.end(), tile) != blockedTileValues.end()) {
+
+            if (!readingItems && find(blockedTileValues.begin(), blockedTileValues.end(), tile) != blockedTileValues.end()) {
                 blockedTiles.push_back(Vector2i(x, y));
             }
+            if (readingItems && find(blockedItemValues.begin(), blockedItemValues.end(), tile) != blockedItemValues.end()) {
+                blockedItemTiles.push_back(Vector2i(x, y));
+            }
+
             x++;
         }
 
@@ -56,6 +60,7 @@ void Map::loadFromFile(const string& filename) {
     }
 }
 
+
 void Map::generateItems() {
     int itemsetWidth = itemSet.getSize().x / tileSize;
 
@@ -63,7 +68,7 @@ void Map::generateItems() {
         for (size_t x = 0; x < itemMap[y].size(); ++x) {
             int itemIndex = itemMap[y][x];
 
-            if (itemIndex > 0) { // 🎯 Ignore les cases vides
+            if (itemIndex > 0) {
                 int tileX = (itemIndex % itemsetWidth) * tileSize;
                 int tileY = (itemIndex / itemsetWidth) * tileSize;
 
@@ -97,19 +102,24 @@ void Map::generateTiles() {
 }
 
 bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds) {
-    // Utiliser hitboxBounds pour définir la zone de collision
     for (auto& tile : blockedTiles) {
-        // Créer un FloatRect représentant la zone de la tuile
         FloatRect tileBounds(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
-
-        // Vérification de la collision entre la hitbox et la tuile
         if (hitboxBounds.intersects(tileBounds)) {
-            return false;  // Collision détectée
+            return false;
         }
     }
-    return true;  // Pas de collision
-}
 
+    for (auto& item : blockedItemTiles) {
+        FloatRect itemBounds(item.x * tileSize, item.y * tileSize, tileSize, tileSize);
+
+        if (hitboxBounds.intersects(itemBounds)) {
+            cout << "Collision detected!" << endl;
+            return false;
+        }
+    }
+
+    return true;
+}
 
 
 void Map::draw(RenderWindow& window) {

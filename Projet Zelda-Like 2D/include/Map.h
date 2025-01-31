@@ -15,12 +15,14 @@ class Map {
 private:
     vector<vector<int>> tileMap;
     vector<int> blockedTileValues;
+    vector<int> blockedItemValues;
     vector<vector<int>> itemMap;
     Texture tileSet;
     Texture itemSet;
     vector<Sprite> tiles;
     vector<Sprite> items;
     vector<Vector2i> blockedTiles;
+    vector<Vector2i> blockedItemTiles;
 
     int tileSize;
 
@@ -28,7 +30,7 @@ private:
     void generateTiles();
     void generateItems();
 public:
-    Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues);
+    Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues);
     void draw(RenderWindow& window);
     bool isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds);
 };

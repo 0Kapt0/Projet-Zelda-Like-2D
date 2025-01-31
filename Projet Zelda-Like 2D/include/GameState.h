@@ -4,6 +4,7 @@
 #include "State.h"
 #include "Player.h"
 #include "Map.h"
+#include "DialogueBox.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -13,6 +14,9 @@ using namespace std;
 class GameState : public State {
 private:
     Player& player;
+
+    DialogueBox dialogue;
+    Clock textCD;
 
     Map map;
     Map fence;
