@@ -1,10 +1,11 @@
 #include "../include/Player.h"
+#include "../include/Map.h"
 #include <iostream>
 
 using namespace sf;
 using namespace std;
 
-Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerDead(false), isDying(false), isDashing(false) {
+Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerDead(false), isDying(false), isDashing(false) {
     array<string, 6> footstepFiles = {
         "assets/player/sounds/footstep1.wav",
         "assets/player/sounds/footstep2.wav",
@@ -69,7 +70,7 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerD
     cameraView.setCenter(position);
 }
 
-void Player::handleInput(float deltaTime) {
+void Player::handleInput(float deltaTime, Map& map) {
     Vector2f mouv(0.0f, 0.0f);
 
     if (!isDying) {
@@ -89,9 +90,20 @@ void Player::handleInput(float deltaTime) {
     {
         isMoving = false;
     }
-
     velocity = mouv * speed;
-    position += velocity * deltaTime;
+    Vector2f newPositionX = { position.x + velocity.x * deltaTime, position.y };
+    Vector2f newPositionY = { position.x, position.y + velocity.y * deltaTime };
+    if (map.isWalkable(newPositionX, playerSize)) {
+        position.x = newPositionX.x;
+    }
+    if (map.isWalkable(newPositionY, playerSize)) {
+        position.y = newPositionY.y;
+    }
+
+    shape.setPosition(position);
+
+
+    //position += velocity * deltaTime;
 }
 
 void Player::playerAttack() {
@@ -175,11 +187,11 @@ void Player::handleDeath() {
     }
 }
 
-void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
+void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     handleDeath();
     if (playerDead) return;
     dash();
-    handleInput(deltaTime);
+    handleInput(deltaTime, map);
     playerAttack();
     playerWalk();
 

@@ -12,6 +12,7 @@ class Player : public Entity {
 private:
     Vector2f position;
     Vector2f velocity;
+    Vector2f playerSize = { 32, 32 };
 
     int health;
     float speed;
@@ -54,8 +55,8 @@ public:
     void setSpeed(float newSpeed);
     void reduceHealth(int damage);
 
-    void handleInput(float deltaTime);
-    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) override;
+    void handleInput(float deltaTime, Map& map);
+    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
     View getCameraView() const;
