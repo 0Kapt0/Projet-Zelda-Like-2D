@@ -2,8 +2,8 @@
 #include <fstream>
 #include <iostream>
 
-Map::Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize)
-    : tileSize(tileSize) {
+Map::Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues)
+    : tileSize(tileSize), blockedTileValues(blockedTileValues) {
     if (!tileSet.loadFromFile(tilesetPath)) {
         cerr << "Erreur de chargement du tileset principal" << endl;
     }
@@ -23,6 +23,8 @@ void Map::loadFromFile(const string& filename) {
     }
 
     string line;
+    int y = 0;
+    int blocked = 0;
     bool readingItems = false;
 
     while (getline(file, line)) {
@@ -34,9 +36,14 @@ void Map::loadFromFile(const string& filename) {
         vector<int> row;
         stringstream ss(line);
         int tile;
+        int x = 0;
 
         while (ss >> tile) {
             row.push_back(tile);
+            if (find(blockedTileValues.begin(), blockedTileValues.end(), tile) != blockedTileValues.end()) {
+                blockedTiles.push_back(Vector2i(x, y));
+            }
+            x++;
         }
 
         if (readingItems) {
@@ -45,6 +52,7 @@ void Map::loadFromFile(const string& filename) {
         else {
             tileMap.push_back(row);
         }
+        y++;
     }
 }
 
@@ -86,6 +94,29 @@ void Map::generateTiles() {
             tiles.push_back(sprite);
         }
     }
+}
+
+bool Map::isWalkable(Vector2f position, Vector2f playerSize) {
+    FloatRect playerBounds(position.x, position.y, playerSize.x, playerSize.y);
+
+    for (auto& tile : blockedTiles) {
+        FloatRect tileBounds(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
+
+        if (playerBounds.intersects(tileBounds)) {
+            if (playerBounds.top < tileBounds.top + tileBounds.height && playerBounds.top + playerBounds.height > tileBounds.top) {
+                if (playerBounds.left + playerBounds.width > tileBounds.left && playerBounds.left < tileBounds.left + tileBounds.width) {
+                    return false;
+                }
+            }
+
+            if (playerBounds.left < tileBounds.left + tileBounds.width && playerBounds.left + playerBounds.width > tileBounds.left) {
+                if (playerBounds.top + playerBounds.height > tileBounds.top && playerBounds.top < tileBounds.top + tileBounds.height) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 

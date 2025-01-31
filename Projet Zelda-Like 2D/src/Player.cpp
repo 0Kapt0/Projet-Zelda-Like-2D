@@ -1,10 +1,11 @@
 #include "../include/Player.h"
+#include "../include/Map.h"
 #include <iostream>
 
 using namespace sf;
 using namespace std;
 
-Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerDead(false), isDying(false), isDashing(false) {
+Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerDead(false), isDying(false), isDashing(false), canDash(true), isMoving(false) {
     array<string, 6> footstepFiles = {
         "assets/player/sounds/footstep1.wav",
         "assets/player/sounds/footstep2.wav",
@@ -29,7 +30,18 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerD
             cerr << "Erreur de chargement : " << swordSwingFiles[i] << endl;
         }
         swordSwing[i].setBuffer(swordSwingBuffers[i]);
-        swordSwing[i].setVolume(60.f);
+        swordSwing[i].setVolume(80.f);
+    }
+    array<string, 2> DashFiles = {
+        "assets/player/sounds/playerDash1.wav",
+        "assets/player/sounds/playerDash2.wav"
+    };
+    for (size_t i = 0; i < DashFiles.size(); i++) {
+        if (!playerDashBuffers[i].loadFromFile(DashFiles[i])) {
+            cerr << "Erreur de chargement : " << DashFiles[i] << endl;
+        }
+        Dash[i].setBuffer(playerDashBuffers[i]);
+        Dash[i].setVolume(20.f);
     }
     if (!playerRun.loadFromFile("assets/player/player_run.png")) {
         cerr << "Texture player_run loaded!" << endl;
@@ -69,7 +81,7 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerD
     cameraView.setCenter(position);
 }
 
-void Player::handleInput(float deltaTime) {
+void Player::handleInput(float deltaTime, Map& map) {
     Vector2f mouv(0.0f, 0.0f);
 
     if (!isDying) {
@@ -89,9 +101,20 @@ void Player::handleInput(float deltaTime) {
     {
         isMoving = false;
     }
-
     velocity = mouv * speed;
-    position += velocity * deltaTime;
+    Vector2f newPositionX = { position.x + velocity.x * deltaTime, position.y };
+    Vector2f newPositionY = { position.x, position.y + velocity.y * deltaTime };
+    if (map.isWalkable(newPositionX, playerSize)) {
+        position.x = newPositionX.x;
+    }
+    if (map.isWalkable(newPositionY, playerSize)) {
+        position.y = newPositionY.y;
+    }
+
+    shape.setPosition(position);
+
+
+    //position += velocity * deltaTime;
 }
 
 void Player::playerAttack() {
@@ -114,9 +137,13 @@ void Player::playFootstep() {
 }
 
 void Player::dash() {
-    if (Keyboard::isKeyPressed(Keyboard::LShift) && !isDashing) {
+    if (Keyboard::isKeyPressed(Keyboard::LShift) && !isDashing && canDash) {
+        int index = rand() % 2;
+        Dash[index].play();
         isDashing = true;
+        canDash = false;
         dashClock.restart();
+        dashCooldownClock.restart();
         speed *= 2.5f;
     }
 
@@ -126,6 +153,10 @@ void Player::dash() {
             isDashing = false;
             speed /= 2.5f;
         }
+    }
+
+    if (!canDash && dashCooldownClock.getElapsedTime().asSeconds() > 2.0f) {
+        canDash = true;
     }
 }
 
@@ -175,11 +206,11 @@ void Player::handleDeath() {
     }
 }
 
-void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
+void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     handleDeath();
     if (playerDead) return;
     dash();
-    handleInput(deltaTime);
+    handleInput(deltaTime, map);
     playerAttack();
     playerWalk();
 

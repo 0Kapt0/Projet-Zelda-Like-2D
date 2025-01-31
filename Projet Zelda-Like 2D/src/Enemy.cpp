@@ -9,7 +9,7 @@ Enemy::Enemy(float x, float y, float _speed)
     shape.setPosition(position);
 }
 
-void Enemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
+void Enemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     animate(deltaTime);
     position.x += speed * deltaTime;
 
