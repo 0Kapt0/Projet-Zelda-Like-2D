@@ -5,6 +5,32 @@ using namespace sf;
 using namespace std;
 
 Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
+    array<string, 6> footstepFiles = {
+        "assets/player/sounds/footstep1.wav",
+        "assets/player/sounds/footstep2.wav",
+        "assets/player/sounds/footstep3.wav",
+        "assets/player/sounds/footstep4.wav",
+        "assets/player/sounds/footstep5.wav",
+        "assets/player/sounds/footstep6.wav"
+    };
+    for (size_t i = 0; i < footstepFiles.size(); i++) {
+        if (!footstepBuffers[i].loadFromFile(footstepFiles[i])) {
+            cerr << "Erreur de chargement : " << footstepFiles[i] << endl;
+        }
+        footsteps[i].setBuffer(footstepBuffers[i]);
+        footsteps[i].setVolume(20.f);
+    }
+    array<string, 2> swordSwingFiles = {
+        "assets/player/sounds/swordSwing1.wav",
+        "assets/player/sounds/swordSwing2.wav"
+    };
+    for (size_t i = 0; i < swordSwingFiles.size(); i++) {
+        if (!swordSwingBuffers[i].loadFromFile(swordSwingFiles[i])) {
+            cerr << "Erreur de chargement : " << swordSwingFiles[i] << endl;
+        }
+        swordSwing[i].setBuffer(swordSwingBuffers[i]);
+        swordSwing[i].setVolume(60.f);
+    }
     if (!playerRun.loadFromFile("assets/player/player_run.png")) {
         cerr << "Texture player_run loaded!" << endl;
     }
@@ -26,25 +52,9 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
         cout << "Texture player_attack1 loaded" << endl;
     }
 
-    /*if (!playerAttack2.loadFromFile("assets/player/player_attack2.png")) {
-        cerr << "Texture player_attack2 not loaded!" << endl;
-    }
-    else {
-        cout << "Texture player_attack2 loaded" << endl;
-    }*/
-    if (!footstepBuffer.loadFromFile("assets/player/sounds/footstep.mp3")) {
-        cerr << "Erreur: Impossible de charger le fichier footstep.mp3 !" << endl;
-    }
-    else {
-        footstepSound.setBuffer(footstepBuffer);
-        footstepSound.setVolume(80.f);
-    }
-
     setTexture(playerIdle, 32, 32, 8, 0.1f);
     shape.setPosition(position);
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
-
-    footstepCooldown = 0.5f;
 
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
@@ -78,17 +88,19 @@ void Player::playerAttack() {
         currentFrame = 0;
         speed = 100;
         setTexture(playerAttack1, 64, 32, 4, 0.1f);
+        int index = rand() % 2;
+        swordSwing[index].play();
     }
 }
 
 void Player::playFootstep() {
-    if (footstepClock.getElapsedTime().asSeconds() >= footstepCooldown) {
-        if (footstepSound.getStatus() != sf::Sound::Playing) {
-            footstepSound.play();
-            footstepClock.restart();
-        }
+    if (footstepClock.getElapsedTime().asSeconds() > 0.4f) {
+        int index = rand() % 6;
+        footsteps[index].play();
+        footstepClock.restart();
     }
 }
+
 
 void Player::playerWalk() {
     if (isAttacking) return;
