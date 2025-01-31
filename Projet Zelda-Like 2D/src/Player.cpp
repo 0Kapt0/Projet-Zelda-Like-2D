@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerDead(false), isDying(false), isDashing(false), canDash(true), isMoving(false) {
+Player::Player() : speed(150.0f), position(400.0f, 400.0f), health(100), playerDead(false), isDying(false), isDashing(false), canDash(true), isMoving(false) {
     array<string, 6> footstepFiles = {
         "assets/player/sounds/footstep1.wav",
         "assets/player/sounds/footstep2.wav",
@@ -88,7 +88,7 @@ void Player::handleInput(float deltaTime, Map& map) {
     Vector2f mouv(0.0f, 0.0f);
 
     if (!isDying) {
-        if (Keyboard::isKeyPressed(Keyboard::Q) || Keyboard::isKeyPressed(Keyboard::A)) mouv.x -= 1.0f, shape.setScale(-1, 1);;
+        if (Keyboard::isKeyPressed(Keyboard::Q) || Keyboard::isKeyPressed(Keyboard::A)) mouv.x -= 1.0f, shape.setScale(-1, 1);
         if (Keyboard::isKeyPressed(Keyboard::D)) mouv.x += 1.0f, shape.setScale(1, 1);
         if (Keyboard::isKeyPressed(Keyboard::Z) || Keyboard::isKeyPressed(Keyboard::W)) mouv.y -= 1.0f;
         if (Keyboard::isKeyPressed(Keyboard::S)) mouv.y += 1.0f;
@@ -212,7 +212,9 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     handleInput(deltaTime, map);
     playerAttack();
     playerWalk();
-    hitbox.setPosition(position);
+    hitbox.setPosition(position.x -9, position.y +4);
+    hitboxV.x = position.x - 9;
+    hitboxV.y = position.y + 4;
 
     animate(deltaTime);
 
@@ -247,7 +249,7 @@ void Player::setSpeed(float newSpeed) {
 }
 
 Vector2f Player::getPosition() const {
-    return position;
+    return hitboxV;
 }
 
 float Player::getSpeed() const {

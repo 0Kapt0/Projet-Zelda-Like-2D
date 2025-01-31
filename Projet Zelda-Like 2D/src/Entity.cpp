@@ -6,7 +6,7 @@ void Entity::setTexture(Texture& tex, int frameWidth, int frameHeight, int _tota
     shape.setTexture(&tex);
     shape.setSize(Vector2f(frameWidth, frameHeight));
     shape.setTextureRect(IntRect(0, 0, frameWidth, frameHeight));
-    shape.setOrigin(frameWidth / 2, frameHeight / 2);
+    shape.setOrigin(frameWidth / 2, 0);
 
     frames.clear();
     for (int i = 0; i < _totalFrames; ++i) {
