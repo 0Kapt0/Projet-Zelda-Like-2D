@@ -78,7 +78,7 @@ Player::Player() : speed(150.0f), position(400.0f, 400.0f), health(100), playerD
     moveShape(8, 14);
     hitbox.setSize({ 16, 28 });
     hitbox.setOrigin(0, 0);
-    hitbox.setFillColor(Color::Color(255, 0, 0, 150));
+    hitbox.setFillColor(Color::Color(255, 0, 0, 0));
 
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
