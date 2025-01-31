@@ -18,6 +18,8 @@ private:
 
     array<SoundBuffer, 2> swordSwingBuffers;
     array<Sound, 2> swordSwing;
+    array<SoundBuffer, 1> playerDashBuffers;
+    array<Sound, 1> playerDash;
     array<SoundBuffer, 6> footstepBuffers;
     array<Sound, 6> footsteps;
     Clock footstepClock;
