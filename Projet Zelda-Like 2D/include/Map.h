@@ -30,7 +30,7 @@ private:
 public:
     Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues);
     void draw(RenderWindow& window);
-    bool isWalkable(Vector2f position, Vector2f playerSize);
+    bool isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds);
 };
 
 #endif

@@ -13,7 +13,6 @@ private:
     Vector2f position;
     Vector2f velocity;
     Vector2f playerSize;
-    Vector2f hitboxV;
     RectangleShape hitbox;
 
     int health;

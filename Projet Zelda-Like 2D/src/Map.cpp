@@ -96,28 +96,20 @@ void Map::generateTiles() {
     }
 }
 
-bool Map::isWalkable(Vector2f position, Vector2f playerSize) {
-    FloatRect playerBounds(position.x, position.y, playerSize.x, playerSize.y);
-
+bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds) {
+    // Utiliser hitboxBounds pour définir la zone de collision
     for (auto& tile : blockedTiles) {
+        // Créer un FloatRect représentant la zone de la tuile
         FloatRect tileBounds(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
 
-        if (playerBounds.intersects(tileBounds)) {
-            if (playerBounds.top < tileBounds.top + tileBounds.height && playerBounds.top + playerBounds.height > tileBounds.top) {
-                if (playerBounds.left + playerBounds.width > tileBounds.left && playerBounds.left < tileBounds.left + tileBounds.width) {
-                    return false;
-                }
-            }
-
-            if (playerBounds.left < tileBounds.left + tileBounds.width && playerBounds.left + playerBounds.width > tileBounds.left) {
-                if (playerBounds.top + playerBounds.height > tileBounds.top && playerBounds.top < tileBounds.top + tileBounds.height) {
-                    return false;
-                }
-            }
+        // Vérification de la collision entre la hitbox et la tuile
+        if (hitboxBounds.intersects(tileBounds)) {
+            return false;  // Collision détectée
         }
     }
-    return true;
+    return true;  // Pas de collision
 }
+
 
 
 void Map::draw(RenderWindow& window) {

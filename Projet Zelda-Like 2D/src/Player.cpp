@@ -100,21 +100,33 @@ void Player::handleInput(float deltaTime, Map& map) {
         mouv /= length;
         isMoving = true;
     }
-    else
-    {
+    else {
         isMoving = false;
     }
+
     velocity = mouv * speed;
     Vector2f newPositionX = { position.x + velocity.x * deltaTime, position.y };
     Vector2f newPositionY = { position.x, position.y + velocity.y * deltaTime };
-    if (map.isWalkable(newPositionX, playerSize)) {
+
+    FloatRect newHitboxBoundsX = hitbox.getGlobalBounds();
+    newHitboxBoundsX.left += velocity.x * deltaTime;
+
+    FloatRect newHitboxBoundsY = hitbox.getGlobalBounds();
+    newHitboxBoundsY.top += velocity.y * deltaTime;
+
+    if (map.isWalkable(newPositionX, playerSize, newHitboxBoundsX)) {
         position.x = newPositionX.x;
+        hitbox.setPosition(position.x - 9, position.y + 4);
     }
-    if (map.isWalkable(newPositionY, playerSize)) {
+
+    if (map.isWalkable(newPositionY, playerSize, newHitboxBoundsY)) {
         position.y = newPositionY.y;
+        hitbox.setPosition(position.x - 9, position.y + 4);
     }
+
     shape.setPosition(position);
 }
+
 
 void Player::playerAttack() {
     if (Keyboard::isKeyPressed(Keyboard::J) && !isAttacking) {
@@ -213,8 +225,6 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     playerAttack();
     playerWalk();
     hitbox.setPosition(position.x -9, position.y +4);
-    hitboxV.x = position.x - 9;
-    hitboxV.y = position.y + 4;
 
     animate(deltaTime);
 
@@ -249,7 +259,7 @@ void Player::setSpeed(float newSpeed) {
 }
 
 Vector2f Player::getPosition() const {
-    return hitboxV;
+    return position;
 }
 
 float Player::getSpeed() const {
