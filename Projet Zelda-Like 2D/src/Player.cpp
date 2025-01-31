@@ -26,17 +26,25 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100) {
         cout << "Texture player_attack1 loaded" << endl;
     }
 
-    if (!playerAttack2.loadFromFile("assets/player/player_attack2.png")) {
+    /*if (!playerAttack2.loadFromFile("assets/player/player_attack2.png")) {
         cerr << "Texture player_attack2 not loaded!" << endl;
     }
     else {
         cout << "Texture player_attack2 loaded" << endl;
+    }*/
+    if (!footstepBuffer.loadFromFile("assets/player/sounds/footstep.mp3")) {
+        cerr << "Erreur: Impossible de charger le fichier footstep.mp3 !" << endl;
+    }
+    else {
+        footstepSound.setBuffer(footstepBuffer);
+        footstepSound.setVolume(80.f);
     }
 
     setTexture(playerIdle, 32, 32, 8, 0.1f);
     shape.setPosition(position);
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 
+    footstepCooldown = 0.5f;
 
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
@@ -73,8 +81,14 @@ void Player::playerAttack() {
     }
 }
 
-
-
+void Player::playFootstep() {
+    if (footstepClock.getElapsedTime().asSeconds() >= footstepCooldown) {
+        if (footstepSound.getStatus() != sf::Sound::Playing) {
+            footstepSound.play();
+            footstepClock.restart();
+        }
+    }
+}
 
 void Player::playerWalk() {
     if (isAttacking) return;
@@ -82,13 +96,12 @@ void Player::playerWalk() {
     if (isMoving) {
         speed = 150.f;
         setTexture(playerRun, 32, 32, 8, 0.1f);
+        playFootstep();
     }
     else {
         setTexture(playerIdle, 32, 32, 8, 0.1f);
     }
 }
-
-
 
 void Player::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition) {
     handleInput(deltaTime);
