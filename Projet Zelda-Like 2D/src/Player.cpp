@@ -31,6 +31,17 @@ Player::Player() : speed(150.0f), position(100.0f, 100.0f), health(100), playerD
         swordSwing[i].setBuffer(swordSwingBuffers[i]);
         swordSwing[i].setVolume(60.f);
     }
+    array<string, 2> DashFiles = {
+        "assets/player/sounds/playerDash1.wav",
+        "assets/player/sounds/playerDash2.wav"
+    };
+    for (size_t i = 0; i < DashFiles.size(); i++) {
+        if (!playerDashBuffers[i].loadFromFile(DashFiles[i])) {
+            cerr << "Erreur de chargement : " << DashFiles[i] << endl;
+        }
+        Dash[i].setBuffer(playerDashBuffers[i]);
+        Dash[i].setVolume(60.f);
+    }
     if (!playerRun.loadFromFile("assets/player/player_run.png")) {
         cerr << "Texture player_run loaded!" << endl;
     }
@@ -115,6 +126,8 @@ void Player::playFootstep() {
 
 void Player::dash() {
     if (Keyboard::isKeyPressed(Keyboard::LShift) && !isDashing) {
+        int index = rand() % 2;
+        Dash[index].play();
         isDashing = true;
         dashClock.restart();
         speed *= 2.5f;

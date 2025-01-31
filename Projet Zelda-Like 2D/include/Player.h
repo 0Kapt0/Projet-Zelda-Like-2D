@@ -18,12 +18,13 @@ private:
 
     array<SoundBuffer, 2> swordSwingBuffers;
     array<Sound, 2> swordSwing;
-    array<SoundBuffer, 1> playerDashBuffers;
-    array<Sound, 1> playerDash;
+    array<SoundBuffer, 2> playerDashBuffers;
+    array<Sound, 2> Dash;
     array<SoundBuffer, 6> footstepBuffers;
     array<Sound, 6> footsteps;
     Clock footstepClock;
     Clock dashClock;
+    Clock dashCooldownClock;
 
     Texture playerRun;
     Texture playerIdle;
@@ -34,9 +35,11 @@ private:
 
     View cameraView;
 
+    bool canDash;
     bool isMoving;
     bool isDying;
     bool playerDead;
+
     void playFootstep();
     void playerDie();
     void handleDeath();
