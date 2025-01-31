@@ -1,58 +1,122 @@
-#include "../include/DialogueBox.h"
+﻿#include "../include/DialogueBox.h"
 #include <iostream>
 
-DialogueBox::DialogueBox(float width, float height, int posx, int posy) : currentDialogue(0), charIndex(0), isTyping(false) {
-    if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) { // Ensure you have a valid font file
-        std::cerr << "Error loading font\n";
+using namespace sf;
+using namespace std;
+
+DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIndex(0), isTyping(false) {
+    if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
+        cerr << "Error loading font\n";
+
+    }
+    if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
+        cerr << "Error loading font\n";
     }
 
-    // Set up dialogue box
-    box.setSize(sf::Vector2f(width, height));
-    box.setFillColor(sf::Color(0, 0, 0, 200));
-    box.setOutlineThickness(2);
-    box.setOutlineColor(sf::Color::White);
-    box.setPosition(posx, posy);
+    if (!textBuffer.loadFromFile("assets/fonts/sounds/testText.wav")) {
+        cerr << "Error loading text scroll sound\n";
+    }
+    textSound.setBuffer(textBuffer);
+    textSound.setVolume(50);
 
-    // Set up text
+    //Set up dialogue box
+    box.setSize(Vector2f(width, height));
+    box.setFillColor(Color(0, 0, 0, 200));
+    box.setOutlineThickness(1);
+    box.setOutlineColor(Color::White);
+
+    //Set up text
     text.setFont(font);
     text.setCharacterSize(30);
-    text.scale(0.3f, 0.3f);
-    text.setFillColor(sf::Color::White);
-    text.setPosition(posx + 10, posy + 10);
+    text.scale(0.25f, 0.25f);
+    text.setFillColor(Color::White);
 }
 
 void DialogueBox::setPosition(float x, float y) {
-    box.setPosition(x, y);  // Set the position of the box
-    text.setPosition(x + 15, y + 15); // Position the text with padding
+    box.setPosition(x, y);
+    text.setPosition(x + 7, y + 2);
 }
 
-void DialogueBox::setDialogue(const std::vector<std::string>& newDialogues) {
+void DialogueBox::setDialogue(const vector<string>& newDialogues) {
     dialogues = newDialogues;
     currentDialogue = 0;
     charIndex = 0;
     displayedText = "";
     isTyping = true;
+
+    wrapText();
+    text.setString("");
 }
 
 void DialogueBox::update() {
-    if (isTyping && clock.getElapsedTime().asMilliseconds() > 50) { // Adjust speed here
+    if (isTyping && clock.getElapsedTime().asMilliseconds() > 50) { //Contrôle la vitesse
         if (charIndex < dialogues[currentDialogue].length()) {
             displayedText += dialogues[currentDialogue][charIndex++];
             text.setString(displayedText);
+            if (textSound.getStatus() != Sound::Playing) {
+                textSound.play();
+            }
             clock.restart();
         }
         else {
             isTyping = false;
+            textSound.stop();
         }
     }
 }
 
+void DialogueBox::wrapText() {
+    text.setString("");
+    vector<string> wrappedText;
+    string currentLine;
+    float scaleFactor = 0.3f;
+    float boxWidth = (box.getSize().x - 14) / scaleFactor;
+
+    istringstream words(dialogues[currentDialogue]);
+    string word;
+
+    while (words >> word) {
+        string testLine = currentLine + (currentLine.empty() ? "" : " ") + word;
+        text.setString(testLine);
+
+        if (text.getLocalBounds().width > boxWidth) {
+            wrappedText.push_back(currentLine);
+            currentLine = word;
+        }
+        else {
+            currentLine = testLine;
+        }
+    }
+
+    if (!currentLine.empty()) {
+        wrappedText.push_back(currentLine);
+    }
+
+    //Vérification du nombre de lignes affichées
+    if (wrappedText.size() > 3) {
+        wrappedText.resize(3);
+    }
+
+    dialogues[currentDialogue] = wrappedText[0];
+    for (size_t i = 1; i < wrappedText.size(); ++i) {
+        dialogues[currentDialogue] += "\n" + wrappedText[i];
+    }
+
+    displayedText = "";
+    charIndex = 0;
+    isTyping = true;
+}
+
+
+
+
 void DialogueBox::advanceDialogue() {
     if (isTyping) {
-        displayedText = dialogues[currentDialogue]; // Instantly complete text
+        displayedText = dialogues[currentDialogue];
         charIndex = displayedText.length();
         text.setString(displayedText);
         isTyping = false;
+        textSound.stop();
     }
     else {
         if (currentDialogue + 1 < dialogues.size()) {
@@ -60,11 +124,14 @@ void DialogueBox::advanceDialogue() {
             charIndex = 0;
             displayedText = "";
             isTyping = true;
+
+            wrapText();
         }
     }
 }
 
-void DialogueBox::draw(sf::RenderWindow& window) {
+
+void DialogueBox::draw(RenderWindow& window) {
     window.draw(box);
     window.draw(text);
 }

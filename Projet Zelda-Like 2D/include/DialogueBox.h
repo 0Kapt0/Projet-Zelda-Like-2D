@@ -2,28 +2,37 @@
 #define DIALOGUEBOX_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <string>
+#include <sstream>
+
+using namespace sf;
+using namespace std;
 
 class DialogueBox {
 private:
-    sf::RectangleShape box;
-    sf::Text text;
-    sf::Font font;
-    std::vector<std::string> dialogues;
+    Font font;
+    Text text;
+    RectangleShape box;
+    Clock clock;
+
+    vector<string> dialogues;
     size_t currentDialogue;
-    std::string displayedText;
     size_t charIndex;
-    sf::Clock clock;
+    string displayedText;
     bool isTyping;
 
+    SoundBuffer textBuffer;
+    Sound textSound;
 public:
-    DialogueBox(float width, float height, int posx, int posy);
-    void setDialogue(const std::vector<std::string>& newDialogues);
+    DialogueBox(float width, float height);
+    void setDialogue(const vector<string>& newDialogues);
     void setPosition(float x, float y);
+    void wrapText();
     void update();
     void advanceDialogue();
-    void draw(sf::RenderWindow& window);
+    void draw(RenderWindow& window);
 };
 
 #endif
