@@ -75,7 +75,10 @@ Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerD
     }
 
     shape.setPosition(position);
-    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
+    shape.setOrigin(50, 2);
+    playerSize = { 16, 28 };
+    hitbox.setSize({ 16, 28 });
+    hitbox.setFillColor(Color::Color(255, 0, 0, 150));
 
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
@@ -122,7 +125,7 @@ void Player::playerAttack() {
         isAttacking = true;
         currentFrame = 0;
         speed = 100;
-        setTexture(playerAttack1, 64, 32, 4, 0.1f);
+        setTexture(playerAttack1, 64, 32, 4, 0.1f, 8, 14);
         int index = rand() % 2;
         swordSwing[index].play();
     }
@@ -148,7 +151,7 @@ void Player::dash() {
     }
 
     if (isDashing) {
-        setTexture(playerDash, 32, 32, 8, 0.1f);
+        setTexture(playerDash, 32, 32, 8, 0.1f, 8, 14);
         if (dashClock.getElapsedTime().asSeconds() > 0.2f) {
             isDashing = false;
             speed /= 2.5f;
@@ -170,7 +173,7 @@ void Player::playerDie() {
     }
 
     if (currentFrame < 13) {
-        setTexture(playerDeath, 32, 32, 14, 0.1f);
+        setTexture(playerDeath, 32, 32, 14, 0.1f, 8, 14);
         if (cameraView.getSize().x > 200.f) {
             cameraView.zoom(0.75f);
         }
@@ -188,11 +191,11 @@ void Player::playerWalk() {
 
     if (isMoving && !isDashing) {
         speed = 150.f;
-        setTexture(playerRun, 32, 32, 8, 0.1f);
+        setTexture(playerRun, 32, 32, 8, 0.1f, 8, 14);
         playFootstep();
     }
     else if (!isDashing) {
-        setTexture(playerIdle, 32, 32, 8, 0.1f);
+        setTexture(playerIdle, 32, 32, 8, 0.1f, 8, 14);
     }
 }
 
@@ -213,6 +216,7 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     handleInput(deltaTime, map);
     playerAttack();
     playerWalk();
+    hitbox.setPosition(position);
 
     animate(deltaTime);
 
@@ -224,6 +228,7 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
 
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
+    window.draw(hitbox);
 }
 void Player::reduceHealth(int damage) {
     health -= damage;

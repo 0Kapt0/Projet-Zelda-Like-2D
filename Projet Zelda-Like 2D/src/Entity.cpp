@@ -2,10 +2,10 @@
 
 Entity::Entity() : currentFrame(0), elapsedTime(0.0f), frameTime(0.1f), totalFrames(0), isAttacking(false) {}
 
-void Entity::setTexture(Texture& tex, int frameWidth, int frameHeight, int _totalFrames, float _frameTime) {
+void Entity::setTexture(Texture& tex, int frameWidth, int frameHeight, int _totalFrames, float _frameTime, int offsetX, int offsetY) {
     shape.setTexture(&tex);
     shape.setSize(Vector2f(frameWidth, frameHeight));
-    shape.setTextureRect(IntRect(0, 0, frameWidth, frameHeight));
+    shape.setTextureRect(IntRect(offsetX, offsetY, frameWidth, frameHeight));
     shape.setOrigin(frameWidth / 2, frameHeight / 2);
 
     frames.clear();

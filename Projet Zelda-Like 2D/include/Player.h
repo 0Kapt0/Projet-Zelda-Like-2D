@@ -12,7 +12,8 @@ class Player : public Entity {
 private:
     Vector2f position;
     Vector2f velocity;
-    Vector2f playerSize = { 32, 32 };
+    Vector2f playerSize;
+    RectangleShape hitbox;
 
     int health;
     float speed;
