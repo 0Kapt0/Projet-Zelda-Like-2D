@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerDead(false), isDying(false), isDashing(false) {
+Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerDead(false), isDying(false), isDashing(false), canDash(true), isMoving(false) {
     array<string, 6> footstepFiles = {
         "assets/player/sounds/footstep1.wav",
         "assets/player/sounds/footstep2.wav",
@@ -30,7 +30,7 @@ Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerD
             cerr << "Erreur de chargement : " << swordSwingFiles[i] << endl;
         }
         swordSwing[i].setBuffer(swordSwingBuffers[i]);
-        swordSwing[i].setVolume(60.f);
+        swordSwing[i].setVolume(80.f);
     }
     array<string, 2> DashFiles = {
         "assets/player/sounds/playerDash1.wav",
@@ -41,7 +41,7 @@ Player::Player() : speed(150.0f), position(500.0f, 500.0f), health(100), playerD
             cerr << "Erreur de chargement : " << DashFiles[i] << endl;
         }
         Dash[i].setBuffer(playerDashBuffers[i]);
-        Dash[i].setVolume(60.f);
+        Dash[i].setVolume(20.f);
     }
     if (!playerRun.loadFromFile("assets/player/player_run.png")) {
         cerr << "Texture player_run loaded!" << endl;
@@ -137,11 +137,13 @@ void Player::playFootstep() {
 }
 
 void Player::dash() {
-    if (Keyboard::isKeyPressed(Keyboard::LShift) && !isDashing) {
+    if (Keyboard::isKeyPressed(Keyboard::LShift) && !isDashing && canDash) {
         int index = rand() % 2;
         Dash[index].play();
         isDashing = true;
+        canDash = false;
         dashClock.restart();
+        dashCooldownClock.restart();
         speed *= 2.5f;
     }
 
@@ -151,6 +153,10 @@ void Player::dash() {
             isDashing = false;
             speed /= 2.5f;
         }
+    }
+
+    if (!canDash && dashCooldownClock.getElapsedTime().asSeconds() > 2.0f) {
+        canDash = true;
     }
 }
 
