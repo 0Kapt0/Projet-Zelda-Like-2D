@@ -8,10 +8,10 @@ class GameHUD : public HUD {
 private:
     Player& player;
 
-    RectangleShape healthBar;         // Barre de vie rouge
-    RectangleShape healthBarOutline;  // Contour de la barre de vie
-    Sprite playerIcon;                // Icône du joueur
-    Texture playerIconTexture;        // Texture pour l'icône du joueur
+    RectangleShape healthBar;
+    RectangleShape healthBarOutline;
+    Sprite playerIcon;
+    Texture playerIconTexture;
     RectangleShape playerIconOutline;
 
 public:

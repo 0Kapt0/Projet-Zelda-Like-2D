@@ -9,10 +9,10 @@ Texture Merchant::merchantTex;
 
 void Merchant::loadMerchantTexture(const string& texturePath) {
     if (!merchantTex.loadFromFile(texturePath)) {
-        cerr << "Erreur lors du chargement de la texture du marchand !" << endl;
+        cerr << "Merchant texture not loaded" << endl;
     }
     else {
-        cout << "Texture du marchand chargée avec succès !" << endl;
+        cout << "Merchant texture loaded" << endl;
     }
 }
 

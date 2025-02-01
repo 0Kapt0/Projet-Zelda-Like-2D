@@ -12,16 +12,16 @@ GameHUD::GameHUD(Player& player) : player(player) {
     }
     else {
         playerIcon.setTexture(playerIconTexture);
-        playerIcon.setScale(.3f, .3f);  // Ajuste la taille de l’icône
-        playerIcon.setPosition(10, 10);  // Position en bas de la barre de vie
+        playerIcon.setScale(.3f, .3f); 
+        playerIcon.setPosition(10, 10);
         playerIcon.setColor(Color(150, 150, 150, 255));
     }
 
     //Créer un contour pour l'icône du joueur
     playerIconOutline.setSize(Vector2f(playerIcon.getGlobalBounds().width, playerIcon.getGlobalBounds().height));
-    playerIconOutline.setFillColor(Color::Transparent);  // Pas de couleur interne
-    playerIconOutline.setOutlineColor(Color(139, 124, 46, 255));     // Contour blanc
-    playerIconOutline.setOutlineThickness(3);            // Épaisseur du contour
+    playerIconOutline.setFillColor(Color::Transparent);
+    playerIconOutline.setOutlineColor(Color(139, 124, 46, 255));
+    playerIconOutline.setOutlineThickness(3);
     playerIconOutline.setPosition(playerIcon.getPosition().x, playerIcon.getPosition().y);
 
     //Contour de la barre de vie
@@ -38,14 +38,15 @@ GameHUD::GameHUD(Player& player) : player(player) {
 }
 
 void GameHUD::update(float deltaTime) {
-    float healthPercent = player.getHealth() / 100.0f;  // Pourcentage de vie restant
-    healthBar.setSize(Vector2f(200 * healthPercent, 20));  // Ajuste la largeur de la barre de vie
+    //Ajuste la bar de vie
+    float healthPercent = player.getHealth() / 100.0f;
+    healthBar.setSize(Vector2f(200 * healthPercent, 20));
 }
 
 void GameHUD::draw(RenderWindow& window) {
     window.draw(healthBarOutline);
     window.draw(healthBar);
     window.draw(playerIconOutline);
-    window.draw(playerIcon);  //Dessine l’icône du joueur sous la barre de vie
+    window.draw(playerIcon);
 }
 

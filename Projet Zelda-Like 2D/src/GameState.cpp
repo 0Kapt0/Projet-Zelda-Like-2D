@@ -8,7 +8,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/dungeon.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, {62, 64}),
+    map("assets/maps/map.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, {62, 64}),
     fence("assets/maps/fence.txt", "assets/tilesets/fence.png", "assets/tilesets/items.png", 32, {}, {}),
     gameState(gameState),
     hud(player)
@@ -24,7 +24,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
 
 void GameState::spawnEnemies() {
     for (const auto& pos : map.getEnemyPositions()) {
-        enemies.emplace_back(pos.x, pos.y, 50.0f); // 50 = vitesse de l'ennemi
+        enemies.emplace_back(pos.x, pos.y, 50.0f);
     }
 }
 

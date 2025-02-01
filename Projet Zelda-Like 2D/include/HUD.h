@@ -14,7 +14,7 @@ protected:
 public:
     virtual ~HUD() = default;
 
-    // Méthodes virtuelles pour dessiner et mettre à jour le HUD
+    //Méthodes virtuelles pour dessiner et mettre à jour le HUD
     virtual void update(float deltaTime) = 0;
     virtual void draw(RenderWindow& window) = 0;
 };
