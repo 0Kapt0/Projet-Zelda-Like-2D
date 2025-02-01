@@ -4,11 +4,7 @@
 using namespace sf;
 using namespace std;
 
-DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIndex(0), isTyping(false) {
-    if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
-        cerr << "Error loading font\n";
-
-    }
+DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIndex(0), isTyping(false), dialogueFinished(true) {
     if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
         cerr << "Error loading font\n";
     }
@@ -32,6 +28,14 @@ DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIn
     text.setFillColor(Color::White);
 }
 
+void DialogueBox::setTextSound(const std::string& soundFile) {
+    if (!textBuffer.loadFromFile(soundFile)) {
+        cerr << "Error loading sound file: " << soundFile << "\n";
+    }
+    textSound.setBuffer(textBuffer);
+}
+
+
 void DialogueBox::setPosition(float x, float y) {
     box.setPosition(x, y);
     text.setPosition(x + 7, y + 2);
@@ -43,13 +47,13 @@ void DialogueBox::setDialogue(const vector<string>& newDialogues) {
     charIndex = 0;
     displayedText = "";
     isTyping = true;
-
+    dialogueFinished = false;
     wrapText();
     text.setString("");
 }
 
 void DialogueBox::update() {
-    if (isTyping && clock.getElapsedTime().asMilliseconds() > 50) { //Contrôle la vitesse
+    if (isTyping && clock.getElapsedTime().asMilliseconds() > 50) { //Contrôle la vitesse de defilement du texte
         if (charIndex < dialogues[currentDialogue].length()) {
             displayedText += dialogues[currentDialogue][charIndex++];
             text.setString(displayedText);
@@ -118,16 +122,29 @@ void DialogueBox::advanceDialogue() {
         isTyping = false;
         textSound.stop();
     }
-    else {
+    else if (clock.getElapsedTime().asSeconds() > 0.2f) {
         if (currentDialogue + 1 < dialogues.size()) {
             currentDialogue++;
             charIndex = 0;
             displayedText = "";
             isTyping = true;
-
             wrapText();
+            clock.restart();
+        }
+        else {
+            dialogueFinished = true;
         }
     }
+}
+
+void DialogueBox::stopSound() {
+    if (textSound.getStatus() == Sound::Playing) {
+        textSound.stop();
+    }
+}
+
+bool DialogueBox::isDialogueFinished() const {
+    return dialogueFinished;
 }
 
 int DialogueBox::getCurrentDialogueIndex() const {
@@ -143,6 +160,8 @@ bool DialogueBox::isCurrentlyTyping() const {
 }
 
 void DialogueBox::draw(RenderWindow& window) {
-    window.draw(box);
-    window.draw(text);
+    if (!dialogueFinished) {
+        window.draw(box);
+        window.draw(text);
+    }
 }

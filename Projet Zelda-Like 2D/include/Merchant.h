@@ -14,6 +14,7 @@ private:
 public:
     Merchant(float x, float y);
     void interact() override;
+    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
 };
 
 #endif

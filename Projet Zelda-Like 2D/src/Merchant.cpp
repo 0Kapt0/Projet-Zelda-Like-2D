@@ -18,10 +18,38 @@ Merchant::Merchant(float x, float y)
     shape.setPosition(x, y);
 }
 
+void Merchant::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
+    animate(deltaTime);
+    dialogueBox.setPosition(shape.getPosition().x - 35, shape.getPosition().y - 35);
+
+    //Calcule la distance entre le joueur et le marchand
+    float distance = sqrt(pow(playerPosition.x - shape.getPosition().x, 2) +
+        pow(playerPosition.y - shape.getPosition().y, 2));
+
+    //distance de la dialoge box
+    float maxDistance = 96.0f;
+
+    if (distance > maxDistance) {
+        setDialogueActive(false);
+    }
+
+    if (isDialogueActive()) {
+        updateDialogue();
+    }
+}
+
+
 void Merchant::interact() {
-    startDialogue({
-        "Bonjour aventurier !",
-        "Bienvenue dans ma boutique.",
-        "J'ai des objets rares a vendre, jette y un oeil !"
-        });
+    if (!isDialogueActive()) {
+        dialogueBox.setTextSound("assets/NPC/sounds/merchantText.wav");
+
+        startDialogue({
+            "Bonjour aventurier !",
+            "Bienvenue dans ma boutique.",
+            "J'ai des objets rares a vendre, jette-y un oeil !",
+            "Fais ton choix aventurier !",
+            "."
+            });
+        setDialogueActive(true);
+    }
 }

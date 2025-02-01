@@ -17,7 +17,6 @@ private:
     Player& player;
     Merchant merchant;
 
-    DialogueBox dialogue;
     Clock textCD;
 
     Map map;

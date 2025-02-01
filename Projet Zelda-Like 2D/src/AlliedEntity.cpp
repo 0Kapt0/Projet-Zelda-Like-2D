@@ -22,10 +22,8 @@ void AlliedEntity::advanceDialogue() {
     if (isTalking) {
         dialogueBox.advanceDialogue();
 
-        //Si on atteint la fin du dialogue, on arrête de parler
-        if (!dialogueBox.isCurrentlyTyping() &&
-            dialogueBox.getCurrentDialogueIndex() >= dialogueBox.getDialogueSize() - 1) {
-            isTalking = false;
+        //Ne pas fermer immédiatement, attendre une confirmation
+        if (dialogueBox.isDialogueFinished()) {
         }
     }
 }
@@ -43,7 +41,9 @@ void AlliedEntity::updateDialogue() {
 //Vérifie la collision avec le joueur et déclenche le dialogue si nécessaire
 void AlliedEntity::checkCollisionWithPlayer(Player& player) {
     if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-        interact();
+        if (Keyboard::isKeyPressed(Keyboard::E) && !isTalking) {
+            interact();
+        }
     }
 }
 
@@ -56,10 +56,24 @@ void AlliedEntity::update(float deltaTime, const RenderWindow& window, const Vec
     }
 }
 
-//Affichage de l'entité + dialogue si nécessaire
+bool AlliedEntity::isDialogueActive() const {
+    return isTalking;
+}
+
+void AlliedEntity::setDialogueActive(bool active) {
+    isTalking = active;
+    if (!active) {
+        dialogueBox.stopSound();
+    }
+}
+
+bool AlliedEntity::isDialogueFinished() const {
+    return dialogueBox.isDialogueFinished();
+}
+
 void AlliedEntity::draw(RenderWindow& window) {
     window.draw(shape);
-    if (isTalking) {
+    if (isTalking && !dialogueBox.isDialogueFinished()) {
         dialogueBox.draw(window);
     }
 }

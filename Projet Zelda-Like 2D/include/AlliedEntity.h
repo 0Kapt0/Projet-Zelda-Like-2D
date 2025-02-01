@@ -25,6 +25,10 @@ public:
     void advanceDialogue();
     void updateDialogue();
 
+    bool isDialogueActive() const;
+    void setDialogueActive(bool active);
+    bool isDialogueFinished() const;
+
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 };

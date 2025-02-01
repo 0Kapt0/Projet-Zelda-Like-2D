@@ -22,21 +22,25 @@ private:
     size_t charIndex;
     string displayedText;
     bool isTyping;
+    bool dialogueFinished;
 
     SoundBuffer textBuffer;
     Sound textSound;
 public:
     DialogueBox(float width, float height);
+    void setTextSound(const string& soundFile);
     void setDialogue(const vector<string>& newDialogues);
     void setPosition(float x, float y);
     void wrapText();
     void update();
     void advanceDialogue();
+    void stopSound();
     void draw(RenderWindow& window);
 
     int getCurrentDialogueIndex() const;
     int getDialogueSize() const;
     bool isCurrentlyTyping() const;
+    bool isDialogueFinished() const;
 };
 
 #endif
