@@ -75,6 +75,11 @@ void Map::loadFromFile(const string& filename) {
                 if (find(blockedItemValues.begin(), blockedItemValues.end(), tile) != blockedItemValues.end()) {
                     tempBlockedItemTiles.push_back(Vector2i(x, currentY));
                 }
+                //Détection des potions (ID 22)
+                if (tile == 22) {
+                    potionPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                    cout << "Potion ajoutee à la position (" << x << ", " << currentY << ")" << endl;  // Debug
+                }
             }
             else if (layer == 2) {  // Entity Layer
                 if (tile == 1) {  // Joueur

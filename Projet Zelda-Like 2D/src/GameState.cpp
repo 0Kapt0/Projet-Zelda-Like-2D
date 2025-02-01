@@ -16,6 +16,19 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     //Charge la texture AVANT de créer les marchands
     Merchant::loadMerchantTexture("assets/NPC/merchant.png");
 
+    if (!potionTexture.loadFromFile("assets/HUD/health_potion.png")) {
+        std::cerr << "Erreur de chargement de la texture des potions\n";
+    }
+
+    // Charger toutes les potions trouvées dans la carte
+    for (const auto& pos : map.getPotionPositions()) {
+        Sprite potionSprite;
+        potionSprite.setTexture(potionTexture);
+        potionSprite.setPosition(pos);
+        potionSprite.setScale(1.f, 1.f);
+        potions.push_back(potionSprite);
+    }
+
     // Initialise les positions des entités à partir de la carte
     player.setPosition(map.getPlayerStartPosition());
     spawnEnemies();
@@ -67,6 +80,16 @@ void GameState::update(float deltaTime) {
         npc->checkCollisionWithPlayer(player);
     }
 
+    for (auto it = potions.begin(); it != potions.end();) {
+        if (player.getShape().getGlobalBounds().intersects(it->getGlobalBounds())) {
+            player.collectHealthPotion();
+            it = potions.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+
     merchant.update(deltaTime, window, player.getPosition(), map);
     merchant.checkCollisionWithPlayer(player);
 }
@@ -84,6 +107,11 @@ void GameState::draw() {
     for (auto& npc : npcs) {
         npc->draw(window);
     }
+
+    for (auto& potion : potions) {
+        window.draw(potion);
+    }
+
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);
     hud.draw(window);

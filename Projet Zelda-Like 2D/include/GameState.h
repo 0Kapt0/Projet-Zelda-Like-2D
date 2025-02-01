@@ -20,6 +20,9 @@ private:
     Merchant merchant;
     GameHUD hud;
 
+    vector<Sprite> potions;  // Liste des sprites des potions
+    Texture potionTexture;   // Texture de la potion
+
     vector<Enemy> enemies;   // Liste des ennemis
     vector<unique_ptr<Merchant>> npcs;   // Liste des NPCs
     Clock textCD;

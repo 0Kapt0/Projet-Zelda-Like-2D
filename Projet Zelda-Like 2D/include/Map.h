@@ -24,6 +24,9 @@ private:
     vector<Vector2i> blockedTiles;
     vector<Vector2i> blockedItemTiles;
 
+    //item speciaux
+    vector<Vector2f> potionPositions;
+
     //Entités du jeu
     vector<Vector2f> enemyPositions;
     vector<Vector2f> npcPositions;
@@ -50,6 +53,7 @@ public:
     vector<Vector2f> getEnemyPositions() const { return enemyPositions; }
     Vector2f getPlayerStartPosition() const { return playerStartPosition; }
     vector<Vector2f> getNpcPositions() const { return npcPositions; }
+    vector<Vector2f> getPotionPositions() const { return potionPositions; }
 
     //Fonctions principales
     void draw(RenderWindow& window);
