@@ -10,7 +10,8 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     merchant(450, 190),
     map("assets/maps/dungeon.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, {62, 64}),
     fence("assets/maps/fence.txt", "assets/tilesets/fence.png", "assets/tilesets/items.png", 32, {}, {}),
-    gameState(gameState)
+    gameState(gameState),
+    hud(player)
 {
     //Charge la texture AVANT de créer les marchands
     Merchant::loadMerchantTexture("assets/NPC/merchant.png");
@@ -55,6 +56,7 @@ void GameState::handleInput() {
 
 void GameState::update(float deltaTime) {
     player.update(deltaTime, window, player.getPosition(), map);
+    hud.update(deltaTime);
 
     for (auto& enemy : enemies) {
         enemy.update(deltaTime, window, player.getPosition(), map);
@@ -71,6 +73,7 @@ void GameState::update(float deltaTime) {
 
 
 void GameState::draw() {
+    window.setView(player.getCameraView());
     map.draw(window);
     player.draw(window);
 
@@ -81,7 +84,8 @@ void GameState::draw() {
     for (auto& npc : npcs) {
         npc->draw(window);
     }
-
-    merchant.draw(window);
+    View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
+    window.setView(hudView);
+    hud.draw(window);
 }
 

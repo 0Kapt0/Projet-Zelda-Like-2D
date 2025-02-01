@@ -147,7 +147,9 @@ sfml-system.lib
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameHUD.cpp" />
     <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\Merchant.cpp" />
@@ -163,7 +165,9 @@ sfml-system.lib
     <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\GameHUD.h" />
     <ClInclude Include="include\GameState.h" />
+    <ClInclude Include="include\HUD.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MenuState.h" />

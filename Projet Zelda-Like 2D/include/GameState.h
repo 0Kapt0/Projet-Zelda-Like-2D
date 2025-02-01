@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Map.h"
 #include "DialogueBox.h"
+#include "GameHUD.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
@@ -17,6 +18,7 @@ class GameState : public State {
 private:
     Player& player;
     Merchant merchant;
+    GameHUD hud;
 
     vector<Enemy> enemies;   // Liste des ennemis
     vector<unique_ptr<Merchant>> npcs;   // Liste des NPCs
