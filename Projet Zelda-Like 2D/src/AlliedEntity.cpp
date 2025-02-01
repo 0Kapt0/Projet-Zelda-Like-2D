@@ -3,15 +3,17 @@
 using namespace sf;
 using namespace std;
 
+//Constructeur
 AlliedEntity::AlliedEntity(const string& _name, float x, float y)
     : name(_name), isTalking(false) {
     dialogueBox = make_unique<DialogueBox>(100.0f, 30.0f);
 }
 
+//Interaction avec le joueur
 void AlliedEntity::interact() {
 }
 
-//Fonction pour démarrer un dialogue avec une liste de phrases
+//Démarre un dialogue
 void AlliedEntity::startDialogue(const vector<string>& dialogues) {
     if (dialogueBox) {
         dialogueBox->setDialogue(dialogues);
@@ -19,18 +21,19 @@ void AlliedEntity::startDialogue(const vector<string>& dialogues) {
     }
 }
 
+//Passe au dialogue suivant
 void AlliedEntity::advanceDialogue() {
     if (isTalking && dialogueBox) {
         dialogueBox->advanceDialogue();
 
-        //Ne pas fermer immédiatement, attendre une confirmation
+        // Ferme le dialogue si terminé
         if (dialogueBox->isDialogueFinished()) {
             isTalking = false;
         }
     }
 }
 
-//Met à jour le dialogue (permet de passer au texte suivant)
+//Met à jour le texte affiché
 void AlliedEntity::updateDialogue() {
     if (isTalking && dialogueBox) {
         dialogueBox->update();
@@ -41,7 +44,7 @@ void AlliedEntity::updateDialogue() {
     }
 }
 
-// Vérifie la collision avec le joueur et déclenche le dialogue si nécessaire
+//Vérifie la collision avec le joueur
 void AlliedEntity::checkCollisionWithPlayer(Player& player) {
     if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
         if (Keyboard::isKeyPressed(Keyboard::E) && !isTalking) {
@@ -50,7 +53,7 @@ void AlliedEntity::checkCollisionWithPlayer(Player& player) {
     }
 }
 
-// Met à jour la boîte de dialogue et la position
+//Met à jour l'entité et son dialogue
 void AlliedEntity::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     animate(deltaTime);
 
@@ -63,10 +66,12 @@ void AlliedEntity::update(float deltaTime, const RenderWindow& window, const Vec
     }
 }
 
+//Retourne si un dialogue est actif
 bool AlliedEntity::isDialogueActive() const {
     return isTalking;
 }
 
+//Active ou désactive un dialogue
 void AlliedEntity::setDialogueActive(bool active) {
     isTalking = active;
     if (!active && dialogueBox) {
@@ -74,10 +79,12 @@ void AlliedEntity::setDialogueActive(bool active) {
     }
 }
 
+//Vérifie si le dialogue est terminé
 bool AlliedEntity::isDialogueFinished() const {
     return dialogueBox ? dialogueBox->isDialogueFinished() : true;
 }
 
+//Dessine l'entité et sa boîte de dialogue
 void AlliedEntity::draw(RenderWindow& window) {
     window.draw(shape);
     if (isTalking && dialogueBox && !dialogueBox->isDialogueFinished()) {

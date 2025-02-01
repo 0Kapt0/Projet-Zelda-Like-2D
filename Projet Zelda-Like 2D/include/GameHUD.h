@@ -8,26 +8,34 @@ class GameHUD : public HUD {
 private:
     Player& player;
 
+    //Barre de vie
     RectangleShape healthBar;
     RectangleShape healthBarOutline;
+
+    //Icône du joueur
     Sprite playerIcon;
     Texture playerIconTexture;
     RectangleShape playerIconOutline;
-    RectangleShape potionHUD;   // Fond du carré pour afficher la potion
-    RectangleShape potionHUDOutline; // Outline du carré de la potion
-    RectangleShape potionCooldownBar; // Barre de cooldown qui se remplit
 
+    //Potion (HUD)
+    RectangleShape potionHUD;
+    RectangleShape potionHUDOutline;
+    RectangleShape potionCooldownBar;
 
-    Sprite potionIcon;       // Icône de la potion
-    Texture potionTexture;   // Texture de l’icône de potion
-    Text potionCountText;    // Texte du nombre de potions
+    //Potion (affichage)
+    Sprite potionIcon;
+    Texture potionTexture;
+    Text potionCountText;
 
 public:
+    //Constructeur
     GameHUD(Player& player);
 
+    //Mise à jour & affichage
     void update(float deltaTime) override;
     void draw(RenderWindow& window) override;
 };
 
 #endif
+
 
