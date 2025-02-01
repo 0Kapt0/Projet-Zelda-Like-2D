@@ -12,8 +12,8 @@ GameHUD::GameHUD(Player& player) : player(player) {
     }
     else {
         playerIcon.setTexture(playerIconTexture);
-        playerIcon.setScale(.3f, .3f); 
-        playerIcon.setPosition(10, 10);
+        playerIcon.setScale(.12f, .12f); 
+        playerIcon.setPosition(20, 20);
         playerIcon.setColor(Color(150, 150, 150, 255));
     }
 
@@ -63,12 +63,12 @@ GameHUD::GameHUD(Player& player) : player(player) {
     healthBarOutline.setFillColor(Color::Transparent);
     healthBarOutline.setOutlineColor(Color(139, 124, 46, 255));
     healthBarOutline.setOutlineThickness(2);
-    healthBarOutline.setPosition(150, 20);
+    healthBarOutline.setPosition(160, 20);
 
     //Barre de vie
     healthBar.setSize(Vector2f(200, 20));
     healthBar.setFillColor(Color(139, 0, 0, 255));
-    healthBar.setPosition(150, 20);
+    healthBar.setPosition(160, 20);
 }
 
 void GameHUD::update(float deltaTime) {
