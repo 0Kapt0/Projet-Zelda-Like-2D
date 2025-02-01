@@ -13,24 +13,45 @@ using namespace std;
 
 class Map {
 private:
-    vector<vector<int>> tileMap;
+    //Calques de la carte
+    vector<vector<int>> tileMap;      // Calque des tuiles
+    vector<vector<int>> itemMap;      // Calque des objets
+    vector<vector<int>> entityMap;    // Calque des entités
+
+    //Blocages (collision)
     vector<int> blockedTileValues;
     vector<int> blockedItemValues;
-    vector<vector<int>> itemMap;
+    vector<Vector2i> blockedTiles;
+    vector<Vector2i> blockedItemTiles;
+
+    //Entités du jeu
+    vector<Vector2f> enemyPositions;
+    vector<Vector2f> npcPositions;
+    Vector2f playerStartPosition;
+
+    //Graphiques
     Texture tileSet;
     Texture itemSet;
     vector<Sprite> tiles;
     vector<Sprite> items;
-    vector<Vector2i> blockedTiles;
-    vector<Vector2i> blockedItemTiles;
 
     int tileSize;
 
+    //Fonctions de chargement
     void loadFromFile(const string& filename);
     void generateTiles();
     void generateItems();
+
 public:
+    //Constructeur
     Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues);
+
+    //Accesseurs
+    vector<Vector2f> getEnemyPositions() const { return enemyPositions; }
+    Vector2f getPlayerStartPosition() const { return playerStartPosition; }
+    vector<Vector2f> getNpcPositions() const { return npcPositions; }
+
+    //Fonctions principales
     void draw(RenderWindow& window);
     bool isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds);
 };

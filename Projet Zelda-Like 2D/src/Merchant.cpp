@@ -4,15 +4,20 @@
 using namespace sf;
 using namespace std;
 
-Merchant::Merchant(float x, float y)
-    : AlliedEntity("Marchand", x, y) {
-    if (!merchantTex.loadFromFile("assets/NPC/merchant.png")) {
+// Déclaration de la texture statique pour tous les marchands
+Texture Merchant::merchantTex;
+
+void Merchant::loadMerchantTexture(const string& texturePath) {
+    if (!merchantTex.loadFromFile(texturePath)) {
         cerr << "Erreur lors du chargement de la texture du marchand !" << endl;
     }
     else {
-        cout << "Texture du marchand chargée avec succes !" << endl;
+        cout << "Texture du marchand chargée avec succès !" << endl;
     }
+}
 
+Merchant::Merchant(float x, float y)
+    : AlliedEntity("Marchand", x, y) {
     shape.setTexture(&merchantTex);
     shape.setSize(Vector2f(32.0f, 32.0f));
     shape.setPosition(x, y);
@@ -20,13 +25,16 @@ Merchant::Merchant(float x, float y)
 
 void Merchant::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     animate(deltaTime);
-    dialogueBox.setPosition(shape.getPosition().x - 35, shape.getPosition().y - 35);
 
-    //Calcule la distance entre le joueur et le marchand
+    if (dialogueBox) {
+        dialogueBox->setPosition(shape.getPosition().x - 35, shape.getPosition().y - 35);
+    }
+
+    // Calcule la distance entre le joueur et le marchand
     float distance = sqrt(pow(playerPosition.x - shape.getPosition().x, 2) +
         pow(playerPosition.y - shape.getPosition().y, 2));
 
-    //distance de la dialoge box
+    // Distance à laquelle le dialogue se ferme automatiquement
     float maxDistance = 96.0f;
 
     if (distance > maxDistance) {
@@ -38,10 +46,9 @@ void Merchant::update(float deltaTime, const RenderWindow& window, const Vector2
     }
 }
 
-
 void Merchant::interact() {
     if (!isDialogueActive()) {
-        dialogueBox.setTextSound("assets/NPC/sounds/merchantText.wav");
+        dialogueBox->setTextSound("assets/NPC/sounds/merchantText.wav");
 
         startDialogue({
             "Bonjour aventurier !",
@@ -50,6 +57,11 @@ void Merchant::interact() {
             "Fais ton choix aventurier !",
             "."
             });
+
         setDialogueActive(true);
     }
+    else {
+        advanceDialogue();
+    }
 }
+

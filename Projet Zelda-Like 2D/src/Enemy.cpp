@@ -20,6 +20,7 @@ void Enemy::update(float deltaTime, const RenderWindow& window, const Vector2f& 
     shape.setPosition(position);
 }
 
+
 void Enemy::setPosition(const Vector2f& newPosition) {
     position = newPosition;
     shape.setPosition(position);

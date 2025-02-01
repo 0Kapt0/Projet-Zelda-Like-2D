@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 Game::Game()
-    : window(VideoMode(960, 720), "projet zelda 2D"),
+    : window(VideoMode(1200, 900), "projet zelda 2D"),
     player() {
     window.setFramerateLimit(60);
 

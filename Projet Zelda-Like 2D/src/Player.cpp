@@ -248,6 +248,9 @@ void Player::reduceHealth(int damage) {
     }
 }
 
+void Player::initialize(Map& map) {
+    setPosition(map.getPlayerStartPosition());
+}
 
 void Player::setPosition(const Vector2f& newPosition) {
     position = newPosition;

@@ -74,7 +74,7 @@ void DialogueBox::wrapText() {
     vector<string> wrappedText;
     string currentLine;
     float scaleFactor = 0.3f;
-    float boxWidth = (box.getSize().x - 14) / scaleFactor;
+    float boxWidth = (box.getSize().x - 4) / scaleFactor;
 
     istringstream words(dialogues[currentDialogue]);
     string word;

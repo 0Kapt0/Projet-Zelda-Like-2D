@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "DialogueBox.h"
+#include <memory>
 
 using namespace sf;
 using namespace std;
@@ -11,7 +12,7 @@ using namespace std;
 class AlliedEntity : public Entity {
 protected:
     string name;
-    DialogueBox dialogueBox;
+    unique_ptr<DialogueBox> dialogueBox;
     bool isTalking;
 
 public:

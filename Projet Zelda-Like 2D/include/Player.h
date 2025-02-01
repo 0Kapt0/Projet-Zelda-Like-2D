@@ -56,7 +56,7 @@ public:
     void dash();
     bool isDashing;
 
-
+    void initialize(Map& map);
     void setPosition(const Vector2f& newPosition);
     void setSpeed(float newSpeed);
     void reduceHealth(int damage);
