@@ -9,9 +9,9 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 62, 64 }),
-    fence("assets/maps/fence.txt", "assets/tilesets/fence.png", "assets/tilesets/items.png", 32, {}, {}),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 72, 73, 80, 81, 88, 89 }),
     gameState(gameState),
+    lobby(true),
     hud(player) {
 
     Merchant::loadMerchantTexture("assets/NPC/merchant.png");
@@ -102,7 +102,13 @@ void GameState::update(float deltaTime) {
         changeMap("assets/maps/dungeon.txt");
     }
 
-    if (itemID == 51) {
+    if (itemID == 60) {
+        lobby = true;
+        changeMap("assets/maps/lobby.txt");
+    }
+
+    if (itemID == 51 || itemID == 61) {
+        lobby = false;
         changeMap("assets/maps/map.txt");
     }
 
@@ -146,7 +152,11 @@ void GameState::changeMap(const string& newMapPath) {
         window.display();
     }
 
-    map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
+    if (!lobby) {
+        map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
+    } else {
+        map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 72, 73, 80, 81, 88, 89 });
+    }
 
     if (map.getWidth() == 0 || map.getHeight() == 0) {
         cerr << "Erreur : La carte chargée est vide !" << endl;
@@ -231,7 +241,6 @@ void GameState::draw() {
     window.setView(player.getCameraView());
 
     map.draw(window);
-    fence.draw(window);
 
     player.draw(window);
 

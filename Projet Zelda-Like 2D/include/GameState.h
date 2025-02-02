@@ -43,7 +43,7 @@ private:
 
     // --- Carte et Environnement ---
     Map map;
-    Map fence;
+    bool lobby;
     void changeMap(const string& newMapPath);
 
     // --- État du Jeu et Minuteur ---
