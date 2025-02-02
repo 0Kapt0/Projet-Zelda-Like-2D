@@ -44,7 +44,7 @@ private:
     // --- Carte et Environnement ---
     Map map;
     bool lobby;
-    void changeMap(const string& newMapPath);
+    void changeMap(const string& newMapPath, bool useAlternativeSpawn);
 
     // --- État du Jeu et Minuteur ---
     int gameState;  //1: lobby, 2: salle 1, etc...

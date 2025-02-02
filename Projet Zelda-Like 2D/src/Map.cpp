@@ -44,6 +44,7 @@ void Map::loadFromFile(const string& filename) {
     vector<Vector2f> tempEnemyPositions;
     vector<Vector2f> tempNpcPositions;
     Vector2f tempPlayerStartPosition;
+    Vector2f tempAlternativeSpawnPosition;
 
     while (getline(file, line)) {
         //Détection des sections du fichier
@@ -80,8 +81,12 @@ void Map::loadFromFile(const string& filename) {
                 }
             }
             else if (layer == 2) {  // Entity Layer
-                if (tile == 1) {  // Joueur
+                if (tile == 1) {  // Spawn normal
                     tempPlayerStartPosition = Vector2f(x * tileSize, currentY * tileSize);
+                }
+                else if (tile == 4) {  // Spawn alternatif (TP retour)
+                    tempAlternativeSpawnPosition = Vector2f(x * tileSize, currentY * tileSize);
+                    cout << "joueur en (" << x << ", " << currentY << ")" << endl;
                 }
                 else if (tile == 2) {  // Ennemi
                     tempEnemyPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
@@ -111,6 +116,7 @@ void Map::loadFromFile(const string& filename) {
     enemyPositions = tempEnemyPositions;
     npcPositions = tempNpcPositions;
     playerStartPosition = tempPlayerStartPosition;
+    alternativeSpawnPosition = tempAlternativeSpawnPosition;
 }
 
 

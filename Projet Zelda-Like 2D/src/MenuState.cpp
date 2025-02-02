@@ -36,16 +36,16 @@ MenuState::~MenuState() {
 
 
 void MenuState::initMenu() {
-    Text startGame("Start Game", font, 30);
+    Text startGame("Start Game", font, 65);
     startGame.setPosition(100, 100);
     menuOptions.push_back(startGame);
 
-    Text options("Options", font, 30);
-    options.setPosition(100, 150);
+    Text options("Options", font, 65);
+    options.setPosition(100, 175);
     menuOptions.push_back(options);
 
-    Text quit("Quit", font, 30);
-    quit.setPosition(100, 200);
+    Text quit("Quit", font, 65);
+    quit.setPosition(100, 250);
     menuOptions.push_back(quit);
 
     for (auto& option : menuOptions) {

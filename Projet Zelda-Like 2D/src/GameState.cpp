@@ -98,18 +98,22 @@ void GameState::update(float deltaTime) {
         return;
     }
 
-    if (itemID == 63) {
-        changeMap("assets/maps/dungeon.txt");
+    if (itemID == 63) { //TP vers le donjon
+        changeMap("assets/maps/dungeon.txt", false);
     }
 
-    if (itemID == 60) {
+    if (itemID == 60) { //Retour au lobby
         lobby = true;
-        changeMap("assets/maps/lobby.txt");
+        changeMap("assets/maps/lobby.txt", true);
     }
 
-    if (itemID == 51 || itemID == 61) {
+    if (itemID == 61) { //TP vers la map principale
         lobby = false;
-        changeMap("assets/maps/map.txt");
+        changeMap("assets/maps/map.txt", false);
+    }
+
+    if (itemID == 51) { //TP vers la map principale (alternatif)
+        changeMap("assets/maps/map.txt", true);
     }
 
     for (auto& enemy : enemies) {
@@ -137,11 +141,10 @@ void GameState::update(float deltaTime) {
 }
 
 // --- Change de carte ---
-void GameState::changeMap(const string& newMapPath) {
+void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     cout << "Changement de carte vers : " << newMapPath << endl;
 
     isLoading = true;
-
     isFading = true;
     fadeIn = true;
     fadeAlpha = 0.0f;
@@ -154,47 +157,27 @@ void GameState::changeMap(const string& newMapPath) {
 
     if (!lobby) {
         map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
-    } else {
+    }
+    else {
         map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 72, 73, 80, 81, 88, 89 });
     }
 
-    if (map.getWidth() == 0 || map.getHeight() == 0) {
-        cerr << "Erreur : La carte chargée est vide !" << endl;
-        return;
-    }
-
-    cout << "Nouvelle carte chargee avec succes !" << endl;
-
-    //Régénére les tiles et items après changement de carte
     map.generateTiles();
     map.generateItems();
 
-    //Vérifie si les tiles sont bien générées
-    if (map.getTileCount() == 0) {
-        cerr << "Erreur : Aucune tuile générée après le changement de carte !" << endl;
-    }
+    //Choisir le bon spawn
+    Vector2f newStartPosition = useAlternativeSpawn ? map.getSpawnPoint2() : map.getSpawnPoint1();
 
-    //Mettre le joueur à une position valide
-    Vector2f newStartPosition = map.getPlayerStartPosition();
     int maxX = map.getWidth() * 32;
     int maxY = map.getHeight() * 32;
 
-    if (newStartPosition.x < 0 || newStartPosition.x >= maxX ||
-        newStartPosition.y < 0 || newStartPosition.y >= maxY) {
-        cerr << "Erreur : Position de spawn invalide !\n";
-        newStartPosition = { 32, 32 };
-    }
-
     player.setPosition(newStartPosition);
 
-    //Nettoyer et recharger les entités
     enemies.clear();
     spawnEnemies();
-
     npcs.clear();
     spawnNPCs();
 
-    //Recharger les potions
     potions.clear();
     for (const auto& pos : map.getPotionPositions()) {
         Sprite potionSprite;
@@ -204,14 +187,18 @@ void GameState::changeMap(const string& newMapPath) {
         potions.push_back(potionSprite);
     }
 
-    cout << "Changement de carte termine avec succes !" << endl;
+    cout << "Changement de carte terminé !" << endl;
 
     player.update(0.0f, window, player.getPosition(), map);
 
     isFading = true;
     fadeIn = false;
     fadeAlpha = 255.0f;
+
+    isLoading = false;
 }
+
+
 
 // --- Transition fondu ---
 void GameState::updateFade(float deltaTime) {

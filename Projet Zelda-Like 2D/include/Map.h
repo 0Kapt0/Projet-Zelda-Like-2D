@@ -30,7 +30,8 @@ private:
     //Entités du jeu
     vector<Vector2f> enemyPositions;
     vector<Vector2f> npcPositions;
-    Vector2f playerStartPosition;
+    Vector2f playerStartPosition = {0, 0};
+    Vector2f alternativeSpawnPosition = { 0, 0 };
 
     //Graphiques
     Texture tileSet;
@@ -60,6 +61,8 @@ public:
     int getHeight() const { return (tileMap.empty() ? 0 : tileMap[0].size()); }
     int getTileCount() const { return tiles.size(); }
     int getItemCount() const { return items.size(); }
+    Vector2f getSpawnPoint1() const { return playerStartPosition; }
+    Vector2f getSpawnPoint2() const { return alternativeSpawnPosition; }
 
 
 
