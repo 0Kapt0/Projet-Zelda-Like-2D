@@ -153,6 +153,7 @@ sfml-system.lib
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\Merchant.cpp" />
+    <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -172,6 +173,7 @@ sfml-system.lib
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\Merchant.h" />
+    <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Physics.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\Renderer.h" />

@@ -12,7 +12,7 @@ GameHUD::GameHUD(Player& player) : player(player) {
     }
     else {
         playerIcon.setTexture(playerIconTexture);
-        playerIcon.setScale(.12f, .12f); 
+        playerIcon.setScale(.18f, .18f); 
         playerIcon.setPosition(20, 20);
         playerIcon.setColor(Color(150, 150, 150, 255));
     }

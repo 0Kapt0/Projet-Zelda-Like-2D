@@ -8,6 +8,7 @@
 #include "MenuState.h"
 #include "GameState.h"
 #include "Map.h"
+#include "PauseMenu.h"
 
 using namespace sf;
 using namespace std;
@@ -21,6 +22,9 @@ private:
     unique_ptr<State> currentState;
 
     Clock clock;
+
+    bool isPaused = false;
+    PauseMenu pauseMenu;
 
 public:
     Game();
