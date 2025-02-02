@@ -11,18 +11,18 @@ PauseMenu::PauseMenu(RenderWindow& window)
         cerr << "Erreur de chargement de la police\n";
     }
 
-    // Fond semi-transparent
+    //Fond semi-transparent
     background.setSize(Vector2f(window.getSize().x, window.getSize().y));
-    background.setFillColor(Color(0, 0, 0, 150)); // Noir semi-transparent
+    background.setFillColor(Color(0, 0, 0, 150));
 
-    // Titre "Pause"
+    //Titre "Pause"
     title.setFont(font);
     title.setString("Pause");
     title.setCharacterSize(50);
     title.setFillColor(Color::White);
     title.setPosition(window.getSize().x / 2 - 50, 100);
 
-    // Options du menu
+    //Options du menu
     vector<string> options = { "Continuer", "Quitter" };
     for (size_t i = 0; i < options.size(); ++i) {
         Text text;
@@ -51,10 +51,10 @@ void PauseMenu::handleInput(RenderWindow& window, bool& isPaused) {
             menuOptions[i].setFillColor(Color::Red);
 
             if (Mouse::isButtonPressed(Mouse::Left)) {
-                if (i == 0) {  // "Continuer"
+                if (i == 0) {
                     isPaused = false;
                 }
-                else if (i == 1) {  // "Quitter"
+                else if (i == 1) {
                     window.close();
                 }
             }
