@@ -187,7 +187,7 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
         potions.push_back(potionSprite);
     }
 
-    cout << "Changement de carte terminé !" << endl;
+    cout << "Changement de carte termine !" << endl;
 
     player.update(0.0f, window, player.getPosition(), map);
 

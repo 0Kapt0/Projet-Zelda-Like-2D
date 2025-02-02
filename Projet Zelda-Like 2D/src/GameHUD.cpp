@@ -67,7 +67,7 @@ GameHUD::GameHUD(Player& player) : player(player) {
 
     //Barre de vie
     healthBar.setSize(Vector2f(200, 20));
-    healthBar.setFillColor(Color(139, 0, 0, 255));
+    healthBar.setFillColor(Color(100, 0, 0, 255));
     healthBar.setPosition(160, 20);
 }
 

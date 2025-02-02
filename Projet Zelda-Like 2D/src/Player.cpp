@@ -27,7 +27,7 @@ Player::Player()
         footsteps[i].setVolume(5.f);
     }
 
-    //Chargement des sons d'attaque et de dash
+    //Chargement des sons d'attaque et de dash et de mort
     array<pair<string, SoundBuffer*>, 4> soundFiles = {
         make_pair("assets/player/sounds/swordSwing1.wav", &swordSwingBuffers[0]),
         make_pair("assets/player/sounds/swordSwing2.wav", &swordSwingBuffers[1]),
