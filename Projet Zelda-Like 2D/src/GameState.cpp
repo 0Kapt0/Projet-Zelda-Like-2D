@@ -74,6 +74,11 @@ void GameState::update(float deltaTime) {
     //Vérifie si le joueur marche sur la tile 63
     int itemID = map.getItemAt(player.getPosition());
 
+    if (itemID == -1) {
+        cerr << "Erreur : Item inexistant à cette position !" << endl;
+        return;
+    }
+
     if (itemID == 63) {  // Vérifie si l'item est bien la tuile de téléportation
         cout << "Téléportation détectée !\n";
         changeMap("assets/maps/dungeon.txt");
@@ -107,13 +112,14 @@ void GameState::update(float deltaTime) {
 void GameState::changeMap(const string& newMapPath) {
     cout << "Changement de carte vers : " << newMapPath << endl;
 
-    //Charge la nouvelle carte
     map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
 
-    if (map.getWidth() == 0 || map.getHeight() == 0 || map.getTileCount() == 0) {
-        cerr << "Erreur : Impossible de charger la nouvelle carte !" << endl;
+    if (map.getWidth() == 0 || map.getHeight() == 0) {
+        cerr << "Erreur : La carte chargée est vide !" << endl;
         return;
     }
+
+    cout << "Nouvelle carte chargée avec succès !" << endl;
 
     //Régénére les tiles et items après changement de carte
     map.generateTiles();

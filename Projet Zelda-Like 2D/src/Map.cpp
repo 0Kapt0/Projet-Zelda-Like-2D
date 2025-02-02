@@ -119,23 +119,27 @@ void Map::loadFromFile(const string& filename) {
 void Map::generateItems() {
     int itemsetWidth = itemSet.getSize().x / tileSize;
 
+    items.clear();  // Nettoie avant d'ajouter de nouveaux objets
+
     for (size_t y = 0; y < itemMap.size(); ++y) {
         for (size_t x = 0; x < itemMap[y].size(); ++x) {
             int itemIndex = itemMap[y][x];
 
-            if (itemIndex > 0) {
-                int tileX = (itemIndex % itemsetWidth) * tileSize;
-                int tileY = (itemIndex / itemsetWidth) * tileSize;
+            // On ignore complètement les items 99 (pas de collision ni d'affichage)
+            if (itemIndex == 99) continue;
 
-                Sprite sprite;
-                sprite.setTexture(itemSet);
-                sprite.setTextureRect(IntRect(tileX, tileY, tileSize, tileSize));
-                sprite.setPosition(x * tileSize, y * tileSize);
-                items.push_back(sprite);
-            }
+            int tileX = (itemIndex % itemsetWidth) * tileSize;
+            int tileY = (itemIndex / itemsetWidth) * tileSize;
+
+            Sprite sprite;
+            sprite.setTexture(itemSet);
+            sprite.setTextureRect(IntRect(tileX, tileY, tileSize, tileSize));
+            sprite.setPosition(x * tileSize, y * tileSize);
+            items.push_back(sprite);
         }
     }
 }
+
 
 
 // GÉNÉRATION DES TUILES
@@ -143,18 +147,17 @@ void Map::generateItems() {
 void Map::generateTiles() {
     int tilesetWidth = tileSet.getSize().x / tileSize;
 
-    if (!tileSet.loadFromFile("assets/tilesets/tiles.png")) {
-        cerr << "❌ Erreur : Impossible de charger la texture des tiles !" << endl;
-        return;
-    }
-    else {
-        cout << "Texture if tiles loaded" << endl;
-    }
+    tiles.clear();  // Nettoie avant d'ajouter de nouvelles tuiles
 
-    tiles.clear();
     for (size_t y = 0; y < tileMap.size(); ++y) {
         for (size_t x = 0; x < tileMap[y].size(); ++x) {
             int tileIndex = tileMap[y][x];
+
+            // Si c'est une case vide (99), elle doit bloquer mais ne pas être dessinée
+            if (tileIndex == 99) {
+                blockedTiles.push_back(Vector2i(x, y));
+                continue;
+            }
 
             int tileX = (tileIndex % tilesetWidth) * tileSize;
             int tileY = (tileIndex / tilesetWidth) * tileSize;
@@ -170,10 +173,11 @@ void Map::generateTiles() {
 
 
 
+
 // COLLISIONS
 
 bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds) {
-    //Vérifie la collision avec les tiles
+    // Vérifie la collision avec les tuiles bloquantes (y compris les 99)
     for (const auto& tile : blockedTiles) {
         FloatRect tileBounds(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
         if (hitboxBounds.intersects(tileBounds)) {
@@ -181,7 +185,7 @@ bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBou
         }
     }
 
-    //Vérifie la collision avec les items
+    // Vérifie la collision avec les items bloquants (mais PAS les `99`)
     for (const auto& item : blockedItemTiles) {
         FloatRect itemBounds(item.x * tileSize, item.y * tileSize, tileSize, tileSize);
         if (hitboxBounds.intersects(itemBounds)) {
@@ -191,6 +195,7 @@ bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBou
 
     return true;
 }
+
 
 // AFFICHAGE DE LA CARTE
 
@@ -230,20 +235,32 @@ int Map::getItemAt(const Vector2f& position) {
     int tileX = static_cast<int>(position.x / tileSize);
     int tileY = static_cast<int>(position.y / tileSize);
 
-    //Vérifie si itemMap est vide AVANT d'y accéder
-    if (itemMap.empty() || itemMap[0].empty()) {
-        cerr << "Erreur : itemMap est vide !" << endl;
+    // 🔹 Vérification si itemMap est vide AVANT d'y accéder
+    if (itemMap.empty()) {
+        cerr << "Erreur critique : itemMap est totalement vide !" << endl;
         return -1;
     }
 
-    //Vérifie les limites de la carte
-    if (tileX < 0 || tileX >= itemMap[0].size() || tileY < 0 || tileY >= itemMap.size()) {
-        cerr << "Erreur : Position (" << tileX << "," << tileY << ") hors du calque des items !" << endl;
+    if (itemMap[0].empty()) {
+        cerr << "Erreur : itemMap[0] est vide, aucune colonne n'est définie !" << endl;
         return -1;
     }
 
-    return itemMap[tileY][tileX];
+    // 🔹 Vérification des limites de la carte
+    if (tileY < 0 || tileY >= static_cast<int>(itemMap.size())) {
+        cerr << "Erreur : Y hors limites (" << tileY << " / " << itemMap.size() << ")" << endl;
+        return -1;
+    }
+
+    if (tileX < 0 || tileX >= static_cast<int>(itemMap[tileY].size())) {
+        cerr << "Erreur : X hors limites (" << tileX << " / " << itemMap[tileY].size() << ")" << endl;
+        return -1;
+    }
+
+    return itemMap[tileY][tileX]; // Retourne l'ID de l'item à cette position
 }
+
+
 
 
 
