@@ -29,6 +29,10 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
         potions.push_back(potionSprite);
     }
 
+    //Fade chargement
+    fadeOverlay.setSize(Vector2f(window.getSize().x, window.getSize().y));
+    fadeOverlay.setFillColor(Color(0, 0, 0, 0));
+
     //Initialise le joueur et les entités
     player.setPosition(map.getPlayerStartPosition());
     spawnEnemies();
@@ -51,6 +55,7 @@ void GameState::spawnNPCs() {
 
 // --- Gère les entrées clavier ---
 void GameState::handleInput() {
+    if (isLoading) return;
     if (Keyboard::isKeyPressed(Keyboard::E) && textCD.getElapsedTime().asSeconds() > 0.2f) {
         for (auto& npc : npcs) {
             if (npc->isDialogueActive()) {
@@ -70,6 +75,7 @@ void GameState::handleInput() {
 void GameState::update(float deltaTime) {
     player.update(deltaTime, window, player.getPosition(), map);
     hud.update(deltaTime);
+    updateFade(deltaTime);
 
     //Vérifie si le joueur marche sur la tile 63
     int itemID = map.getItemAt(player.getPosition());
@@ -111,6 +117,18 @@ void GameState::update(float deltaTime) {
 // --- Change de carte ---
 void GameState::changeMap(const string& newMapPath) {
     cout << "Changement de carte vers : " << newMapPath << endl;
+
+    isLoading = true;
+
+    isFading = true;
+    fadeIn = true;
+    fadeAlpha = 0.0f;
+
+    while (fadeAlpha < 255.0f) {
+        updateFade(0.016f);
+        draw();
+        window.display();
+    }
 
     map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
 
@@ -161,8 +179,35 @@ void GameState::changeMap(const string& newMapPath) {
     }
 
     cout << "Changement de carte terminé avec succès !" << endl;
+
+    player.update(0.0f, window, player.getPosition(), map);
+
+    isFading = true;
+    fadeIn = false;
+    fadeAlpha = 255.0f;
 }
 
+// --- Transition fondu ---
+void GameState::updateFade(float deltaTime) {
+    if (!isFading) return;
+
+    if (fadeIn) {
+        fadeAlpha += 200.0f * deltaTime;
+        if (fadeAlpha >= 255.0f) {
+            fadeAlpha = 255.0f;
+            isFading = false;
+        }
+    }
+    else {
+        fadeAlpha -= 200.0f * deltaTime;
+        if (fadeAlpha <= 0.0f) {
+            fadeAlpha = 0.0f;
+            isFading = false;
+        }
+    }
+
+    fadeOverlay.setFillColor(Color(0, 0, 0, static_cast<Uint8>(fadeAlpha)));
+}
 
 
 // --- Dessine l'état du jeu ---
@@ -188,4 +233,5 @@ void GameState::draw() {
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);
     hud.draw(window);
+    window.draw(fadeOverlay);
 }

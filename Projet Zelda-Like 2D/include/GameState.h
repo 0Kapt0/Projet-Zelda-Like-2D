@@ -29,6 +29,14 @@ private:
     vector<Sprite> potions;
     Texture potionTexture;
 
+    // --- Transition fondu ---
+    RectangleShape fadeOverlay;
+    float fadeAlpha = 0.0f;
+    bool isFading = false;
+    bool fadeIn = false;
+    bool isLoading = false;
+    void updateFade(float deltaTime);
+
     // --- Carte et Environnement ---
     Map map;
     Map fence;

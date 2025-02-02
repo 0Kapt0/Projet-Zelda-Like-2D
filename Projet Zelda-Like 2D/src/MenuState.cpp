@@ -10,8 +10,30 @@ MenuState::MenuState(RenderWindow& window)
         cerr << "Erreur de chargement de la police" << endl;
     }
 
+    if (!backgroundTexture.loadFromFile("assets/backgrounds/menu_background.png")) {
+        cerr << "Erreur de chargement du fond d'écran du menu\n";
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setScale(
+        window.getSize().x / backgroundSprite.getLocalBounds().width,
+        window.getSize().y / backgroundSprite.getLocalBounds().height
+    );
+
+    if (!menuMusic.openFromFile("assets/music/Music_jeu.ogg")) {
+        cerr << "Erreur de chargement du fond d'écran du menu\n";
+    } else {
+        menuMusic.setLoop(true);
+        menuMusic.setVolume(10.f);
+        menuMusic.play();
+    }
+
     initMenu();
 }
+
+MenuState::~MenuState() {
+    menuMusic.stop();
+}
+
 
 void MenuState::initMenu() {
     Text startGame("Start Game", font, 30);
@@ -30,6 +52,7 @@ void MenuState::initMenu() {
         option.setFillColor(Color::White);
     }
 }
+
 
 void MenuState::handleInput() {
     Vector2i mousePos = Mouse::getPosition(window);
@@ -67,11 +90,11 @@ void MenuState::handleInput() {
 }
 
 void MenuState::update(float deltaTime) {
-
 }
 
 void MenuState::draw() {
     window.clear();
+    window.draw(backgroundSprite);
     for (auto& option : menuOptions) {
         window.draw(option);
     }
