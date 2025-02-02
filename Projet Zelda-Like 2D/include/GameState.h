@@ -9,6 +9,7 @@
 #include "DialogueBox.h"
 #include "GameHUD.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 using namespace sf;
@@ -37,6 +38,9 @@ private:
     bool isLoading = false;
     void updateFade(float deltaTime);
 
+    // --- Sound ---
+    Music ambientSound;
+
     // --- Carte et Environnement ---
     Map map;
     Map fence;
@@ -52,6 +56,7 @@ private:
 
 public:
     GameState(RenderWindow& window, Player& player, int gameState);
+    ~GameState();
 
     void handleInput() override;
     void update(float deltaTime) override;

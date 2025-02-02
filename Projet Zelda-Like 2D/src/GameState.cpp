@@ -9,12 +9,21 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/map.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 }),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 62, 64 }),
     fence("assets/maps/fence.txt", "assets/tilesets/fence.png", "assets/tilesets/items.png", 32, {}, {}),
     gameState(gameState),
     hud(player) {
 
     Merchant::loadMerchantTexture("assets/NPC/merchant.png");
+
+    if (!ambientSound.openFromFile("assets/music/dungeon_ambient_1.ogg")) {
+        std::cerr << "Erreur de chargement du son d'ambiance !\n";
+    }
+    else {
+        ambientSound.setLoop(true);
+        ambientSound.setVolume(5);
+        ambientSound.play();
+    }
 
     if (!potionTexture.loadFromFile("assets/HUD/health_potion.png")) {
         cerr << "Erreur de chargement de la texture des potions\n";
@@ -39,6 +48,10 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     spawnNPCs();
 }
 
+GameState::~GameState() {
+    ambientSound.stop();
+}
+
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
     for (const auto& pos : map.getEnemyPositions()) {
@@ -55,7 +68,7 @@ void GameState::spawnNPCs() {
 
 // --- Gère les entrées clavier ---
 void GameState::handleInput() {
-    if (isLoading) return;
+    /*if (isLoading) return;*/
     if (Keyboard::isKeyPressed(Keyboard::E) && textCD.getElapsedTime().asSeconds() > 0.2f) {
         for (auto& npc : npcs) {
             if (npc->isDialogueActive()) {
@@ -85,9 +98,12 @@ void GameState::update(float deltaTime) {
         return;
     }
 
-    if (itemID == 63) {  // Vérifie si l'item est bien la tuile de téléportation
-        cout << "Téléportation détectée !\n";
+    if (itemID == 63) {
         changeMap("assets/maps/dungeon.txt");
+    }
+
+    if (itemID == 51) {
+        changeMap("assets/maps/map.txt");
     }
 
     for (auto& enemy : enemies) {
@@ -137,7 +153,7 @@ void GameState::changeMap(const string& newMapPath) {
         return;
     }
 
-    cout << "Nouvelle carte chargée avec succès !" << endl;
+    cout << "Nouvelle carte chargee avec succes !" << endl;
 
     //Régénére les tiles et items après changement de carte
     map.generateTiles();
@@ -178,7 +194,7 @@ void GameState::changeMap(const string& newMapPath) {
         potions.push_back(potionSprite);
     }
 
-    cout << "Changement de carte terminé avec succès !" << endl;
+    cout << "Changement de carte termine avec succes !" << endl;
 
     player.update(0.0f, window, player.getPosition(), map);
 
@@ -215,6 +231,8 @@ void GameState::draw() {
     window.setView(player.getCameraView());
 
     map.draw(window);
+    fence.draw(window);
+
     player.draw(window);
 
     for (auto& enemy : enemies) {

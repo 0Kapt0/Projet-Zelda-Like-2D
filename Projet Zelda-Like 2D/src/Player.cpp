@@ -24,7 +24,7 @@ Player::Player()
         if (!footstepBuffers[i].loadFromFile(footstepFiles[i]))
             cerr << "Erreur chargement : " << footstepFiles[i] << endl;
         footsteps[i].setBuffer(footstepBuffers[i]);
-        footsteps[i].setVolume(10.f);
+        footsteps[i].setVolume(5.f);
     }
 
     //Chargement des sons d'attaque et de dash
@@ -44,8 +44,10 @@ Player::Player()
     swordSwing[1].setBuffer(swordSwingBuffers[1]);
     Dash[0].setBuffer(playerDashBuffers[0]);
     Dash[1].setBuffer(playerDashBuffers[1]);
-    Dash[0].setVolume(10.f);
-    Dash[1].setVolume(10.f);
+    Dash[0].setVolume(15.f);
+    Dash[1].setVolume(15.f);
+    swordSwing[0].setVolume(30.f);
+    swordSwing[1].setVolume(60.f);
 
 
 
@@ -60,7 +62,7 @@ Player::Player()
 
     for (auto& texture : textureFiles) {
         if (!texture.second->loadFromFile(texture.first))
-            cerr << "Texture non chargée : " << texture.first << endl;
+            cerr << "Texture non chargee : " << texture.first << endl;
     }
 
     //Initialisation de la taille et de la caméra
@@ -254,7 +256,7 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
 //Récupération d'une potion
 void Player::collectHealthPotion() {
     healthPotions++;
-    cout << "Potion de vie récupérée ! Nombre actuel : " << healthPotions << endl;
+    cout << "Potion de vie recuperee ! Nombre actuel : " << healthPotions << endl;
 }
 
 //Utilisation d'une potion de soin
@@ -265,13 +267,13 @@ void Player::useHealthPotion() {
         healthPotions--;
         isPotionOnCooldown = true;
         potionCooldown.restart();
-        cout << "Potion utilisée ! Cooldown en cours..." << endl;
+        cout << "Potion utilisee ! Cooldown en cours..." << endl;
     }
     else if (isPotionOnCooldown) {
         cout << "Potion en cooldown, veuillez attendre " << getPotionCooldownTime() << "s." << endl;
     }
     else {
-        cout << "Aucune potion disponible ou vie déjà pleine !" << endl;
+        cout << "Aucune potion disponible ou vie deja pleine !" << endl;
     }
 }
 
@@ -290,7 +292,7 @@ float Player::getPotionCooldownTime() const {
 void Player::updatePotionCooldown() {
     if (isPotionOnCooldown && potionCooldown.getElapsedTime().asSeconds() >= 10.0f) {
         isPotionOnCooldown = false;
-        cout << "Cooldown terminé, potion disponible !" << endl;
+        cout << "Cooldown termine, potion disponible !" << endl;
     }
 }
 
@@ -319,7 +321,7 @@ void Player::reduceHealth(int damage) {
     cout << "Vie restante : " << health << endl;
 
     if (health <= 0 && !isDying) {
-        cout << "Le joueur commence à mourir !" << endl;
+        cout << "Le joueur commence a mourir !" << endl;
         playerDie();
     }
 }
