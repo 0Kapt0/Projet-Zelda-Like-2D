@@ -24,7 +24,7 @@ Player::Player()
         if (!footstepBuffers[i].loadFromFile(footstepFiles[i]))
             cerr << "Erreur chargement : " << footstepFiles[i] << endl;
         footsteps[i].setBuffer(footstepBuffers[i]);
-        footsteps[i].setVolume(20.f);
+        footsteps[i].setVolume(10.f);
     }
 
     //Chargement des sons d'attaque et de dash

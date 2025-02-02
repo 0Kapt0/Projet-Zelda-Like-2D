@@ -49,11 +49,12 @@ public:
     //Constructeur
     Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues);
 
-    //Accesseurs
+    //Guetters
     vector<Vector2f> getEnemyPositions() const { return enemyPositions; }
     Vector2f getPlayerStartPosition() const { return playerStartPosition; }
     vector<Vector2f> getNpcPositions() const { return npcPositions; }
     vector<Vector2f> getPotionPositions() const { return potionPositions; }
+    int getTileAt(const Vector2f& position);
 
     //Fonctions principales
     void draw(RenderWindow& window);
