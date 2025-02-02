@@ -5,7 +5,6 @@
 Map::Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues)
     : tileSize(tileSize), blockedTileValues(blockedTileValues), blockedItemValues(blockedItemValues) {
 
-    // Chargement des textures
     if (!tileSet.loadFromFile(tilesetPath)) {
         cerr << "Erreur de chargement du tileset principal" << endl;
     }
@@ -13,10 +12,8 @@ Map::Map(const string& filename, const string& tilesetPath, const string& itemse
         cerr << "Erreur de chargement du tileset des items" << endl;
     }
 
-    // Chargement de la carte
     loadFromFile(filename);
 
-    // Génération des graphismes
     generateTiles();
     generateItems();
 }
@@ -31,11 +28,12 @@ void Map::loadFromFile(const string& filename) {
         return;
     }
 
+
     string line;
     int layer = 0;  // 0 = Ground Layer, 1 = Items Layer, 2 = Entity Layer
     int currentY = 0;
 
-    // Stockage temporaire des calques
+    //Stockage temporaire des calques
     vector<vector<int>> tempTileMap;
     vector<vector<int>> tempItemMap;
     vector<vector<int>> tempEntityMap;
@@ -48,7 +46,7 @@ void Map::loadFromFile(const string& filename) {
     Vector2f tempPlayerStartPosition;
 
     while (getline(file, line)) {
-        // Détection des sections du fichier
+        //Détection des sections du fichier
         if (line.find("# Items Layer") != string::npos) {
             layer = 1; currentY = 0;
             continue;
@@ -78,7 +76,7 @@ void Map::loadFromFile(const string& filename) {
                 //Détection des potions (ID 22)
                 if (tile == 22) {
                     potionPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
-                    cout << "Potion ajoutee à la position (" << x << ", " << currentY << ")" << endl;  // Debug
+                    cout << "Potion ajoutee à la position (" << x << ", " << currentY << ")" << endl;
                 }
             }
             else if (layer == 2) {  // Entity Layer
@@ -104,7 +102,7 @@ void Map::loadFromFile(const string& filename) {
         currentY++;
     }
 
-    // Assignation finale
+    //Assignation
     tileMap = tempTileMap;
     itemMap = tempItemMap;
     entityMap = tempEntityMap;
@@ -145,6 +143,15 @@ void Map::generateItems() {
 void Map::generateTiles() {
     int tilesetWidth = tileSet.getSize().x / tileSize;
 
+    if (!tileSet.loadFromFile("assets/tilesets/tiles.png")) {
+        cerr << "❌ Erreur : Impossible de charger la texture des tiles !" << endl;
+        return;
+    }
+    else {
+        cout << "Texture if tiles loaded" << endl;
+    }
+
+    tiles.clear();
     for (size_t y = 0; y < tileMap.size(); ++y) {
         for (size_t x = 0; x < tileMap[y].size(); ++x) {
             int tileIndex = tileMap[y][x];
@@ -162,10 +169,11 @@ void Map::generateTiles() {
 }
 
 
+
 // COLLISIONS
 
 bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBounds) {
-    // Vérifier la collision avec les tiles
+    //Vérifie la collision avec les tiles
     for (const auto& tile : blockedTiles) {
         FloatRect tileBounds(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
         if (hitboxBounds.intersects(tileBounds)) {
@@ -173,7 +181,7 @@ bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBou
         }
     }
 
-    // Vérifie la collision avec les items
+    //Vérifie la collision avec les items
     for (const auto& item : blockedItemTiles) {
         FloatRect itemBounds(item.x * tileSize, item.y * tileSize, tileSize, tileSize);
         if (hitboxBounds.intersects(itemBounds)) {
@@ -187,6 +195,56 @@ bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBou
 // AFFICHAGE DE LA CARTE
 
 void Map::draw(RenderWindow& window) {
-    for (const auto& tile : tiles) window.draw(tile);
-    for (const auto& item : items) window.draw(item);
+    if (tiles.empty()) {
+        cerr << "Erreur : Aucun tile à afficher !" << endl;
+        return;
+    }
+
+    for (const auto& tile : tiles) {
+        window.draw(tile);
+    }
+
+    for (const auto& item : items) {
+        window.draw(item);
+    }
 }
+
+
+
+
+// GUETTERS
+
+int Map::getTileAt(const Vector2f& position) {
+    int tileX = static_cast<int>(position.x / tileSize);
+    int tileY = static_cast<int>(position.y / tileSize);
+
+    if (tileX < 0 || tileX >= tileMap[0].size() || tileY < 0 || tileY >= tileMap.size()) {
+        cerr << "Erreur : Position (" << tileX << "," << tileY << ") hors de la carte !" << endl;
+        return -1;
+    }
+
+    return tileMap[tileY][tileX];
+}
+
+int Map::getItemAt(const Vector2f& position) {
+    int tileX = static_cast<int>(position.x / tileSize);
+    int tileY = static_cast<int>(position.y / tileSize);
+
+    //Vérifie si itemMap est vide AVANT d'y accéder
+    if (itemMap.empty() || itemMap[0].empty()) {
+        cerr << "Erreur : itemMap est vide !" << endl;
+        return -1;
+    }
+
+    //Vérifie les limites de la carte
+    if (tileX < 0 || tileX >= itemMap[0].size() || tileY < 0 || tileY >= itemMap.size()) {
+        cerr << "Erreur : Position (" << tileX << "," << tileY << ") hors du calque des items !" << endl;
+        return -1;
+    }
+
+    return itemMap[tileY][tileX];
+}
+
+
+
+

@@ -32,6 +32,7 @@ private:
     // --- Carte et Environnement ---
     Map map;
     Map fence;
+    void changeMap(const string& newMapPath);
 
     // --- État du Jeu et Minuteur ---
     int gameState;  //1: lobby, 2: salle 1, etc...

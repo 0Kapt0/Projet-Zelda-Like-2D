@@ -42,12 +42,12 @@ private:
 
     //Fonctions de chargement
     void loadFromFile(const string& filename);
-    void generateTiles();
-    void generateItems();
 
 public:
     //Constructeur
     Map(const string& filename, const string& tilesetPath, const string& itemsetPath, int tileSize, vector<int> blockedTileValues, vector<int> blockedItemValues);
+    void generateTiles();
+    void generateItems();
 
     //Guetters
     vector<Vector2f> getEnemyPositions() const { return enemyPositions; }
@@ -55,6 +55,13 @@ public:
     vector<Vector2f> getNpcPositions() const { return npcPositions; }
     vector<Vector2f> getPotionPositions() const { return potionPositions; }
     int getTileAt(const Vector2f& position);
+    int getItemAt(const Vector2f& position);
+    int getWidth() const { return tileMap.size(); }
+    int getHeight() const { return (tileMap.empty() ? 0 : tileMap[0].size()); }
+    int getTileCount() const { return tiles.size(); }
+    int getItemCount() const { return items.size(); }
+
+
 
     //Fonctions principales
     void draw(RenderWindow& window);
