@@ -5,6 +5,8 @@
 #include "Player.h"
 
 class PatternEnemy : public Enemy {
+private:
+    Vector2f direction;
 public:
     PatternEnemy(float x, float y, float speed);
 
