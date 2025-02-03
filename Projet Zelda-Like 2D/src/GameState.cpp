@@ -9,7 +9,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    /*map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 })*/map("assets/maps/dungeon.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 }),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 }),
     gameState(gameState),
     lobby(true),
     hud(player) {

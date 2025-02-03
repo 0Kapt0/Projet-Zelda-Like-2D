@@ -74,7 +74,7 @@ Player::Player()
     cameraView.setCenter(position);
 
     //contructeur attack hitbox
-    attackHitbox.setSize(Vector2f(32, 16));
+    attackHitbox.setSize(Vector2f(42, 21));
     attackHitbox.setFillColor(Color(255, 0, 0, 100));
     attackHitbox.setOutlineThickness(1);
     attackHitbox.setOutlineColor(Color::Red);
@@ -152,7 +152,7 @@ void Player::playerAttack() {
 
 
 void Player::updateAttackHitbox() {
-    Vector2f attackOffset(0, 0);
+    Vector2f attackOffset(0, 12);
 
     // Déplacement de la hitbox en fonction de la direction
     if (velocity.x > 0) attackOffset.x = 20;
