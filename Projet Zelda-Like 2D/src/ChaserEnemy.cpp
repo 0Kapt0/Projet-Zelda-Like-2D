@@ -29,7 +29,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         direction /= distance;
     }
 
-    // Tourne l'ennemi selon la direction X
+    //Tourne l'ennemi selon la direction X
     if (direction.x > 0) {
         shape.setScale(1, 1);
     }
