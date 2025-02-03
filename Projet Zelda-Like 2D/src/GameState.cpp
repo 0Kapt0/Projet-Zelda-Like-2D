@@ -54,8 +54,11 @@ GameState::~GameState() {
 
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
-    for (const auto& pos : map.getEnemyPositions()) {
-        enemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f));
+    for (const auto& pos : map.getChaserEnemyPositions()) {
+        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f));
+    }
+    for (const auto& pos : map.getPatternEnemyPositions()) {
+        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y, 50.0f));
     }
 }
 
@@ -116,7 +119,11 @@ void GameState::update(float deltaTime) {
         changeMap("assets/maps/map.txt", true);
     }
 
-    for (auto& enemy : enemies) {
+    for (auto& enemy : chaserEnemies) {
+        enemy->update(deltaTime, window, player.getPosition(), map);
+    }
+
+    for (auto& enemy : patternEnemies) {
         enemy->update(deltaTime, window, player.getPosition(), map);
     }
 
@@ -173,7 +180,8 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
 
     player.setPosition(newStartPosition);
 
-    enemies.clear();
+    chaserEnemies.clear();
+    patternEnemies.clear();
     spawnEnemies();
     npcs.clear();
     spawnNPCs();
@@ -231,7 +239,11 @@ void GameState::draw() {
 
     player.draw(window);
 
-    for (auto& enemy : enemies) {
+    for (auto& enemy : chaserEnemies) {
+        enemy->draw(window);
+    }
+
+    for (auto& enemy : patternEnemies) {
         enemy->draw(window);
     }
 

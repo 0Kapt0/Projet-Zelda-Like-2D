@@ -41,7 +41,8 @@ void Map::loadFromFile(const string& filename) {
     vector<Vector2i> tempBlockedTiles;
     vector<Vector2i> tempBlockedItemTiles;
 
-    vector<Vector2f> tempEnemyPositions;
+    vector<Vector2f> tempChaserEnemyPositions;
+    vector<Vector2f> tempPatternEnemyPosition;
     vector<Vector2f> tempNpcPositions;
     Vector2f tempPlayerStartPosition;
     Vector2f tempAlternativeSpawnPosition;
@@ -88,8 +89,11 @@ void Map::loadFromFile(const string& filename) {
                     tempAlternativeSpawnPosition = Vector2f(x * tileSize, currentY * tileSize);
                     cout << "joueur en (" << x << ", " << currentY << ")" << endl;
                 }
-                else if (tile == 2) {  // Ennemi
-                    tempEnemyPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                else if (tile == 2) {  // Ennemi chasseur
+                    tempChaserEnemyPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                }
+                else if (tile == 5) {   // Enemy pattern
+                    tempPatternEnemyPosition.push_back(Vector2f(x * tileSize, currentY * tileSize));
                 }
                 else if (tile == 3) {  // NPC
                     tempNpcPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
@@ -113,7 +117,8 @@ void Map::loadFromFile(const string& filename) {
     entityMap = tempEntityMap;
     blockedTiles = tempBlockedTiles;
     blockedItemTiles = tempBlockedItemTiles;
-    enemyPositions = tempEnemyPositions;
+    chaserEnemyPositions = tempChaserEnemyPositions;
+    patternEnemyPositions = tempPatternEnemyPosition;
     npcPositions = tempNpcPositions;
     playerStartPosition = tempPlayerStartPosition;
     alternativeSpawnPosition = tempAlternativeSpawnPosition;
