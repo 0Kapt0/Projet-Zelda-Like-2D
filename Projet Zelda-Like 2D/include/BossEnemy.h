@@ -1,6 +1,7 @@
 ﻿#ifndef BOSS_ENEMY_H
 #define BOSS_ENEMY_H
 
+#include <SFML/Audio.hpp>
 #include "DialogueBox.h"
 #include "Enemy.h"
 #include "Player.h"
@@ -58,7 +59,12 @@ private:
     DialogueBox dialogue;
     sf::Clock dialogueClock;
     bool waitingForNextDialogue = false;
+    bool isShaking = false;   // Indique si la boîte de dialogue tremble
+    sf::Clock shakeClock;     // Timer pour le tremblement
+    float shakeDuration = 3.f; // Durée du tremblement en secondes
+    void shakeDialogue();
 
+    sf::Music bossMusic;
 
     // Textures des différentes animations
     sf::Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;

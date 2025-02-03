@@ -13,7 +13,7 @@ DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIn
         cerr << "Error loading text scroll sound\n";
     }
     textSound.setBuffer(textBuffer);
-    textSound.setVolume(20);
+    textSound.setVolume(7);
 
     //Set up la dialogue box
     box.setSize(Vector2f(width, height));
@@ -165,6 +165,14 @@ int DialogueBox::getCurrentDialogueIndex() const {
 int DialogueBox::getDialogueSize() const {
     return dialogues.size();
 }
+
+std::string DialogueBox::getCurrentText() const {
+    if (currentDialogue < dialogues.size()) {
+        return dialogues[currentDialogue]; 
+    }
+    return "";
+}
+
 
 //Vérifie si le texte défile
 bool DialogueBox::isCurrentlyTyping() const {

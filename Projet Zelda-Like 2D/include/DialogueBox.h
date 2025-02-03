@@ -55,6 +55,7 @@ public:
     int getDialogueSize() const;
     bool isCurrentlyTyping() const;
     bool isDialogueFinished() const;
+    string getCurrentText() const;
 };
 
 #endif
