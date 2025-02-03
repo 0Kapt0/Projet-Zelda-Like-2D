@@ -1,4 +1,4 @@
-#ifndef PLAYER_H
+﻿#ifndef PLAYER_H
 #define PLAYER_H
 
 #include "Entity.h"
@@ -10,61 +10,74 @@ using namespace sf;
 
 class Player : public Entity {
 private:
+    //Position & Mouvement
     Vector2f position;
     Vector2f velocity;
-    Vector2f playerSize = { 32, 32 };
-
-    int health;
+    Vector2f playerSize;
     float speed;
+    bool isMoving, isDashing, canDash;
 
+    //Vie et Mort
+    int health;
+    bool playerDead, isDying;
+
+    //Potions et Cooldown
+    int healthPotions;
+    bool isPotionOnCooldown;
+    Clock potionCooldown;
+
+    //Sons
     array<SoundBuffer, 2> swordSwingBuffers;
     array<Sound, 2> swordSwing;
     array<SoundBuffer, 2> playerDashBuffers;
     array<Sound, 2> Dash;
     array<SoundBuffer, 6> footstepBuffers;
     array<Sound, 6> footsteps;
-    Clock footstepClock;
-    Clock dashClock;
-    Clock dashCooldownClock;
+    Clock footstepClock, dashClock, dashCooldownClock;
 
-    Texture playerRun;
-    Texture playerIdle;
-    Texture playerDeath;
-    Texture playerDash;
-    Texture playerAttack1;
-    Texture playerAttack2;
-
+    //Textures et Affichage
+    Texture playerRun, playerIdle, playerDeath, playerDash, playerAttack1, playerAttack2;
+    RectangleShape hitbox;
     View cameraView;
 
-    bool canDash;
-    bool isMoving;
-    bool isDying;
-    bool playerDead;
-
+    // Fonctions internes
     void playFootstep();
     void playerDie();
     void handleDeath();
+
 public:
+    //Constructeur
     Player();
 
+    //Getters
     Vector2f getPosition() const;
     float getSpeed() const;
     float getHealth() const;
+    int getHealthPotions() const;
+    bool canUsePotion() const;
+    float getPotionCooldownTime() const;
+    View getCameraView() const;
+
+    //Setters & Initialisation
+    void setPosition(const Vector2f& newPosition);
+    void setSpeed(float newSpeed);
+    void initialize(Map& map);
+
+    //Mécaniques du joueur
     void playerWalk();
     void playerAttack();
     void dash();
-    bool isDashing;
-
-
-    void setPosition(const Vector2f& newPosition);
-    void setSpeed(float newSpeed);
     void reduceHealth(int damage);
 
+    //Gestion des potions
+    void collectHealthPotion();
+    void useHealthPotion();
+    void updatePotionCooldown();
+
+    //Gestion des entrées et mise à jour
     void handleInput(float deltaTime, Map& map);
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
-
-    View getCameraView() const;
 };
 
 #endif
