@@ -6,6 +6,8 @@ ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _detectionRange, 
     : Enemy(x, y, _speed), detectionRange(_detectionRange), player(_player), isAttacking(false) {
 
     speed = _speed;
+    originalSpeed = _speed;
+    speedDuringAttack = _speed / 2;
     attackCooldownTime = 1.0f;
 
     if (!texture.loadFromFile("assets/enemy/necro/necro_anim.png")) {
@@ -30,7 +32,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         direction /= distance;
     }
 
-    // Tourne l'ennemi selon la direction X
+    //Tourne l'ennemi selon la direction X
     if (direction.x > 0) {
         shape.setScale(1, 1);
     }
@@ -38,28 +40,10 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         shape.setScale(-1, 1);
     }
 
-    // Gestion de l'attaque
-    if (isAttacking) {
-        animate(deltaTime);
+    float currentSpeed = isAttacking ? speedDuringAttack : originalSpeed;
 
-        // Vérifier si l'animation d'attaque est terminée
-        if (attackCooldown.getElapsedTime().asSeconds() > 0.72f) {
-            isAttacking = false;
-            speed = 50;
-            currentFrame = 0;
-            elapsedTime = 0.0f;
-
-            // **Appliquer les dégâts à la fin de l'animation**
-            player.reduceHealth(10);
-
-            setTexture(texture, 48, 50, 8, 0.1f); // Remettre l'animation de base
-        }
-        return; // Ne pas faire d'autres mises à jour tant que l'attaque est en cours
-    }
-
-    // Déplacement si l'ennemi n'est pas en train d'attaquer
     if (distance < detectionRange) {
-        Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
+        Vector2f newPosition = getPosition() + (direction * currentSpeed * deltaTime);
 
         if (map.isWalkable(newPosition, shape.getSize(), shape.getGlobalBounds())) {
             position = newPosition;
@@ -67,22 +51,38 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         }
     }
 
-    // Début de l'attaque si le joueur est touché et pas en dash
+    //Gestion de l'attaque
+    if (isAttacking) {
+        animate(deltaTime);
+
+        if (currentFrame == 4 && !player.getIsDashing() && shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+            player.reduceHealth(10);
+        }
+
+        if (attackCooldown.getElapsedTime().asSeconds() > 1.2f) {
+            isAttacking = false;
+            speed = originalSpeed;
+            currentFrame = 0;
+            elapsedTime = 0.0f;
+            setTexture(texture, 48, 50, 8, 0.1f);
+        }
+        return;
+    }
+
     if (!player.getIsDashing() && shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
         if (attackCooldown.getElapsedTime().asSeconds() > attackCooldownTime) {
             isAttacking = true;
             attackCooldown.restart();
-
-            speed /= 2.0f; // Ralentir l'ennemi pendant l'attaque
-
+            speed = speedDuringAttack;
             currentFrame = 0;
             elapsedTime = 0.0f;
-            setTexture(attack, 80, 65, 8, 0.15f); // Changer l'animation pour celle d'attaque
+            setTexture(attack, 80, 65, 8, 0.15f);
         }
     }
 
     animate(deltaTime);
 }
+
 
 void ChaserEnemy::draw(RenderWindow& window) {
     window.draw(shape);

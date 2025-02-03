@@ -14,6 +14,8 @@ public:
 private:
     Player& player;
     float detectionRange;
+    float originalSpeed;
+    float speedDuringAttack;
     Texture texture;
     Texture attack;
 
