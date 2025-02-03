@@ -9,7 +9,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 }),
+    /*map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 })*/map("assets/maps/dungeon.txt", "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 }),
     gameState(gameState),
     lobby(true),
     hud(player) {
@@ -54,7 +54,8 @@ GameState::~GameState() {
 
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
-    boss = make_unique<BossEnemy>(500, 300, 200.0f, player);
+    boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
+
     for (const auto& pos : map.getChaserEnemyPositions()) {
         chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f, player));
     }
@@ -126,6 +127,10 @@ void GameState::update(float deltaTime) {
 
     for (auto& enemy : patternEnemies) {
         enemy->update(deltaTime, window, player.getPosition(), map);
+    }
+
+    if (boss) {  // Vérifie que le boss existe bien
+        boss->update(deltaTime, window, player.getPosition(), map);
     }
 
     for (auto& npc : npcs) {
@@ -258,9 +263,10 @@ void GameState::draw() {
         window.draw(potion);
     }
 
-    boss->draw(window);
+    if (boss) {  // Vérifie que le boss existe bien
+        boss->draw(window);
+    }
 
-    //Définit la vue pour l'interface HUD
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);
     hud.draw(window);

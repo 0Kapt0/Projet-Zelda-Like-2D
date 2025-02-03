@@ -29,6 +29,7 @@ private:
 
     //Entités du jeu
     vector<Vector2f> chaserEnemyPositions;
+    Vector2f bossPosition;
     vector<Vector2f> patternEnemyPositions;
     vector<Vector2f> npcPositions;
     Vector2f playerStartPosition = {0, 0};
@@ -54,6 +55,7 @@ public:
     //Guetters
     vector<Vector2f> getChaserEnemyPositions() const { return chaserEnemyPositions; }
     vector<Vector2f> getPatternEnemyPositions() const { return patternEnemyPositions; }
+    Vector2f getBossPosition() const { return bossPosition; }
     Vector2f getPlayerStartPosition() const { return playerStartPosition; }
     vector<Vector2f> getNpcPositions() const { return npcPositions; }
     vector<Vector2f> getPotionPositions() const { return potionPositions; }

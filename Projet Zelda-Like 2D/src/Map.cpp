@@ -95,6 +95,10 @@ void Map::loadFromFile(const string& filename) {
                 else if (tile == 5) {   // Enemy pattern
                     tempPatternEnemyPosition.push_back(Vector2f(x * tileSize, currentY * tileSize));
                 }
+                else if (tile == 9) {  // ID 9 = Boss
+                    bossPosition = Vector2f(x * tileSize, currentY * tileSize);
+                    std::cout << "Boss spawn en (" << x << ", " << currentY << ")" << std::endl;
+                }
                 else if (tile == 3) {  // NPC
                     tempNpcPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
                 }
