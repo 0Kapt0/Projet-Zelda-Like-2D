@@ -12,7 +12,7 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed, Player& _player)
     }
     else {
         shape.setTexture(&texture);
-        setTexture(texture, 32, 32, 7, 0.1f);
+        setTexture(texture, 32, 17, 7, 0.1f);
     }
 
     //Positionne l'ennemi au bon endroit

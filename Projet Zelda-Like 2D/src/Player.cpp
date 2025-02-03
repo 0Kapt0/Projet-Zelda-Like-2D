@@ -157,8 +157,6 @@ void Player::updateAttackHitbox() {
     // Déplacement de la hitbox en fonction de la direction
     if (velocity.x > 0) attackOffset.x = 20;
     if (velocity.x < 0) attackOffset.x = -50;
-    if (velocity.y > 0) attackOffset.y = 20;
-    if (velocity.y < 0) attackOffset.y = -20;
 
     attackHitbox.setPosition(position + attackOffset);
 }
