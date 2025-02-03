@@ -9,7 +9,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 72, 73, 80, 81, 88, 89 }),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 }),
     gameState(gameState),
     lobby(true),
     hud(player) {
@@ -54,8 +54,11 @@ GameState::~GameState() {
 
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
-    for (const auto& pos : map.getEnemyPositions()) {
-        enemies.emplace_back(pos.x, pos.y, 50.0f);
+    for (const auto& pos : map.getChaserEnemyPositions()) {
+        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f, player));
+    }
+    for (const auto& pos : map.getPatternEnemyPositions()) {
+        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y, 10.0f, player));
     }
 }
 
@@ -116,8 +119,12 @@ void GameState::update(float deltaTime) {
         changeMap("assets/maps/map.txt", true);
     }
 
-    for (auto& enemy : enemies) {
-        enemy.update(deltaTime, window, player.getPosition(), map);
+    for (auto& enemy : chaserEnemies) {
+        enemy->update(deltaTime, window, player.getPosition(), map);
+    }
+
+    for (auto& enemy : patternEnemies) {
+        enemy->update(deltaTime, window, player.getPosition(), map);
     }
 
     for (auto& npc : npcs) {
@@ -156,7 +163,7 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     }
 
     if (!lobby) {
-        map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 64 });
+        map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 });
     }
     else {
         map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {}, { 72, 73, 80, 81, 88, 89 });
@@ -173,7 +180,8 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
 
     player.setPosition(newStartPosition);
 
-    enemies.clear();
+    chaserEnemies.clear();
+    patternEnemies.clear();
     spawnEnemies();
     npcs.clear();
     spawnNPCs();
@@ -231,8 +239,12 @@ void GameState::draw() {
 
     player.draw(window);
 
-    for (auto& enemy : enemies) {
-        enemy.draw(window);
+    for (auto& enemy : chaserEnemies) {
+        enemy->draw(window);
+    }
+
+    for (auto& enemy : patternEnemies) {
+        enemy->draw(window);
     }
 
     for (auto& npc : npcs) {
@@ -243,7 +255,7 @@ void GameState::draw() {
         window.draw(potion);
     }
 
-    // Définit la vue pour l'interface HUD
+    //Définit la vue pour l'interface HUD
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);
     hud.draw(window);

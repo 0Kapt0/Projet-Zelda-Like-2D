@@ -51,13 +51,14 @@ Player::Player()
 
 
 
-    // Chargement des textures du joueur
-    array<pair<string, Texture*>, 5> textureFiles = {
+    //Chargement des textures du joueur
+    array<pair<string, Texture*>, 6> textureFiles = {
         make_pair("assets/player/player_run.png", &playerRun),
         make_pair("assets/player/player_idle.png", &playerIdle),
         make_pair("assets/player/player_death.png", &playerDeath),
         make_pair("assets/player/player_dash.png", &playerDash),
-        make_pair("assets/player/player_attack1.png", &playerAttack1)
+        make_pair("assets/player/player_attack1.png", &playerAttack1),
+        make_pair("assets/player/player_damage.png", &playerHit)
     };
 
     for (auto& texture : textureFiles) {
@@ -66,11 +67,19 @@ Player::Player()
     }
 
     //Initialisation de la taille et de la caméra
-    playerSize = { 16, 28 };
-    hitbox.setSize({ 16, 28 });
+    playerSize = { 12, 16 };
+    hitbox.setSize({ 12, 16 });
     hitbox.setFillColor(Color::Transparent);
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
+
+    //contructeur attack hitbox
+    attackHitbox.setSize(Vector2f(32, 16));
+    attackHitbox.setFillColor(Color(255, 0, 0, 100));
+    attackHitbox.setOutlineThickness(1);
+    attackHitbox.setOutlineColor(Color::Red);
+    attackHitbox.setPosition(position);
+
 }
 
 //Gestion des entrées du joueur
@@ -126,14 +135,35 @@ void Player::handleInput(float deltaTime, Map& map) {
 
 //Attaque du joueur
 void Player::playerAttack() {
-    if (Keyboard::isKeyPressed(Keyboard::J) && !isAttacking) {
+    checkAttackDuration();
+
+    if (!isAttacking && Keyboard::isKeyPressed(Keyboard::Space)) {
         isAttacking = true;
         currentFrame = 0;
         speed = 100;
         setTexture(playerAttack1, 64, 32, 4, 0.1f);
+        attackDurationClock.restart();
+        updateAttackHitbox();
 
         int index = rand() % 2;
         swordSwing[index].play();
+    }
+}
+
+
+void Player::updateAttackHitbox() {
+    Vector2f attackOffset(0, 0);
+
+    // Déplacement de la hitbox en fonction de la direction
+    if (velocity.x > 0) attackOffset.x = 20;
+    if (velocity.x < 0) attackOffset.x = -50;
+
+    attackHitbox.setPosition(position + attackOffset);
+}
+
+void Player::checkAttackDuration() {
+    if (isAttacking && attackDurationClock.getElapsedTime().asSeconds() > 0.3f) {
+        isAttacking = false;
     }
 }
 
@@ -235,13 +265,14 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     handleDeath();
     if (playerDead) return;
 
+    updateDamageFlash();
     dash();
     handleInput(deltaTime, map);
     playerAttack();
     playerWalk();
     updatePotionCooldown();
 
-    hitbox.setPosition(position.x - 9, position.y + 4);
+    hitbox.setPosition(position.x - 6, position.y +16);
     animate(deltaTime);
 
     shape.setPosition(position);
@@ -309,6 +340,9 @@ int Player::getHealthPotions() const {
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
     window.draw(hitbox);
+    if (isAttacking) {
+        window.draw(attackHitbox);
+    }
 }
 
 /* ============================
@@ -317,12 +351,48 @@ void Player::draw(RenderWindow& window) {
 
 //Réduction de la santé du joueur
 void Player::reduceHealth(int damage) {
+    if (damageCooldown.getElapsedTime().asSeconds() < 1.f) {
+        return;
+    }
+
+    damageCooldown.restart();
+
     health -= damage;
     cout << "Vie restante : " << health << endl;
 
+    // Lancer le clignotement
+    startDamageFlash();
+
     if (health <= 0 && !isDying) {
-        cout << "Le joueur commence a mourir !" << endl;
+        cout << "Le joueur commence à mourir !" << endl;
         playerDie();
+    }
+}
+
+void Player::startDamageFlash() {
+    isTakingDamage = true;
+    damageFlashCount = 0;
+    damageFlashTimer.restart();
+}
+
+void Player::updateDamageFlash() {
+    if (!isTakingDamage) return;
+
+    if (damageFlashTimer.getElapsedTime().asSeconds() > 0.1f) {
+        if (damageFlashCount % 2 == 0) {
+            shape.setFillColor(Color::White);
+        }
+        else {
+            shape.setFillColor(Color::Transparent);
+        }
+
+        damageFlashCount++;
+        damageFlashTimer.restart();
+
+        if (damageFlashCount >= 9) {
+            isTakingDamage = false;
+            shape.setFillColor(Color::White);
+        }
     }
 }
 
@@ -360,4 +430,8 @@ float Player::getHealth() const {
 //Getter caméra joueur
 View Player::getCameraView() const {
     return cameraView;
+}
+
+bool Player::getIsDashing() const {
+    return isDashing;
 }

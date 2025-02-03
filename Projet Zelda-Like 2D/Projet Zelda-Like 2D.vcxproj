@@ -143,6 +143,7 @@ sfml-system.lib
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\AlliedEntity.cpp" />
+    <ClCompile Include="src\ChaserEnemy.cpp" />
     <ClCompile Include="src\DialogueBox.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Entity.cpp" />
@@ -153,6 +154,7 @@ sfml-system.lib
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MenuState.cpp" />
     <ClCompile Include="src\Merchant.cpp" />
+    <ClCompile Include="src\PatternEnemy.cpp" />
     <ClCompile Include="src\PauseMenu.cpp" />
     <ClCompile Include="src\Physics.cpp" />
     <ClCompile Include="src\Player.cpp" />
@@ -162,6 +164,7 @@ sfml-system.lib
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AlliedEntity.h" />
+    <ClInclude Include="include\ChaserEnemy.h" />
     <ClInclude Include="include\DialogueBox.h" />
     <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\Entity.h" />
@@ -173,6 +176,7 @@ sfml-system.lib
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MenuState.h" />
     <ClInclude Include="include\Merchant.h" />
+    <ClInclude Include="include\PatternEnemy.h" />
     <ClInclude Include="include\PauseMenu.h" />
     <ClInclude Include="include\Physics.h" />
     <ClInclude Include="include\Player.h" />
