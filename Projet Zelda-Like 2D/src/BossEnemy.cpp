@@ -2,6 +2,9 @@
 #include <cmath>
 #include <iostream>
 
+using namespace sf;
+using namespace std;
+
 BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     : Enemy(x, y, 0.0f), detectionRange(_detectionRange), player(_player),
     isAttacking(false), playerEnteredArena(false), hasDoneIntroAttack(false),
@@ -40,31 +43,31 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
    ==================== */
 void BossEnemy::loadTextures() {
     if (!spawnTexture.loadFromFile("assets/enemy/boss/spawn.png"))
-        std::cerr << "Erreur chargement SPAWN !" << std::endl;
+        cerr << "Erreur chargement SPAWN !" << endl;
     if (!deathTexture.loadFromFile("assets/enemy/boss/death.png"))
-        std::cerr << "Erreur chargement DEATH !" << std::endl;
+        cerr << "Erreur chargement DEATH !" << endl;
     if (!idleTexture.loadFromFile("assets/enemy/boss/idle.png"))
-        std::cerr << "Erreur chargement IDLE !" << std::endl;
+        cerr << "Erreur chargement IDLE !" << endl;
     if (!fireballTexture.loadFromFile("assets/enemy/boss/attack1.png"))
-        std::cerr << "Erreur chargement FIREBALL !" << std::endl;
+        cerr << "Erreur chargement FIREBALL !" << endl;
     if (!laserTexture.loadFromFile("assets/enemy/boss/attack2.png"))
-        std::cerr << "Erreur chargement LASER !" << std::endl;
+        cerr << "Erreur chargement LASER !" << endl;
     if (!summonTexture.loadFromFile("assets/enemy/boss/attack3.png"))
-        std::cerr << "Erreur chargement SUMMON !" << std::endl;
+        cerr << "Erreur chargement SUMMON !" << endl;
     if (!meteorTexture.loadFromFile("assets/enemy/boss/attack4.png"))
-        std::cerr << "Erreur chargement METEOR !" << std::endl;
+        cerr << "Erreur chargement METEOR !" << endl;
     if (!chargeTexture.loadFromFile("assets/enemy/boss/attack5.png"))
-        std::cerr << "Erreur chargement CHARGE !" << std::endl;
+        cerr << "Erreur chargement CHARGE !" << endl;
 
     if (!bossMusic.openFromFile("assets/enemy/boss/bossTheme.ogg")) {
-        std::cerr << "Erreur chargement musique du boss !" << std::endl;
+        cerr << "Erreur chargement musique du boss !" << endl;
     }
 }
 
 /* ====================
     MISE À JOUR DU BOSS
    ==================== */
-void BossEnemy::update(float deltaTime, const sf::RenderWindow& window, const sf::Vector2f& playerPosition, Map& map) {
+void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     if (!playerEnteredArena) {
         checkPlayerEntry();
         return;
@@ -89,12 +92,12 @@ void BossEnemy::update(float deltaTime, const sf::RenderWindow& window, const sf
     PHASES DU COMBAT
    ==================== */
 void BossEnemy::checkPlayerEntry() {
-    float distance = std::sqrt(std::pow(player.getPosition().x - getPosition().x, 2) +
-        std::pow(player.getPosition().y - getPosition().y, 2));
+    float distance = sqrt(pow(player.getPosition().x - getPosition().x, 2) +
+        pow(player.getPosition().y - getPosition().y, 2));
     if (distance < 250.0f) {
         playerEnteredArena = true;
         phaseClock.restart();
-        std::cout << "Début du combat !" << std::endl;
+        cout << "Début du combat !" << endl;
     }
 }
 
@@ -118,7 +121,7 @@ void BossEnemy::handleIntroDialogue() {
     dialogue.update();
 
     if (dialogue.isDialogueFinished()) {
-        std::cout << "Dialogue terminé, début du spawn !" << std::endl;
+        cout << "Dialogue terminé, début du spawn !" << endl;
         currentPhase = BossPhase::SPAWN;
         isSpawning = false;
         startSpawnAnimation();
@@ -161,7 +164,7 @@ void BossEnemy::handleAttackingPhase(float deltaTime) {
     executePattern(deltaTime);
 
     if (currentFrame >= totalFrames - 1) {
-        std::cout << "Animation d'attaque terminee, passage en IDLE." << std::endl;
+        cout << "Animation d'attaque terminee, passage en IDLE." << endl;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
         isAttacking = false;
@@ -173,7 +176,7 @@ void BossEnemy::handleAttackingPhase(float deltaTime) {
 
 void BossEnemy::handleDeathPhase() {
     if (phaseClock.getElapsedTime().asSeconds() > 6.5f) {
-        std::cout << "Le Boss est mort definitivement !" << std::endl;
+        cout << "Le Boss est mort definitivement !" << endl;
     }
 }
 
@@ -182,12 +185,12 @@ void BossEnemy::handleDeathPhase() {
    ==================== */
 void BossEnemy::startSpawnAnimation() {
     if (!isSpawning) {
-        std::cout << "Lancement de la musique du Boss !" << std::endl;
+        cout << "Lancement de la musique du Boss !" << endl;
         bossMusic.setLoop(true);
         bossMusic.setVolume(10);
         bossMusic.play();
 
-        std::cout << "Animation de spawn commence !" << std::endl;
+        cout << "Animation de spawn commence !" << endl;
         currentPhase = BossPhase::SPAWN;
         currentFrame = 0;
         shape.setTexture(&spawnTexture);
@@ -206,7 +209,7 @@ void BossEnemy::startDeathAnimation() {
     phaseClock.restart();
     isDying = true;
 
-    std::cout << "Boss mort, arrêt de la musique !" << std::endl;
+    cout << "Boss mort, arrêt de la musique !" << endl;
     bossMusic.stop();
 }
 
@@ -238,15 +241,15 @@ void BossEnemy::executePattern(float deltaTime) {
     if (!isAttacking) return;
 
     switch (currentPattern) {
-    case BossPattern::FIREBALLS: std::cout << "Le Boss tire des boules de feu !" << std::endl; break;
-    case BossPattern::LASER:std::cout << "Le Boss tire un laser !" << std::endl; break;
-    case BossPattern::SUMMON: std::cout << "Le Boss invoque des ennemis !" << std::endl; break;
-    case BossPattern::METEOR: std::cout << "Le Boss fait tomber des meteores !" << std::endl; break;
-    case BossPattern::CHARGE: std::cout << "Le Boss charge vers le joueur !" << std::endl; break;
+    case BossPattern::FIREBALLS: cout << "Le Boss tire des boules de feu !" << endl; break;
+    case BossPattern::LASER:cout << "Le Boss tire un laser !" << endl; break;
+    case BossPattern::SUMMON: cout << "Le Boss invoque des ennemis !" << endl; break;
+    case BossPattern::METEOR: cout << "Le Boss fait tomber des meteores !" << endl; break;
+    case BossPattern::CHARGE: cout << "Le Boss charge vers le joueur !" << endl; break;
     }
 
     if (attackClock.getElapsedTime().asSeconds() > attackDuration) {
-        std::cout << "Fin de l'attaque, retour en IDLE." << std::endl;
+        cout << "Fin de l'attaque, retour en IDLE." << endl;
         isAttacking = false;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
@@ -254,7 +257,7 @@ void BossEnemy::executePattern(float deltaTime) {
     }
 }
 
-void BossEnemy::draw(sf::RenderWindow& window) {
+void BossEnemy::draw(RenderWindow& window) {
     window.draw(shape);
     dialogue.draw(window);
 }

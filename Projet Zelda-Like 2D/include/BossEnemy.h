@@ -7,6 +7,9 @@
 #include "Player.h"
 #include <vector>
 
+using namespace sf;
+using namespace std;
+
 enum class BossPattern {
     SPAWN,     // Animation d'apparition
     IDLE,      // Le boss ne fait rien
@@ -31,8 +34,8 @@ class BossEnemy : public Enemy {
 public:
     BossEnemy(float x, float y, float _detectionRange, Player& _player);
 
-    void update(float deltaTime, const sf::RenderWindow& window, const sf::Vector2f& playerPosition, Map& map) override;
-    void draw(sf::RenderWindow& window) override;
+    void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
+    void draw(RenderWindow& window) override;
 
     // Gestion de l'apparition et de la mort
     void startDeathAnimation();
@@ -47,8 +50,8 @@ private:
     float attackCooldown;
     float attackDuration;
 
-    sf::Clock attackClock;
-    sf::Clock phaseClock;
+    Clock attackClock;
+    Clock phaseClock;
 
     bool isAttacking;
     bool playerEnteredArena;
@@ -57,18 +60,18 @@ private:
     bool isDying;
 
     DialogueBox dialogue;
-    sf::Clock dialogueClock;
+    Clock dialogueClock;
     bool waitingForNextDialogue = false;
     bool isShaking = false;   // Indique si la boîte de dialogue tremble
-    sf::Clock shakeClock;     // Timer pour le tremblement
+    Clock shakeClock;     // Timer pour le tremblement
     float shakeDuration = 3.f; // Durée du tremblement en secondes
     void shakeDialogue();
 
-    sf::Music bossMusic;
+    Music bossMusic;
 
     // Textures des différentes animations
-    sf::Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
-    sf::Texture spawnTexture, deathTexture;
+    Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
+    Texture spawnTexture, deathTexture;
 
     // Chargement des textures
     void loadTextures();
