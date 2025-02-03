@@ -52,12 +52,13 @@ Player::Player()
 
 
     //Chargement des textures du joueur
-    array<pair<string, Texture*>, 5> textureFiles = {
+    array<pair<string, Texture*>, 6> textureFiles = {
         make_pair("assets/player/player_run.png", &playerRun),
         make_pair("assets/player/player_idle.png", &playerIdle),
         make_pair("assets/player/player_death.png", &playerDeath),
         make_pair("assets/player/player_dash.png", &playerDash),
-        make_pair("assets/player/player_attack1.png", &playerAttack1)
+        make_pair("assets/player/player_attack1.png", &playerAttack1),
+        make_pair("assets/player/player_damage.png", &playerHit)
     };
 
     for (auto& texture : textureFiles) {
@@ -235,6 +236,7 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     handleDeath();
     if (playerDead) return;
 
+    updateDamageFlash();
     dash();
     handleInput(deltaTime, map);
     playerAttack();
@@ -317,12 +319,48 @@ void Player::draw(RenderWindow& window) {
 
 //Réduction de la santé du joueur
 void Player::reduceHealth(int damage) {
+    if (damageCooldown.getElapsedTime().asSeconds() < 1.f) {
+        return;
+    }
+
+    damageCooldown.restart();
+
     health -= damage;
     cout << "Vie restante : " << health << endl;
 
+    // Lancer le clignotement
+    startDamageFlash();
+
     if (health <= 0 && !isDying) {
-        cout << "Le joueur commence a mourir !" << endl;
+        cout << "Le joueur commence à mourir !" << endl;
         playerDie();
+    }
+}
+
+void Player::startDamageFlash() {
+    isTakingDamage = true;
+    damageFlashCount = 0;
+    damageFlashTimer.restart();
+}
+
+void Player::updateDamageFlash() {
+    if (!isTakingDamage) return;
+
+    if (damageFlashTimer.getElapsedTime().asSeconds() > 0.1f) {
+        if (damageFlashCount % 2 == 0) {
+            shape.setFillColor(Color::White);
+        }
+        else {
+            shape.setFillColor(Color::Transparent);
+        }
+
+        damageFlashCount++;
+        damageFlashTimer.restart();
+
+        if (damageFlashCount >= 9) {
+            isTakingDamage = false;
+            shape.setFillColor(Color::White);
+        }
     }
 }
 
