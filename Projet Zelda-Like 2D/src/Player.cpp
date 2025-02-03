@@ -139,6 +139,9 @@ void Player::playerAttack() {
 
     if (!isAttacking && Keyboard::isKeyPressed(Keyboard::Space)) {
         isAttacking = true;
+        currentFrame = 0;
+        speed = 100;
+        setTexture(playerAttack1, 64, 32, 4, 0.1f);
         attackDurationClock.restart();
         updateAttackHitbox();
 
@@ -429,4 +432,8 @@ float Player::getHealth() const {
 //Getter caméra joueur
 View Player::getCameraView() const {
     return cameraView;
+}
+
+bool Player::getIsDashing() const {
+    return isDashing;
 }
