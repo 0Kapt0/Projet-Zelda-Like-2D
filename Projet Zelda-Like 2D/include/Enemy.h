@@ -9,7 +9,7 @@ using namespace sf;
 using namespace std;
 
 class Enemy : public Entity {
-private:
+protected:
     Vector2f position;
     float speed;
 
@@ -17,14 +17,12 @@ public:
     //Constructeur de l'ennemi
     Enemy(float x, float y, float _speed);
 
-    //Définit la position de l'ennemi
-    void setPosition(const Vector2f& newPosition);
-
-    //Retourne la forme de l'ennemi
+    //Guetters
     const RectangleShape& getShape() const;
+    Vector2f getPosition() const { return shape.getPosition(); }
 
-    //Retourne la position actuelle de l'ennemi
-    Vector2f getPosition() const;
+    //setters
+    void setPosition(const Vector2f& newPosition);
 
     //Met à jour l'ennemi
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
