@@ -32,13 +32,12 @@ void Entity::animate(float deltaTime) {
                 currentFrame++;
             }
             else {
-                std::cout << "✅ Animation terminée, blocage sur la dernière frame." << std::endl;
-                // 🔥 Ne réinitialise pas immédiatement currentFrame, garde la dernière frame visible
+                std::cout << "Animation terminée, blocage sur la dernière frame." << std::endl;
                 return;
             }
         }
         else {
-            currentFrame = (currentFrame + 1) % totalFrames; // Cycle normal des frames en idle
+            currentFrame = (currentFrame + 1) % totalFrames;
         }
 
         shape.setTextureRect(frames[currentFrame]);
