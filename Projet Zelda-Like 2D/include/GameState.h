@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "ChaserEnemy.h"
 #include "PatternEnemy.h"
+#include "BossEnemy.h"
 #include "Map.h"
 #include "DialogueBox.h"
 #include "GameHUD.h"
@@ -31,6 +32,7 @@ private:
     /*vector<Enemy> enemies;*/
     vector<unique_ptr<ChaserEnemy>> chaserEnemies;
     vector<unique_ptr<PatternEnemy>> patternEnemies;
+    unique_ptr<BossEnemy> boss;
     vector<Sprite> potions;
     Texture potionTexture;
 

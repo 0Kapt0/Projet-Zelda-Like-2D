@@ -54,6 +54,7 @@ GameState::~GameState() {
 
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
+    boss = make_unique<BossEnemy>(500, 300, 200.0f, player);
     for (const auto& pos : map.getChaserEnemyPositions()) {
         chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f, player));
     }
@@ -142,6 +143,8 @@ void GameState::update(float deltaTime) {
             ++it;
         }
     }
+
+    boss->update(deltaTime, window, player.getPosition(), map);
 
     merchant.update(deltaTime, window, player.getPosition(), map);
     merchant.checkCollisionWithPlayer(player);
@@ -254,6 +257,8 @@ void GameState::draw() {
     for (auto& potion : potions) {
         window.draw(potion);
     }
+
+    boss->draw(window);
 
     //Définit la vue pour l'interface HUD
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
