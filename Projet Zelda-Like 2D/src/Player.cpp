@@ -67,8 +67,8 @@ Player::Player()
     }
 
     //Initialisation de la taille et de la caméra
-    playerSize = { 16, 16 };
-    hitbox.setSize({ 16, 16 });
+    playerSize = { 12, 16 };
+    hitbox.setSize({ 12, 16 });
     hitbox.setFillColor(Color::Transparent);
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
@@ -243,7 +243,7 @@ void Player::update(float deltaTime, const RenderWindow& window, const Vector2f&
     playerWalk();
     updatePotionCooldown();
 
-    hitbox.setPosition(position.x - 9, position.y +16);
+    hitbox.setPosition(position.x - 6, position.y +16);
     animate(deltaTime);
 
     shape.setPosition(position);
