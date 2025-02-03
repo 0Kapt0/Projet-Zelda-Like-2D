@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-PatternEnemy::PatternEnemy(float x, float y, float _speed)
-    : Enemy(x, y, _speed) {
+PatternEnemy::PatternEnemy(float x, float y, float _speed, Player& _player)
+    : Enemy(x, y, _speed), player(_player) {
 
     speed = _speed;
 
@@ -18,12 +18,12 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed)
     //Positionne l'ennemi au bon endroit
     setPosition(Vector2f(x, y));
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
+
+    direction.x = -10;
 }
 
 void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
-    Vector2f direction;
-    direction.x = -10;
-    direction.y = 0;
+
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
@@ -34,8 +34,22 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
         shape.setPosition(position);
     }
     else {
-        shape.setPosition(shape.getPosition().x + 100, 0);
+        if (direction.x == -10) {
+            shape.move(10, 0);
+            direction.x = 10;
+            shape.setScale(-1, 1);
+        }
+        else if (direction.x == 10) {
+            shape.move(-10, 0);
+            direction.x = -10;
+            shape.setScale(1, 1);
+        }
     }
+
+    if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+        player.reduceHealth(10);
+    }
+
     animate(deltaTime);
 }
 
