@@ -243,7 +243,7 @@ void GameState::draw() {
         window.draw(potion);
     }
 
-    // Définit la vue pour l'interface HUD
+    //Définit la vue pour l'interface HUD
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);
     hud.draw(window);

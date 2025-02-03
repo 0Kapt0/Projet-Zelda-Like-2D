@@ -51,7 +51,7 @@ Player::Player()
 
 
 
-    // Chargement des textures du joueur
+    //Chargement des textures du joueur
     array<pair<string, Texture*>, 5> textureFiles = {
         make_pair("assets/player/player_run.png", &playerRun),
         make_pair("assets/player/player_idle.png", &playerIdle),
