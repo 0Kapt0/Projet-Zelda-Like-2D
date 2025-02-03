@@ -14,5 +14,5 @@ Le jeux se joue au clavier.
 * J : utiliser une potion de heal
 
 ## Sprites
-Joueur : ![Sprite du joueur](Projet Zelda-Like 2D/assets/player/player_for_md.png)
+Joueur : ![Sprite du joueur] (C:\Users\agodin\Documents\GitHub\Projet-Zelda-Like-2D\Projet Zelda-Like 2D\assets\player\player_for_md.png)
 Nous avons pris nos sprites sur [itch.io](https://itch.io/).
