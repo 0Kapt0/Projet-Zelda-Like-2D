@@ -29,6 +29,15 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         direction /= distance;
     }
 
+    // Tourne l'ennemi selon la direction X
+    if (direction.x > 0) {
+        shape.setScale(1, 1);
+    }
+    else if (direction.x < 0) {
+        shape.setScale(-1, 1);
+    }
+
+
     //Déplacement si dans la portée
     if (distance < detectionRange) {
         Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
