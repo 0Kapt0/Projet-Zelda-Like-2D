@@ -3,13 +3,14 @@
 ## Plot
 
 histoire du jeu
+test
 
-## Entrées
+## EntrÃ©es
 Le jeux se joue au clavier.
-* ZQSD : pour se déplacer dans 8 directions différentes
-	* WASD : se déplacer aussi avec un clavier américain
-* Espace : pour donner un coup d'épée et infliger des dégâts sur les ennemis
-* E : intéragir avec les différents PNG
+* ZQSD : pour se dï¿½placer dans 8 directions diffï¿½rentes
+	* WASD : se dï¿½placer aussi avec un clavier amï¿½ricain
+* Espace : pour donner un coup d'ï¿½pï¿½e et infliger des dï¿½gï¿½ts sur les ennemis
+* E : intï¿½ragir avec les diffï¿½rents PNG
 * J : utiliser une potion de heal
 
 Nous avons pris nos sprites sur [itch.io](https://itch.io/).
