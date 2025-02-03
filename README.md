@@ -13,4 +13,6 @@ Le jeux se joue au clavier.
 * E : int�ragir avec les diff�rents PNG
 * J : utiliser une potion de heal
 
+## Sprites
+Joueur : ![Sprite du joueur](Projet Zelda-Like 2D/assets/player/player_for_md.png)
 Nous avons pris nos sprites sur [itch.io](https://itch.io/).
