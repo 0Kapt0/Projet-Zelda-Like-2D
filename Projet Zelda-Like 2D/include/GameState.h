@@ -6,6 +6,7 @@
 #include "Merchant.h"
 #include "Enemy.h"
 #include "ChaserEnemy.h"
+#include "PatternEnemy.h"
 #include "Map.h"
 #include "DialogueBox.h"
 #include "GameHUD.h"
@@ -28,7 +29,8 @@ private:
 
     // --- Ennemis et Potions ---
     /*vector<Enemy> enemies;*/
-    vector<unique_ptr<ChaserEnemy>> enemies;
+    vector<unique_ptr<ChaserEnemy>> chaserEnemies;
+    vector<unique_ptr<PatternEnemy>> patternEnemies;
     vector<Sprite> potions;
     Texture potionTexture;
 

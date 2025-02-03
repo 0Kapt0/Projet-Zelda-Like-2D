@@ -1,13 +1,12 @@
-#ifndef CHASER_ENEMY_H
-#define CHASER_ENEMY_H
+#ifndef PATTERN_ENEMY_H
+#define PATTERN_ENEMY_H
 
 #include "Enemy.h"
 #include "Player.h"
 
-class ChaserEnemy : public Enemy {
+class PatternEnemy : public Enemy {
 public:
-    Player& player;
-    ChaserEnemy(float x, float y, float speed, float detectionRange, Player& _player);
+    PatternEnemy(float x, float y, float speed);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
