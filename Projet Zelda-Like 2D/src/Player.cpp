@@ -72,6 +72,14 @@ Player::Player()
     hitbox.setFillColor(Color::Transparent);
     cameraView.setSize(426.67f, 320);
     cameraView.setCenter(position);
+
+    //contructeur attack hitbox
+    attackHitbox.setSize(Vector2f(32, 16));
+    attackHitbox.setFillColor(Color(255, 0, 0, 100));
+    attackHitbox.setOutlineThickness(1);
+    attackHitbox.setOutlineColor(Color::Red);
+    attackHitbox.setPosition(position);
+
 }
 
 //Gestion des entrées du joueur
@@ -127,14 +135,34 @@ void Player::handleInput(float deltaTime, Map& map) {
 
 //Attaque du joueur
 void Player::playerAttack() {
-    if (Keyboard::isKeyPressed(Keyboard::Space) && !isAttacking) {
+    checkAttackDuration();
+
+    if (!isAttacking && Keyboard::isKeyPressed(Keyboard::Space)) {
         isAttacking = true;
-        currentFrame = 0;
-        speed = 100;
-        setTexture(playerAttack1, 64, 32, 4, 0.1f);
+        attackDurationClock.restart();
+        updateAttackHitbox();
 
         int index = rand() % 2;
         swordSwing[index].play();
+    }
+}
+
+
+void Player::updateAttackHitbox() {
+    Vector2f attackOffset(0, 0);
+
+    // Déplacement de la hitbox en fonction de la direction
+    if (velocity.x > 0) attackOffset.x = 20;
+    if (velocity.x < 0) attackOffset.x = -50;
+    if (velocity.y > 0) attackOffset.y = 20;
+    if (velocity.y < 0) attackOffset.y = -20;
+
+    attackHitbox.setPosition(position + attackOffset);
+}
+
+void Player::checkAttackDuration() {
+    if (isAttacking && attackDurationClock.getElapsedTime().asSeconds() > 0.3f) {
+        isAttacking = false;
     }
 }
 
@@ -311,6 +339,9 @@ int Player::getHealthPotions() const {
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
     window.draw(hitbox);
+    if (isAttacking) {
+        window.draw(attackHitbox);
+    }
 }
 
 /* ============================

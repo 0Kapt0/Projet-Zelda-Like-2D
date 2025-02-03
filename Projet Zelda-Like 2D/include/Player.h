@@ -46,6 +46,13 @@ private:
     RectangleShape hitbox;
     View cameraView;
 
+    //attaque
+    RectangleShape attackHitbox;
+    bool isAttacking = false;
+    Clock attackDurationClock;
+    void updateAttackHitbox();
+    void checkAttackDuration();
+
     // Fonctions internes
     void playFootstep();
     void playerDie();
