@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-PatternEnemy::PatternEnemy(float x, float y, float _speed)
-    : Enemy(x, y, _speed) {
+PatternEnemy::PatternEnemy(float x, float y, float _speed, Player& _player)
+    : Enemy(x, y, _speed), player(_player) {
 
     speed = _speed;
 
@@ -44,8 +44,12 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
             direction.x = -10;
             shape.setScale(1, 1);
         }
-        std::cout << "Mur touché !\n";
     }
+
+    if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+        player.reduceHealth(10);
+    }
+
     animate(deltaTime);
 }
 
