@@ -5,7 +5,6 @@
 ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _detectionRange, Player& _player)
     : Enemy(x, y, _speed), detectionRange(_detectionRange), player(_player), isAttacking(false) {
 
-
     speed = _speed;
     attackCooldownTime = 1.0f;
 
@@ -43,16 +42,23 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
     if (isAttacking) {
         animate(deltaTime);
 
+        // Vérifier si l'animation d'attaque est terminée
         if (attackCooldown.getElapsedTime().asSeconds() > 0.72f) {
             isAttacking = false;
             speed = 50;
             currentFrame = 0;
             elapsedTime = 0.0f;
-            setTexture(texture, 48, 50, 8, 0.1f);
+
+            // **Appliquer les dégâts à la fin de l'animation**
+            player.reduceHealth(10);
+
+            setTexture(texture, 48, 50, 8, 0.1f); // Remettre l'animation de base
         }
+        return; // Ne pas faire d'autres mises à jour tant que l'attaque est en cours
     }
 
-    if (!isAttacking && distance < detectionRange) {
+    // Déplacement si l'ennemi n'est pas en train d'attaquer
+    if (distance < detectionRange) {
         Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
 
         if (map.isWalkable(newPosition, shape.getSize(), shape.getGlobalBounds())) {
@@ -61,20 +67,20 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
         }
     }
 
-    if (!player.getIsDashing())
-        if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-            if (attackCooldown.getElapsedTime().asSeconds() > attackCooldownTime) {
-                isAttacking = true;
-                attackCooldown.restart();
-                player.reduceHealth(10);
+    // Début de l'attaque si le joueur est touché et pas en dash
+    if (!player.getIsDashing() && shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+        if (attackCooldown.getElapsedTime().asSeconds() > attackCooldownTime) {
+            isAttacking = true;
+            attackCooldown.restart();
 
-                speed /= 2.0f;
+            speed /= 2.0f; // Ralentir l'ennemi pendant l'attaque
 
-                currentFrame = 0;
-                elapsedTime = 0.0f;
-                setTexture(attack, 80, 65, 8, 0.15f);
-            }
+            currentFrame = 0;
+            elapsedTime = 0.0f;
+            setTexture(attack, 80, 65, 8, 0.15f); // Changer l'animation pour celle d'attaque
         }
+    }
+
     animate(deltaTime);
 }
 

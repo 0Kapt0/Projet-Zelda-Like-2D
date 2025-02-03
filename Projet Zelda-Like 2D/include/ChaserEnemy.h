@@ -21,6 +21,7 @@ private:
     bool isAttacking = false;
     Clock attackCooldown;
     float attackCooldownTime;
+    Clock hitClock;
 };
 
 #endif
