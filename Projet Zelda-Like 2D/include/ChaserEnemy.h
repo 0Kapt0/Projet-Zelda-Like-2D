@@ -6,7 +6,8 @@
 
 class ChaserEnemy : public Enemy {
 public:
-    ChaserEnemy(float x, float y, float speed, float detectionRange);
+    Player& player;
+    ChaserEnemy(float x, float y, float speed, float detectionRange, Player& _player);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;

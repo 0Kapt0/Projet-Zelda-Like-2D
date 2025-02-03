@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _detectionRange)
-    : Enemy(x, y, _speed), detectionRange(_detectionRange) {
+ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _detectionRange, Player& _player)
+    : Enemy(x, y, _speed), detectionRange(_detectionRange), player(_player) {
 
     speed = _speed;
 
@@ -39,6 +39,11 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
             shape.setPosition(position);
         }
     }
+
+    if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+        player.reduceHealth(10);
+    }
+
     animate(deltaTime);
 }
 

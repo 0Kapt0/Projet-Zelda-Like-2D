@@ -55,7 +55,7 @@ GameState::~GameState() {
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
     for (const auto& pos : map.getEnemyPositions()) {
-        enemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f));
+        enemies.emplace_back(make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f, player));
     }
 }
 

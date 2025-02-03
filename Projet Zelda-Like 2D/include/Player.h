@@ -20,6 +20,12 @@ private:
     //Vie et Mort
     int health;
     bool playerDead, isDying;
+    Clock damageCooldown;
+    bool isTakingDamage = false;
+    Clock damageFlashTimer;
+    int damageFlashCount = 0;
+    void startDamageFlash();
+    void updateDamageFlash();
 
     //Potions et Cooldown
     int healthPotions;
@@ -36,7 +42,7 @@ private:
     Clock footstepClock, dashClock, dashCooldownClock;
 
     //Textures et Affichage
-    Texture playerRun, playerIdle, playerDeath, playerDash, playerAttack1, playerAttack2;
+    Texture playerRun, playerIdle, playerDeath, playerDash, playerAttack1, playerAttack2, playerHit;
     RectangleShape hitbox;
     View cameraView;
 
