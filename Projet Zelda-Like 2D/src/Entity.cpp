@@ -1,4 +1,4 @@
-#include "../include/Entity.h"
+﻿#include "../include/Entity.h"
 
 Entity::Entity() : currentFrame(0), elapsedTime(0.0f), frameTime(0.1f), totalFrames(0), isAttacking(false) {}
 
@@ -32,17 +32,19 @@ void Entity::animate(float deltaTime) {
                 currentFrame++;
             }
             else {
-                isAttacking = false;
-                currentFrame = 0;
+                std::cout << "✅ Animation terminée, blocage sur la dernière frame." << std::endl;
+                // 🔥 Ne réinitialise pas immédiatement currentFrame, garde la dernière frame visible
+                return;
             }
         }
         else {
-            currentFrame = (currentFrame + 1) % totalFrames;
+            currentFrame = (currentFrame + 1) % totalFrames; // Cycle normal des frames en idle
         }
 
         shape.setTextureRect(frames[currentFrame]);
     }
 }
+
 
 
 

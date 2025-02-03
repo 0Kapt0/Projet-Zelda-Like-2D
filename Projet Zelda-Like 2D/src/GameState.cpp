@@ -149,8 +149,6 @@ void GameState::update(float deltaTime) {
         }
     }
 
-    boss->update(deltaTime, window, player.getPosition(), map);
-
     merchant.update(deltaTime, window, player.getPosition(), map);
     merchant.checkCollisionWithPlayer(player);
 }
@@ -263,9 +261,7 @@ void GameState::draw() {
         window.draw(potion);
     }
 
-    if (boss) {  // Vérifie que le boss existe bien
-        boss->draw(window);
-    }
+    boss->draw(window);
 
     View hudView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
     window.setView(hudView);

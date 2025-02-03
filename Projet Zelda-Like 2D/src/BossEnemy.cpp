@@ -5,12 +5,12 @@
 BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     : Enemy(x, y, 0.0f), detectionRange(_detectionRange), player(_player),
     isAttacking(false), playerEnteredArena(false), hasDoneIntroAttack(false),
-    dialogue(320, 50), isSpawning(false), isDying(false) {
+    dialogue(150, 50), isSpawning(false), isDying(false) {
 
-    attackCooldown = 5.0f;  // Idle entre les attaques
-    currentPhase = BossPhase::INTRO_DIALOGUE;  // Le boss commence par parler
+    attackCooldown = 5.0f;
+    currentPhase = BossPhase::INTRO_DIALOGUE;
 
-    dialogue.setPosition(x, y);
+    dialogue.setPosition(x - 50, y);
     dialogue.setDialogue({
         "Ahah ! Enfin un challenger digne de moi !",
         "Tu crois pouvoir me vaincre ?",
@@ -18,7 +18,7 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
         });
 
     loadTextures();
-    shape.setTexture(nullptr);  // Début invisible
+    shape.setTexture(nullptr);
     shape.setPosition(x, y);
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 }
@@ -62,7 +62,9 @@ void BossEnemy::update(float deltaTime, const sf::RenderWindow& window, const sf
     case BossPhase::DEAD: handleDeathPhase(); return;
     }
 
-    animate(deltaTime);
+    if (!isDying) {
+        animate(deltaTime);
+    }
 }
 
 /* ====================
@@ -74,13 +76,13 @@ void BossEnemy::checkPlayerEntry() {
     if (distance < 200.0f) {
         playerEnteredArena = true;
         phaseClock.restart();
-        std::cout << "⚔️ Début du combat !" << std::endl;
+        std::cout << "Début du combat !" << std::endl;
     }
 }
 
 void BossEnemy::handleIntroDialogue() {
     if (!dialogue.isCurrentlyTyping() && !waitingForNextDialogue) {
-        dialogueClock.restart();  // Démarre le délai d'attente
+        dialogueClock.restart();
         waitingForNextDialogue = true;
     }
 
@@ -89,7 +91,6 @@ void BossEnemy::handleIntroDialogue() {
         waitingForNextDialogue = false;
     }
 
-    // Si le dialogue est terminé, passer à la phase de spawn
     if (dialogue.isDialogueFinished()) {
         currentPhase = BossPhase::SPAWN;
         startSpawnAnimation();
@@ -116,17 +117,24 @@ void BossEnemy::handleIdlePhase() {
 }
 
 void BossEnemy::handleAttackingPhase(float deltaTime) {
+    if (!isAttacking) return;
+
     executePattern(deltaTime);
-    if (phaseClock.getElapsedTime().asSeconds() > attackDuration) {
+
+    if (currentFrame >= totalFrames - 1) {
+        std::cout << "Animation d'attaque terminee, passage en IDLE." << std::endl;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
+        isAttacking = false;
         phaseClock.restart();
     }
 }
 
+
+
 void BossEnemy::handleDeathPhase() {
     if (phaseClock.getElapsedTime().asSeconds() > 6.5f) {
-        std::cout << "💀 Le Boss est mort définitivement !" << std::endl;
+        std::cout << "Le Boss est mort definitivement !" << std::endl;
     }
 }
 
@@ -134,12 +142,14 @@ void BossEnemy::handleDeathPhase() {
     ANIMATIONS
    ==================== */
 void BossEnemy::startSpawnAnimation() {
-    std::cout << "🎬 Animation de spawn du boss commence !" << std::endl;
-    currentPhase = BossPhase::SPAWN;
-    shape.setTexture(&spawnTexture);  // Applique bien la texture !
-    setTexture(spawnTexture, 320, 320, 30, 0.1f);
-    phaseClock.restart();
-    isSpawning = true;
+    if (!isSpawning) {
+        std::cout << "Animation de spawn commence !" << std::endl;
+        currentPhase = BossPhase::SPAWN;
+        shape.setTexture(&spawnTexture);
+        setTexture(spawnTexture, 320, 320, 30, 0.1f);
+        phaseClock.restart();
+        isSpawning = true;
+    }
 }
 
 
@@ -154,6 +164,8 @@ void BossEnemy::startDeathAnimation() {
     GESTION DES ATTAQUES
    ==================== */
 void BossEnemy::changePattern() {
+    if (isAttacking) return;
+
     int randPattern = rand() % 5;
     switch (randPattern) {
     case 0: currentPattern = BossPattern::FIREBALLS; setTexture(fireballTexture, 320, 320, 17, 0.1f); attackDuration = 1.7f; break;
@@ -167,25 +179,27 @@ void BossEnemy::changePattern() {
     attackClock.restart();
 }
 
+
+
 void BossEnemy::executePattern(float deltaTime) {
     if (!isAttacking) return;
 
     switch (currentPattern) {
-    case BossPattern::FIREBALLS: std::cout << "🔥 Le Boss tire des boules de feu !" << std::endl; break;
+    case BossPattern::FIREBALLS: std::cout << "Le Boss tire des boules de feu !" << std::endl; break;
     case BossPattern::LASER:
-        std::cout << "🔫 Le Boss tire un laser !" << std::endl;
+        std::cout << "Le Boss tire un laser !" << std::endl;
         if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
             player.reduceHealth(15);
         }
         break;
-    case BossPattern::SUMMON: std::cout << "👹 Le Boss invoque des ennemis !" << std::endl; break;
-    case BossPattern::METEOR: std::cout << "☄️ Le Boss fait tomber des météores !" << std::endl; break;
-    case BossPattern::CHARGE: std::cout << "⚡ Le Boss charge vers le joueur !" << std::endl; break;
+    case BossPattern::SUMMON: std::cout << "Le Boss invoque des ennemis !" << std::endl; break;
+    case BossPattern::METEOR: std::cout << "Le Boss fait tomber des meteores !" << std::endl; break;
+    case BossPattern::CHARGE: std::cout << "Le Boss charge vers le joueur !" << std::endl; break;
     }
 }
 
 void BossEnemy::draw(sf::RenderWindow& window) {
     window.draw(shape);
-    dialogue.draw(window);  // Affichage du dialogue
+    dialogue.draw(window);
 }
 

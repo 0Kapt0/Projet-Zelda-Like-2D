@@ -1,4 +1,4 @@
-#ifndef BOSS_ENEMY_H
+ï»¿#ifndef BOSS_ENEMY_H
 #define BOSS_ENEMY_H
 
 #include "DialogueBox.h"
@@ -12,15 +12,15 @@ enum class BossPattern {
     FIREBALLS, // Tire des projectiles
     LASER,     // Tire un laser
     SUMMON,    // Invoque des ennemis
-    METEOR,    // Fait tomber des météores
+    METEOR,    // Fait tomber des mÃ©tÃ©ores
     CHARGE,    // Charge vers le joueur
     DEAD       // Animation de mort
 };
 
 enum class BossPhase {
     INTRO_DIALOGUE,  // Le boss parle avant de spawn
-    SPAWN,           // Animation d’apparition
-    ATTACK_INTRO,    // Première attaque spéciale
+    SPAWN,           // Animation dâ€™apparition
+    ATTACK_INTRO,    // PremiÃ¨re attaque spÃ©ciale
     IDLE,            // Attente entre les attaques
     ATTACKING,       // Attaque en cours
     DEAD             // Animation de mort
@@ -60,18 +60,17 @@ private:
     bool waitingForNextDialogue = false;
 
 
-    // Textures des différentes animations
+    // Textures des diffÃ©rentes animations
     sf::Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
     sf::Texture spawnTexture, deathTexture;
 
     // Chargement des textures
     void loadTextures();
 
-    // Gestion des différentes phases du boss
+    // Gestion des diffÃ©rentes phases du boss
     void checkPlayerEntry();
     void handleIntroDialogue();
     void handleSpawnAnimation();
-    void handleIntroAttack();
     void handleIdlePhase();
     void handleAttackingPhase(float deltaTime);
     void handleDeathPhase();
