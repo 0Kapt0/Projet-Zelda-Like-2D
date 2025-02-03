@@ -18,7 +18,7 @@ ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _detectionRange, 
     }
 
     shape.setTexture(&texture);
-    setTexture(texture, 48, 50, 8, 0.1f);
+    setTexture(texture, 48, 65, 8, 0.1f);
 
     setPosition(Vector2f(x, y));
     shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
@@ -64,7 +64,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
             speed = originalSpeed;
             currentFrame = 0;
             elapsedTime = 0.0f;
-            setTexture(texture, 48, 50, 8, 0.1f);
+            setTexture(texture, 48, 65, 8, 0.1f);
         }
         return;
     }
