@@ -6,16 +6,21 @@
 
 class ChaserEnemy : public Enemy {
 public:
-    Player& player;
     ChaserEnemy(float x, float y, float speed, float detectionRange, Player& _player);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
-    float speed;
 private:
+    Player& player;
     float detectionRange;
     Texture texture;
+    Texture attack;
+
+    //Gestion de l'attaque
+    bool isAttacking = false;
+    Clock attackCooldown;
+    float attackCooldownTime;
 };
 
 #endif

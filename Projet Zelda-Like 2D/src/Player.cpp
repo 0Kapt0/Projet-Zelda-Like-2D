@@ -433,3 +433,7 @@ float Player::getHealth() const {
 View Player::getCameraView() const {
     return cameraView;
 }
+
+bool Player::getIsDashing() const {
+    return isDashing;
+}

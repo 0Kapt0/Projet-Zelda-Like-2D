@@ -70,6 +70,8 @@ public:
     bool canUsePotion() const;
     float getPotionCooldownTime() const;
     View getCameraView() const;
+    bool getIsDashing() const;
+
 
     //Setters & Initialisation
     void setPosition(const Vector2f& newPosition);
