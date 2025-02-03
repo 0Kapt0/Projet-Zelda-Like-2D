@@ -55,7 +55,7 @@ GameState::~GameState() {
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
     for (const auto& pos : map.getEnemyPositions()) {
-        enemies.emplace_back(pos.x, pos.y, 50.0f);
+        enemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f));
     }
 }
 
@@ -117,7 +117,7 @@ void GameState::update(float deltaTime) {
     }
 
     for (auto& enemy : enemies) {
-        enemy.update(deltaTime, window, player.getPosition(), map);
+        enemy->update(deltaTime, window, player.getPosition(), map);
     }
 
     for (auto& npc : npcs) {
@@ -232,7 +232,7 @@ void GameState::draw() {
     player.draw(window);
 
     for (auto& enemy : enemies) {
-        enemy.draw(window);
+        enemy->draw(window);
     }
 
     for (auto& npc : npcs) {
