@@ -37,10 +37,12 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
         if (direction.x == -10) {
             shape.move(10, 0);
             direction.x = 10;
+            shape.setScale(-1, 1);
         }
         else if (direction.x == 10) {
             shape.move(-10, 0);
             direction.x = -10;
+            shape.setScale(1, 1);
         }
         std::cout << "Mur touché !\n";
     }
