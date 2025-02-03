@@ -126,7 +126,7 @@ void Player::handleInput(float deltaTime, Map& map) {
 
 //Attaque du joueur
 void Player::playerAttack() {
-    if (Keyboard::isKeyPressed(Keyboard::J) && !isAttacking) {
+    if (Keyboard::isKeyPressed(Keyboard::Space) && !isAttacking) {
         isAttacking = true;
         currentFrame = 0;
         speed = 100;
