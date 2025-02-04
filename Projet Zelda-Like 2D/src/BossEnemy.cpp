@@ -111,7 +111,6 @@ void BossEnemy::handleIntroDialogue() {
         dialogue.advanceDialogue();
         waitingForNextDialogue = false;
 
-        // Vérifie si on est sur la dernière ligne du dialogue
         if (dialogue.getCurrentDialogueIndex() == dialogue.getDialogueSize() - 1) {
             isShaking = true;
             shakeClock.restart();
@@ -165,6 +164,7 @@ void BossEnemy::handleAttackingPhase(float deltaTime) {
 
     if (currentFrame >= totalFrames - 1) {
         cout << "Animation d'attaque terminee, passage en IDLE." << endl;
+        currentFrame = 0;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
         isAttacking = false;
@@ -225,7 +225,7 @@ void BossEnemy::changePattern() {
 
     switch (randPattern) {
     case 0: currentPattern = BossPattern::FIREBALLS; setTexture(fireballTexture, 320, 320, 17, 0.1f); attackDuration = 1.7f; break;
-    case 1: currentPattern = BossPattern::LASER; setTexture(laserTexture, 320, 320, 24, 0.1f); attackDuration = 2.4f; break;
+    case 1: currentPattern = BossPattern::LASER; setTexture(laserTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
     case 2: currentPattern = BossPattern::SUMMON; setTexture(summonTexture, 320, 320, 70, 0.1f); attackDuration = 7.f; break;
     case 3: currentPattern = BossPattern::METEOR; setTexture(meteorTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
     case 4: currentPattern = BossPattern::CHARGE; setTexture(chargeTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
