@@ -323,7 +323,7 @@ void BossEnemy::changePattern() {
     currentFrame = 0;
 
     switch (randPattern) {
-    case 0: currentPattern = BossPattern::FIREBALLS; setTexture(fireballTexture, 320, 320, 17, 0.1f); attackDuration = 2.7f; break;
+    case 0: currentPattern = BossPattern::FIREBALLS; setTexture(fireballTexture, 320, 320, 17, 0.1f); attackDuration = 1.7f; break;
     case 1: currentPattern = BossPattern::LASER; setTexture(laserTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
     case 2: currentPattern = BossPattern::SUMMON; setTexture(summonTexture, 320, 320, 70, 0.1f); attackDuration = 7.f; break;
     case 3: currentPattern = BossPattern::METEOR; setTexture(meteorTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
