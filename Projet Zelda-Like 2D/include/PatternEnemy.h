@@ -14,10 +14,29 @@ public:
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
+    void checkPlayerAttack();
     float speed;
 private:
     float detectionRange;
     Texture texture;
+    float originalSpeed;
+    float speedDuringAttack;
+    Texture attack;
+    Texture death;
+
+    Clock damageCooldown;
+    float damageCooldownTime = 0.5f;
+
+    void handleDeath();
+    bool isDying = false;
+    bool isDead = false;
+    Clock deathAnimationClock;
+    bool deathAnimationFinished = false;
+
+    bool isAttacking = false;
+    Clock attackCooldown;
+    float attackCooldownTime;
+    Clock hitClock;
 };
 
 #endif
