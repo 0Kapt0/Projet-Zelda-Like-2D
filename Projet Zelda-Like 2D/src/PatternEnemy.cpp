@@ -4,7 +4,6 @@
 
 PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player& _player)
     : Enemy(x, y, _speed, _health), player(_player), isAttacking(false) {
-
     speed = _speed;
     originalSpeed = _speed;
     speedDuringAttack = _speed / 2;
@@ -26,7 +25,6 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player
 
     //Positionne l'ennemi au bon endroit
     setPosition(Vector2f(x, y));
-    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 
     direction.x = -10;
 }
