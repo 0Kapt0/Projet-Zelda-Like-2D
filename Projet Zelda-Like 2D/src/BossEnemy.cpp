@@ -30,12 +30,24 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
         });
 
 
+    bossName = "Agis The World Ender";
 
+    if (!bossFont.loadFromFile("assets/fonts/American_Captain.ttf")) {
+        std::cerr << "Erreur : Impossible de charger la police du Boss !" << std::endl;
+    }
+
+    bossNameText.setFont(bossFont);
+    bossNameText.setCharacterSize(30);
+    bossNameText.setScale(.3f, .3f);
+    bossNameText.setFillColor(Color::White);
+    bossNameText.setOutlineColor(Color::Black);
+    bossNameText.setOutlineThickness(2);
+    bossNameText.setString(bossName);
 
     loadTextures();
+    initializeBossHealthBar();
     shape.setTexture(nullptr);
     shape.setPosition(x, y);
-    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 }
 
 /* ====================
@@ -68,17 +80,26 @@ void BossEnemy::loadTextures() {
     MISE À JOUR DU BOSS
    ==================== */
 void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
+    if (isDead) return;
+
     if (!playerEnteredArena) {
         checkPlayerEntry();
         return;
     }
+
+    if (Keyboard::isKeyPressed(Keyboard::N)) reduceHealth(10);
+
+    updateBossHealthBarPosition(player.getCameraView());
 
     switch (currentPhase) {
     case BossPhase::INTRO_DIALOGUE: handleIntroDialogue(); break;
     case BossPhase::SPAWN: handleSpawnAnimation(); break;
     case BossPhase::IDLE: handleIdlePhase(); break;
     case BossPhase::ATTACKING: handleAttackingPhase(deltaTime); break;
-    case BossPhase::DEAD: handleDeathPhase(); return;
+    case BossPhase::DEAD:
+        handleDeathPhase();
+        animate(deltaTime);
+        return;
     }
 
     if (!isDying) {
@@ -158,12 +179,13 @@ void BossEnemy::handleIdlePhase() {
 }
 
 void BossEnemy::handleAttackingPhase(float deltaTime) {
+    if (currentPhase == BossPhase::DEAD) return;
     if (!isAttacking) return;
 
     executePattern(deltaTime);
 
     if (currentFrame >= totalFrames - 1) {
-        cout << "Animation d'attaque terminee, passage en IDLE." << endl;
+        std::cout << "Animation d'attaque terminée, passage en IDLE." << std::endl;
         currentFrame = 0;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
@@ -172,17 +194,85 @@ void BossEnemy::handleAttackingPhase(float deltaTime) {
     }
 }
 
+void BossEnemy::reduceHealth(float damage) {
+    if (health <= 0) return;
 
+    health -= damage;
+    if (health < 0) health = 0;
 
-void BossEnemy::handleDeathPhase() {
-    if (phaseClock.getElapsedTime().asSeconds() > 6.5f) {
-        cout << "Le Boss est mort definitivement !" << endl;
+    cout << "Boss prend " << damage << " dégâts. Vie restante : " << health << std::endl;
+
+    updateBossHealthBar();
+
+    if (health <= 0) {
+        cout << "🔥 Boss vaincu ! Lancement de l'animation de mort..." << std::endl;
+        startDeathAnimation();
     }
 }
+
+void BossEnemy::handleDeathPhase() {
+    if (!isDying) return;
+
+    if (phaseClock.getElapsedTime().asSeconds() >= 0.1f) {
+        if (currentFrame < 64) {
+            animate(0.1f);
+            phaseClock.restart();
+        }
+        else {
+            std::cout << "💀 Le Boss est définitivement mort et disparaît." << std::endl;
+            bossHealthBarVisible = false;
+            isDead = true;
+        }
+    }
+}
+
+
+
+
+
 
 /* ====================
     ANIMATIONS
    ==================== */
+void BossEnemy::initializeBossHealthBar() {
+    maxHealth = health;
+
+    //Contour de la barre de vie
+    bossHealthBarOutline.setSize(Vector2f(270, 6));
+    bossHealthBarOutline.setFillColor(Color::Transparent);
+    bossHealthBarOutline.setOutlineColor(Color::Black);
+    bossHealthBarOutline.setOutlineThickness(1);
+    bossHealthBarOutline.setPosition(150, 800);
+
+    //Barre de vie rouge
+    bossHealthBar.setSize(Vector2f(270, 6));
+    bossHealthBar.setFillColor(Color(130, 0, 0, 255));
+    bossHealthBar.setPosition(150, 800);
+
+    bossHealthBarVisible = false;
+}
+
+void BossEnemy::updateBossHealthBar() {
+    float healthPercentage = health / maxHealth;
+    bossHealthBar.setSize(Vector2f(270 * healthPercentage, 6));
+}
+
+void BossEnemy::updateBossHealthBarPosition(const View& cameraView) {
+    Vector2f viewCenter = cameraView.getCenter();
+    Vector2f viewSize = cameraView.getSize();
+
+    float healthBarY = viewCenter.y + (viewSize.y / 2) - 40;
+
+    float healthBarX = viewCenter.x - (bossHealthBarOutline.getSize().x / 2);
+
+    bossHealthBar.setPosition(healthBarX, healthBarY);
+    bossHealthBarOutline.setPosition(healthBarX, healthBarY);
+
+    bossNameText.setPosition(healthBarX,
+        healthBarY - 11);
+}
+
+
 void BossEnemy::startSpawnAnimation() {
     if (!isSpawning) {
         cout << "Lancement de la musique du Boss !" << endl;
@@ -197,21 +287,30 @@ void BossEnemy::startSpawnAnimation() {
         setTexture(spawnTexture, 320, 320, 30, 0.1f);
         phaseClock.restart();
         isSpawning = true;
+
+        //Active la barre de vie du boss
+        bossHealthBarVisible = true;
     }
 }
 
-
-
 void BossEnemy::startDeathAnimation() {
+    if (isDying) return;
+
     currentPhase = BossPhase::DEAD;
     currentFrame = 0;
-    setTexture(deathTexture, 320, 320, 65, 0.1f);
-    phaseClock.restart();
     isDying = true;
 
-    cout << "Boss mort, arrêt de la musique !" << endl;
+    setTexture(deathTexture, 320, 320, 65, 0.15f); 
+    phaseClock.restart();
+
+    cout << "Animation de mort en cours..." << endl;
     bossMusic.stop();
 }
+
+
+
+
+
 
 
 /* ====================
@@ -235,9 +334,8 @@ void BossEnemy::changePattern() {
     attackClock.restart();
 }
 
-
-
 void BossEnemy::executePattern(float deltaTime) {
+    if (currentPhase == BossPhase::DEAD) return;
     if (!isAttacking) return;
 
     switch (currentPattern) {
@@ -258,8 +356,15 @@ void BossEnemy::executePattern(float deltaTime) {
 }
 
 void BossEnemy::draw(RenderWindow& window) {
+    if (isDead) return; // ✅ Ne dessine plus le boss après sa disparition
+
     window.draw(shape);
     dialogue.draw(window);
+    if (bossHealthBarVisible) {
+        window.draw(bossHealthBarOutline);
+        window.draw(bossHealthBar);
+        window.draw(bossNameText);
+    }
 }
 
 

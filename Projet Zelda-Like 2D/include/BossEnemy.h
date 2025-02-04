@@ -40,6 +40,7 @@ public:
     // Gestion de l'apparition et de la mort
     void startDeathAnimation();
     void startSpawnAnimation();
+    void reduceHealth(float damage);
 
 private:
     Player& player;
@@ -59,12 +60,27 @@ private:
     bool isSpawning;
     bool isDying;
 
+    // Barre de vie du boss
+    RectangleShape bossHealthBar;
+    RectangleShape bossHealthBarOutline;
+    float maxHealth;
+    bool bossHealthBarVisible = false;
+    Text bossNameText;
+    Font bossFont;
+    string bossName;
+    bool isDead = false;
+
+    // Initialisation de la barre de vie
+    void initializeBossHealthBar();
+    void updateBossHealthBar();
+    void updateBossHealthBarPosition(const View& cameraView);
+
     DialogueBox dialogue;
     Clock dialogueClock;
     bool waitingForNextDialogue = false;
-    bool isShaking = false;   // Indique si la boîte de dialogue tremble
-    Clock shakeClock;     // Timer pour le tremblement
-    float shakeDuration = 3.f; // Durée du tremblement en secondes
+    bool isShaking = false;
+    Clock shakeClock;
+    float shakeDuration = 3.f;
     void shakeDialogue();
 
     Music bossMusic;

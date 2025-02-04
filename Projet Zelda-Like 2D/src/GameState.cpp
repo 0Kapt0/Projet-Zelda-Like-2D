@@ -172,7 +172,7 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
         map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 });
     }
     else {
-        map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, {72, 73, 80, 81, 88, 89});
+        map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {/*65*/}, {72, 73, 80, 81, 88, 89});
     }
 
     map.generateTiles();
