@@ -136,6 +136,8 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
 void PatternEnemy::draw(RenderWindow& window) {
     if (isDead) return;
     window.draw(shape);
+
     window.draw(healthBarOutline);
     window.draw(healthBar);
+
 }
