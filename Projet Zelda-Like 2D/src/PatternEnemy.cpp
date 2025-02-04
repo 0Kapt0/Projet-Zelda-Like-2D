@@ -3,12 +3,15 @@
 #include <iostream>
 
 PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player& _player)
-    : Enemy(x, y, _speed, _health), player(_player) {
+    : Enemy(x, y, _speed, _health), player(_player), isAttacking(false) {
 
     speed = _speed;
 
     if (!texture.loadFromFile("assets/enemy/slime/slime_walk.png")) {
-        std::cerr << "Erreur de chargement de la texture du ChaserEnemy !" << std::endl;
+        std::cerr << "Erreur de chargement de la texture du PatternEnemy !" << std::endl;
+    }
+    if (!death.loadFromFile("assets/enemy/slime/slime_death.png")) {
+        std::cerr << "Erreur de chargement de la texture de mort du PatternEnemy !" << std::endl;
     }
     else {
         shape.setTexture(&texture);
@@ -36,7 +39,7 @@ void PatternEnemy::checkPlayerAttack() {
         speed = 0;
 
         if (!deathAnimationFinished) {
-            setTexture(death, 48, 48, 11, 1.0f);
+            setTexture(death, 32, 16, 16, 1.0f);
             currentFrame = 0;
             elapsedTime = 0;
             deathAnimationClock.restart();
@@ -59,6 +62,11 @@ void PatternEnemy::handleDeath() {
 }
 
 void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
+    if (isDying) {
+        updateHealthBar();
+        handleDeath();
+        return;
+    }
 
     updateHealthBar();
 
@@ -93,11 +101,8 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
     animate(deltaTime);
 }
 
-
-
-
-
 void PatternEnemy::draw(RenderWindow& window) {
+    if (isDead) return;
     window.draw(shape);
     window.draw(healthBarOutline);
     window.draw(healthBar);
