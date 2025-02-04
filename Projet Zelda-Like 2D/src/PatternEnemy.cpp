@@ -24,6 +24,8 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player
 
 void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
 
+    updateHealthBar();
+
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
@@ -59,4 +61,6 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
 
 void PatternEnemy::draw(RenderWindow& window) {
     window.draw(shape);
+    window.draw(healthBarOutline);
+    window.draw(healthBar);
 }

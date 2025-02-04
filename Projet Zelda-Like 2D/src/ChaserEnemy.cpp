@@ -104,7 +104,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
     }
 
     //Gestion de l'attaque
-    if (isAttacking) {
+    if (isAttacking && !isDying) {
         animate(deltaTime);
 
         if (currentFrame == 4 && !player.getIsDashing() && shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
