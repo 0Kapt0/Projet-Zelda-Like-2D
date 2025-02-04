@@ -46,8 +46,6 @@ void ChaserEnemy::checkPlayerAttack() {
             deathAnimationClock.restart();
         }
     }
-
-
 }
 
 void ChaserEnemy::handleDeath() {

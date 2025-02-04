@@ -22,9 +22,47 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player
     direction.x = -10;
 }
 
+void PatternEnemy::checkPlayerAttack() {
+    if (damageCooldown.getElapsedTime().asSeconds() < damageCooldownTime) return;
+
+    if (shape.getGlobalBounds().intersects(player.getAttackHitbox()) && player.playerAttacking()) {
+        reduceHealth(20);
+        std::cout << "L'ennemi a ete touche par l'attaque du joueur !" << std::endl;
+        damageCooldown.restart();
+    }
+
+    if (health <= 0 && !isDying) {
+        isDying = true;
+        speed = 0;
+
+        if (!deathAnimationFinished) {
+            setTexture(death, 48, 48, 11, 1.0f);
+            currentFrame = 0;
+            elapsedTime = 0;
+            deathAnimationClock.restart();
+        }
+    }
+}
+
+void PatternEnemy::handleDeath() {
+    if (!isDying) return;
+
+    if (!deathAnimationFinished) {
+        animate(0.1f);
+    }
+
+    if (currentFrame >= totalFrames - 1) {
+        deathAnimationFinished = true;
+        isDead = true;
+        return;
+    }
+}
+
 void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
 
     updateHealthBar();
+
+    checkPlayerAttack();
 
     float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
