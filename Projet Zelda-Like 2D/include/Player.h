@@ -77,6 +77,7 @@ public:
     View getCameraView() const;
     bool getIsDashing() const;
     FloatRect getAttackHitbox() const;
+    bool playerAttacking() const;
 
     //Setters & Initialisation
     void setPosition(const Vector2f& newPosition);

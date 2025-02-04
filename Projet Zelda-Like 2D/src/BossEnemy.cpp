@@ -6,7 +6,7 @@ using namespace sf;
 using namespace std;
 
 BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
-    : Enemy(x, y, 0.0f), detectionRange(_detectionRange), player(_player),
+    : Enemy(x, y, 0.0f, 200), detectionRange(_detectionRange), player(_player),
     isAttacking(false), playerEnteredArena(false), hasDoneIntroAttack(false),
     dialogue(130, 30), isSpawning(false), isDying(false) {
 

@@ -6,11 +6,12 @@
 
 class ChaserEnemy : public Enemy {
 public:
-    ChaserEnemy(float x, float y, float speed, float detectionRange, Player& _player);
+    ChaserEnemy(float x, float y, float speed, float health, float detectionRange, Player& _player);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
+    void checkPlayerAttack();
 private:
     Player& player;
     float detectionRange;
@@ -18,6 +19,17 @@ private:
     float speedDuringAttack;
     Texture texture;
     Texture attack;
+    Texture death;
+
+    Clock damageCooldown;
+    float damageCooldownTime = 0.5f;
+
+    //Death handle
+    void handleDeath();
+    bool isDying = false;
+    bool isDead = false;
+    Clock deathAnimationClock;
+    bool deathAnimationFinished = false;
 
     //Gestion de l'attaque
     bool isAttacking = false;

@@ -3,35 +3,44 @@
 
 #include "Entity.h"
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
 using namespace sf;
-using namespace std;
 
 class Enemy : public Entity {
 protected:
     Vector2f position;
     float speed;
+    float health;
+    float maxHealth;
+
+    //Barre de vie
+    RectangleShape healthBar;
+    RectangleShape healthBarOutline;
+    void initializeHealthBar();
+    void updateHealthBar();
 
 public:
-    //Constructeur de l'ennemi
-    Enemy(float x, float y, float _speed);
+    //Constructeur corrigé avec les bons paramètres
+    Enemy(float x, float y, float _speed, float _health);
 
-    //Guetters
+    //Getters
     const RectangleShape& getShape() const;
     Vector2f getPosition() const { return shape.getPosition(); }
+    float getHealth() const { return health; }
 
-    //setters
+    // Réduit la vie de l'ennemi
+    void reduceHealth(float damage);
+
+    //Setters
     void setPosition(const Vector2f& newPosition);
 
-    //Met à jour l'ennemi
+    //affichage et maj
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
-
-    //Dessine l'ennemi à l'écran
     void draw(RenderWindow& window) override;
 
-    //Destructeur virtuel
+    //Destructeur virtuel pour éviter des erreurs de polymorphisme
     virtual ~Enemy() {}
 };
 
 #endif
+

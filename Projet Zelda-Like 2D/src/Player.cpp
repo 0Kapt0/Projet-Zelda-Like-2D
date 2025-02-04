@@ -456,6 +456,10 @@ bool Player::getIsDashing() const {
     return isDashing;
 }
 
+bool Player::playerAttacking() const {
+    return isAttacking;
+}
+
 FloatRect Player::getAttackHitbox() const {
     return attackHitbox.getGlobalBounds();
 }

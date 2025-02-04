@@ -57,10 +57,10 @@ void GameState::spawnEnemies() {
     boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
 
     for (const auto& pos : map.getChaserEnemyPositions()) {
-        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 150.0f, player));
+        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 100, 150.0f, player));
     }
     for (const auto& pos : map.getPatternEnemyPositions()) {
-        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y, 10.0f, player));
+        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y, 10.0f, 100.f, player));
     }
 }
 

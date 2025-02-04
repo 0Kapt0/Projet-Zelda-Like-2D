@@ -2,8 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-PatternEnemy::PatternEnemy(float x, float y, float _speed, Player& _player)
-    : Enemy(x, y, _speed), player(_player) {
+PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player& _player)
+    : Enemy(x, y, _speed, _health), player(_player) {
 
     speed = _speed;
 

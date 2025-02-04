@@ -9,7 +9,7 @@ private:
     Vector2f direction;
 public:
     Player& player;
-    PatternEnemy(float x, float y, float speed, Player& player);
+    PatternEnemy(float x, float y, float speed, float health, Player& player);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
