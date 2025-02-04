@@ -10,7 +10,7 @@ using namespace sf;
 
 class Player : public Entity {
 private:
-    //Position & Mouvement
+    //Position et Mouvement
     Vector2f position;
     Vector2f velocity;
     Vector2f playerSize;
@@ -26,6 +26,11 @@ private:
     int damageFlashCount = 0;
     void startDamageFlash();
     void updateDamageFlash();
+
+    // Son de mort
+    SoundBuffer playerDeathBuffer;
+    Sound playerDeathSound;
+
 
     //Potions et Cooldown
     int healthPotions;
@@ -71,7 +76,7 @@ public:
     float getPotionCooldownTime() const;
     View getCameraView() const;
     bool getIsDashing() const;
-
+    FloatRect getAttackHitbox() const;
 
     //Setters & Initialisation
     void setPosition(const Vector2f& newPosition);

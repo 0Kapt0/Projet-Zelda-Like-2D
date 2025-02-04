@@ -49,6 +49,12 @@ Player::Player()
     swordSwing[0].setVolume(30.f);
     swordSwing[1].setVolume(60.f);
 
+    if (!playerDeathBuffer.loadFromFile("assets/player/sounds/death_sound.wav")) {
+        cerr << "Erreur chargement : playerDeath.wav" << endl;
+    }
+    playerDeathSound.setBuffer(playerDeathBuffer);
+    playerDeathSound.setVolume(10.f);
+    playerDeathSound.setPitch(0.7f);
 
 
     //Chargement des textures du joueur
@@ -143,6 +149,7 @@ void Player::playerAttack() {
         speed = 100;
         setTexture(playerAttack1, 64, 32, 4, 0.1f);
         attackDurationClock.restart();
+
         updateAttackHitbox();
 
         int index = rand() % 2;
@@ -150,16 +157,26 @@ void Player::playerAttack() {
     }
 }
 
-
 void Player::updateAttackHitbox() {
     Vector2f attackOffset(0, 12);
 
-    // Déplacement de la hitbox en fonction de la direction
-    if (velocity.x > 0) attackOffset.x = 20;
-    if (velocity.x < 0) attackOffset.x = -50;
+    float direction = shape.getScale().x;
+
+    if (direction > 0) {
+        attackOffset.x = 0.f;
+    }
+    else {
+        attackOffset.x = -50.f;
+    }
 
     attackHitbox.setPosition(position + attackOffset);
+
+    if (direction > 0) {
+        attackHitbox.move(7.f, 0.f);
+    }
 }
+
+
 
 void Player::checkAttackDuration() {
     if (isAttacking && attackDurationClock.getElapsedTime().asSeconds() > 0.3f) {
@@ -231,6 +248,8 @@ void Player::playerDie() {
         isAttacking = false;
         speed = 0;
         currentFrame = 0;
+
+        playerDeathSound.play();
     }
 
     if (currentFrame < 13) {
@@ -245,6 +264,7 @@ void Player::playerDie() {
         isDying = false;
     }
 }
+
 
 //Vérification de l'état du joueur (mort ou vivant)
 void Player::handleDeath() {
@@ -434,4 +454,8 @@ View Player::getCameraView() const {
 
 bool Player::getIsDashing() const {
     return isDashing;
+}
+
+FloatRect Player::getAttackHitbox() const {
+    return attackHitbox.getGlobalBounds();
 }

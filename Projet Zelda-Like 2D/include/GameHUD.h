@@ -16,6 +16,8 @@ private:
     Sprite playerIcon;
     Texture playerIconTexture;
     RectangleShape playerIconOutline;
+    Sprite playerBlood;
+    Texture playerBloodTexture;
 
     //Potion (HUD)
     RectangleShape potionHUD;

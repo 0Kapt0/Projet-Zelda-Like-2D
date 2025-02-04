@@ -17,6 +17,17 @@ GameHUD::GameHUD(Player& player) : player(player) {
         playerIcon.setColor(Color(150, 150, 150, 255));
     }
 
+    //Charge la texture de l’icône blood du joueur
+    if (!playerBloodTexture.loadFromFile("assets/HUD/blood.png")) {
+        std::cerr << "Erreur de chargement de l'icône blood du joueur\n";
+    }
+    else {
+        playerBlood.setTexture(playerBloodTexture);
+        playerBlood.setScale(.025f, .025f);
+        playerBlood.setPosition(20, 20);
+        playerBlood.setColor(Color(255, 255, 255, 200));
+    }
+
     //Charge la texture de la potion
     if (!potionTexture.loadFromFile("assets/HUD/health_potion.png")) {
         std::cerr << "Erreur de chargement de l'icône de la potion\n";
@@ -88,6 +99,8 @@ void GameHUD::update(float deltaTime) {
     // Ajuste la barre de vie
     float healthPercent = player.getHealth() / 100.0f;
     healthBar.setSize(Vector2f(200 * healthPercent, 20));
+    float healthBlood = 200 - player.getHealth() * 2;
+    playerBlood.setColor(Color(255, 255, 255, healthBlood));
 }
 
 
@@ -96,6 +109,7 @@ void GameHUD::draw(RenderWindow& window) {
     window.draw(healthBar);
     window.draw(playerIconOutline);
     window.draw(playerIcon);
+    window.draw(playerBlood);
 
     //Dessine le fond et l'outline du HUD de la potion
     window.draw(potionHUDOutline);
