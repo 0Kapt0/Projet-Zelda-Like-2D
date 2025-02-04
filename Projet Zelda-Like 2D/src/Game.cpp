@@ -9,7 +9,7 @@ Game::Game()
     player(),
     pauseMenu(window) {
     window.setFramerateLimit(60);
-
+    window.setVerticalSyncEnabled(true);
     currentState = make_unique<MenuState>(window);
 }
 

@@ -90,10 +90,10 @@ void Map::loadFromFile(const string& filename) {
                     cout << "joueur en (" << x << ", " << currentY << ")" << endl;
                 }
                 else if (tile == 2) {  // Ennemi chasseur
-                    tempChaserEnemyPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                    tempChaserEnemyPositions.push_back(Vector2f(x * tileSize + 80, currentY * tileSize));
                 }
                 else if (tile == 5) {   // Enemy pattern
-                    tempPatternEnemyPosition.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                    tempPatternEnemyPosition.push_back(Vector2f(x * tileSize + 80, currentY * tileSize));
                 }
                 else if (tile == 9) {  // ID 9 = Boss
                     bossPosition = Vector2f(x * tileSize, currentY * tileSize);

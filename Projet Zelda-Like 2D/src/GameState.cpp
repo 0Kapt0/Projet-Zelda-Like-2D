@@ -57,10 +57,10 @@ void GameState::spawnEnemies() {
     boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
 
     for (const auto& pos : map.getChaserEnemyPositions()) {
-        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y, 50.0f, 100, 150.0f, player));
+        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y+16, 50.0f, 100, 150.0f, player));
     }
     for (const auto& pos : map.getPatternEnemyPositions()) {
-        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y, 10.0f, 100.f, player));
+        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y+16, 10.0f, 100.f, player));
     }
 }
 
@@ -161,6 +161,9 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     isFading = true;
     fadeIn = true;
     fadeAlpha = 0.0f;
+    chaserEnemies.clear();
+    patternEnemies.clear();
+
 
     while (fadeAlpha < 255.0f) {
         updateFade(0.016f);
@@ -169,12 +172,12 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     }
 
     if (!lobby) {
-        map = Map(newMapPath, "assets/tilesets/tiles.png", "assets/tilesets/items.png", 32, { 6, 99, 5 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 });
+        map = Map(newMapPath, "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 77, 99, 78 }, { 62, 52, 27, 53, 69, 70, 67, 65, 66, 68, 64 });
     }
     else {
         map = Map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 });
     }
-
+    spawnEnemies();
     map.generateTiles();
     map.generateItems();
 
@@ -186,9 +189,8 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
 
     player.setPosition(newStartPosition);
 
-    chaserEnemies.clear();
-    patternEnemies.clear();
-    spawnEnemies();
+
+ 
     npcs.clear();
     spawnNPCs();
 
@@ -239,9 +241,11 @@ void GameState::updateFade(float deltaTime) {
 
 // --- Dessine l'état du jeu ---
 void GameState::draw() {
+
     window.setView(player.getCameraView());
 
     map.draw(window);
+
 
     player.draw(window);
 
