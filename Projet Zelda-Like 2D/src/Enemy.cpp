@@ -16,12 +16,12 @@ const RectangleShape& Enemy::getShape() const {
 
 void Enemy::initializeHealthBar() {
     healthBar.setSize(Vector2f(40.0f, 5.0f));
-    healthBar.setFillColor(Color::Red);
+    healthBar.setFillColor(Color(100, 0, 0, 255));
     healthBar.setOrigin(healthBar.getSize().x / 2, healthBar.getSize().y / 2);
 
-    healthBarOutline.setSize(Vector2f(42.0f, 7.0f));
+    healthBarOutline.setSize(Vector2f(40.0f, 5.0f));
     healthBarOutline.setFillColor(Color::Transparent);
-    healthBarOutline.setOutlineThickness(1);
+    healthBarOutline.setOutlineThickness(0.5f);
     healthBarOutline.setOutlineColor(Color::Black);
     healthBarOutline.setOrigin(healthBarOutline.getSize().x / 2, healthBarOutline.getSize().y / 2);
 }
@@ -31,8 +31,8 @@ void Enemy::updateHealthBar() {
     healthBar.setSize(Vector2f(40.0f * healthPercentage, 5.0f));
 
     Vector2f enemyPosition = shape.getPosition();
-    healthBar.setPosition(enemyPosition.x, enemyPosition.y - 40);
-    healthBarOutline.setPosition(enemyPosition.x, enemyPosition.y - 40);
+    healthBar.setPosition(enemyPosition.x, enemyPosition.y - 5);
+    healthBarOutline.setPosition(enemyPosition.x, enemyPosition.y - 5);
 }
 
 

@@ -23,7 +23,6 @@ ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _health, float _d
     setTexture(texture, 48, 65, 8, 0.1f);
 
     setPosition(Vector2f(x, y));
-    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 }
 
 //Vérifie si l'ennemi est touché par l'attaque du joueur
