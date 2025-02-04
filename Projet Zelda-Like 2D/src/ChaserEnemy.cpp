@@ -32,7 +32,7 @@ void ChaserEnemy::checkPlayerAttack() {
 
     if (shape.getGlobalBounds().intersects(player.getAttackHitbox()) && player.playerAttacking()) {
         reduceHealth(20);
-        std::cout << "L'ennemi a été touché par l'attaque du joueur !" << std::endl;
+        std::cout << "L'ennemi a ete touche par l'attaque du joueur !" << std::endl;
         damageCooldown.restart();
     }
 
@@ -69,9 +69,12 @@ void ChaserEnemy::handleDeath() {
 
 void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
     if (isDying) {
+        updateHealthBar();
         handleDeath();
         return;
     }
+
+    updateHealthBar();
 
     checkPlayerAttack();
 
@@ -136,4 +139,6 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
 void ChaserEnemy::draw(RenderWindow& window) {
     if (isDead) return;
     window.draw(shape);
+    window.draw(healthBarOutline);
+    window.draw(healthBar);
 }

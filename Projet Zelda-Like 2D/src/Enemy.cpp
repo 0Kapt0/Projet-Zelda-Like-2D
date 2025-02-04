@@ -1,10 +1,9 @@
-#include "../include/Enemy.h"
+﻿#include "../include/Enemy.h"
 
 Enemy::Enemy(float x, float y, float _speed, float _health)
-    : position(x, y), speed(_speed), health(_health) {
+    : position(x, y), speed(_speed), health(_health), maxHealth(_health) {
     shape.setPosition(position);
     initializeHealthBar();
-    updateHealthBar();
 }
 
 void Enemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
@@ -43,8 +42,6 @@ void Enemy::reduceHealth(float damage) {
     health -= damage;
     if (health < 0) health = 0;
 
-    updateHealthBar();
-
     std::cout << "L'ennemi a subi " << damage << " points de degats ! Vie restante : " << health << std::endl;
 
     if (health <= 0) {
@@ -60,11 +57,7 @@ void Enemy::setPosition(const Vector2f& newPosition) {
 
 void Enemy::draw(RenderWindow& window) {
     window.draw(shape);
-
-    if (health > 0) {
-        window.draw(healthBarOutline);
-        window.draw(healthBar);
-    }
+    window.draw(healthBarOutline);
+    window.draw(healthBar);
 }
-
 
