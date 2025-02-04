@@ -23,7 +23,6 @@ ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _health, float _d
     setTexture(texture, 48, 65, 8, 0.1f);
 
     setPosition(Vector2f(x, y));
-    shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 }
 
 //Vérifie si l'ennemi est touché par l'attaque du joueur
@@ -105,7 +104,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
     }
 
     //Gestion de l'attaque
-    if (isAttacking) {
+    if (isAttacking && !isDying) {
         animate(deltaTime);
 
         if (currentFrame == 4 && !player.getIsDashing() && shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
