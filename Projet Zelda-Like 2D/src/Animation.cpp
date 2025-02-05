@@ -15,9 +15,9 @@ Animation::Animation(int scene) : scene(scene), dialogue(1198, 200) {
     dialogue.setPosition(1, 699);
     dialogue.setDialogueCharacterSize(200);
     dialogue.setDialogue({
-        "Il y a longtemps, un monde paisible et prospère fut dévasté par une force inconcevable : le Void." 
-        "Ce mal sombre et insidieux a corrompu chaque recoin de la terre, plongeant les royaumes dans une ère de ténèbres." 
-        "Les paysages autrefois florissants sont désormais des ruines, et l'espoir s'effrite à chaque souffle du vent."
+        "Il y a longtemps, un monde paisible et prospère fut dévasté par une force inconcevable : le Void. " 
+        "Ce mal sombre et insidieux a corrompu chaque recoin de la terre, plongeant les royaumes dans une ère de ténèbres. " 
+        "Les paysages autrefois florissants sont désormais des ruines, et l'espoir s'effrite à chaque souffle du vent. "
         });
 
     if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
