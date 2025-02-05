@@ -5,12 +5,16 @@ using namespace sf;
 using namespace std;
 
 Game::Game()
-    : window(VideoMode(1200, 900), "Zeldouille", Style::None),
+    : window(VideoMode(1200, 900), "Zeldouille"),
     player(),
     pauseMenu(window) {
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     currentState = make_unique<MenuState>(window);
+}
+
+Game::~Game() {
+    cout << "Le jeu est détruit\n";
 }
 
 void Game::run() {

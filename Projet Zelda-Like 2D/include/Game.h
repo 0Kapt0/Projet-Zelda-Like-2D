@@ -28,6 +28,7 @@ private:
 
 public:
     Game();
+    ~Game();
     void run();
     void changeState(unique_ptr<State> newState);
 };
