@@ -20,9 +20,6 @@ void Game::run() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (event.key.code == Keyboard::R) {
-                window.close();
-            }
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
                 isPaused = !isPaused;
             }

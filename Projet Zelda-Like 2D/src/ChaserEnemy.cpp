@@ -10,13 +10,13 @@ ChaserEnemy::ChaserEnemy(float x, float y, float _speed, float _health, float _d
     attackCooldownTime = 1.0f;
 
     if (!texture.loadFromFile("assets/enemy/necro/necro_anim.png")) {
-        std::cerr << "Erreur de chargement de la texture du ChaserEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture du ChaserEnemy !" << endl;
     }
     if (!attack.loadFromFile("assets/enemy/necro/necro_attack.png")) {
-        std::cerr << "Erreur de chargement de la texture d'attaque du ChaserEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture d'attaque du ChaserEnemy !" << endl;
     }
     if (!death.loadFromFile("assets/enemy/necro/necro_death.png")) {
-        std::cerr << "Erreur de chargement de la texture de mort du ChaserEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture de mort du ChaserEnemy !" << endl;
     }
 
     shape.setTexture(&texture);
@@ -31,7 +31,7 @@ void ChaserEnemy::checkPlayerAttack() {
 
     if (shape.getGlobalBounds().intersects(player.getAttackHitbox()) && player.playerAttacking()) {
         reduceHealth(20);
-        std::cout << "L'ennemi a ete touche par l'attaque du joueur !" << std::endl;
+        cout << "L'ennemi a ete touche par l'attaque du joueur !" << endl;
         damageCooldown.restart();
     }
 
@@ -76,7 +76,7 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
     checkPlayerAttack();
 
     Vector2f direction = playerPosition - getPosition();
-    float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    float distance = sqrt(direction.x * direction.x + direction.y * direction.y);
 
     if (distance > 0.0f) {
         direction /= distance;

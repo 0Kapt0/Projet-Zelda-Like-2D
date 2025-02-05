@@ -33,7 +33,7 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     bossName = "Agis The World Ender";
 
     if (!bossFont.loadFromFile("assets/fonts/American_Captain.ttf")) {
-        std::cerr << "Erreur : Impossible de charger la police du Boss !" << std::endl;
+        cerr << "Erreur : Impossible de charger la police du Boss !" << endl;
     }
 
     bossNameText.setFont(bossFont);
@@ -185,7 +185,7 @@ void BossEnemy::handleAttackingPhase(float deltaTime) {
     executePattern(deltaTime);
 
     if (currentFrame >= totalFrames - 1) {
-        std::cout << "Animation d'attaque terminée, passage en IDLE." << std::endl;
+        cout << "Animation d'attaque terminée, passage en IDLE." << endl;
         currentFrame = 0;
         currentPhase = BossPhase::IDLE;
         setTexture(idleTexture, 320, 320, 15, 0.1f);
@@ -200,12 +200,12 @@ void BossEnemy::reduceHealth(float damage) {
     health -= damage;
     if (health < 0) health = 0;
 
-    cout << "Boss prend " << damage << " dégâts. Vie restante : " << health << std::endl;
+    cout << "Boss prend " << damage << " dégâts. Vie restante : " << health << endl;
 
     updateBossHealthBar();
 
     if (health <= 0) {
-        cout << "🔥 Boss vaincu ! Lancement de l'animation de mort..." << std::endl;
+        cout << "Boss vaincu ! Lancement de l'animation de mort..." << endl;
         startDeathAnimation();
     }
 }
@@ -219,16 +219,12 @@ void BossEnemy::handleDeathPhase() {
             phaseClock.restart();
         }
         else {
-            std::cout << "💀 Le Boss est définitivement mort et disparaît." << std::endl;
+            cout << "Le Boss est définitivement mort et disparaît." << endl;
             bossHealthBarVisible = false;
             isDead = true;
         }
     }
 }
-
-
-
-
 
 
 /* ====================
@@ -307,12 +303,6 @@ void BossEnemy::startDeathAnimation() {
     bossMusic.stop();
 }
 
-
-
-
-
-
-
 /* ====================
     GESTION DES ATTAQUES
    ==================== */
@@ -356,7 +346,7 @@ void BossEnemy::executePattern(float deltaTime) {
 }
 
 void BossEnemy::draw(RenderWindow& window) {
-    if (isDead) return; // ✅ Ne dessine plus le boss après sa disparition
+    if (isDead) return; //Ne dessine plus le boss après sa disparition
 
     window.draw(shape);
     dialogue.draw(window);

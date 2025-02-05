@@ -11,23 +11,23 @@ using namespace sf;
 using namespace std;
 
 enum class BossPattern {
-    SPAWN,     // Animation d'apparition
-    IDLE,      // Le boss ne fait rien
-    FIREBALLS, // Tire des projectiles
-    LASER,     // Tire un laser
-    SUMMON,    // Invoque des ennemis
-    METEOR,    // Fait tomber des météores
-    CHARGE,    // Charge vers le joueur
-    DEAD       // Animation de mort
+    SPAWN,
+    IDLE,
+    FIREBALLS,
+    LASER,
+    SUMMON,
+    METEOR,
+    CHARGE,
+    DEAD
 };
 
 enum class BossPhase {
-    INTRO_DIALOGUE,  // Le boss parle avant de spawn
-    SPAWN,           // Animation d’apparition
-    ATTACK_INTRO,    // Première attaque spéciale
-    IDLE,            // Attente entre les attaques
-    ATTACKING,       // Attaque en cours
-    DEAD             // Animation de mort
+    INTRO_DIALOGUE,
+    SPAWN,
+    ATTACK_INTRO,
+    IDLE,
+    ATTACKING,
+    DEAD
 };
 
 class BossEnemy : public Enemy {
@@ -37,7 +37,7 @@ public:
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
 
-    // Gestion de l'apparition et de la mort
+    //Gestion de l'apparition et de la mort
     void startDeathAnimation();
     void startSpawnAnimation();
     void reduceHealth(float damage);
@@ -60,7 +60,7 @@ private:
     bool isSpawning;
     bool isDying;
 
-    // Barre de vie du boss
+    //Barre de vie du boss
     RectangleShape bossHealthBar;
     RectangleShape bossHealthBarOutline;
     float maxHealth;
@@ -70,7 +70,7 @@ private:
     string bossName;
     bool isDead = false;
 
-    // Initialisation de la barre de vie
+    //Initialisation de la barre de vie
     void initializeBossHealthBar();
     void updateBossHealthBar();
     void updateBossHealthBarPosition(const View& cameraView);
@@ -85,14 +85,14 @@ private:
 
     Music bossMusic;
 
-    // Textures des différentes animations
+    //Textures des différentes animations
     Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
     Texture spawnTexture, deathTexture;
 
-    // Chargement des textures
+    //Chargement des textures
     void loadTextures();
 
-    // Gestion des différentes phases du boss
+    //Gestion des différentes phases du boss
     void checkPlayerEntry();
     void handleIntroDialogue();
     void handleSpawnAnimation();
@@ -100,9 +100,9 @@ private:
     void handleAttackingPhase(float deltaTime);
     void handleDeathPhase();
 
-    // Gestion des attaques et patterns
+    //Gestion des attaques et patterns
     void changePattern();
     void executePattern(float deltaTime);
 };
 
-#endif // BOSS_ENEMY_H
+#endif
