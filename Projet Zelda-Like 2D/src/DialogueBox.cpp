@@ -166,6 +166,10 @@ int DialogueBox::getDialogueSize() const {
     return dialogues.size();
 }
 
+void DialogueBox::setDialogueCharacterSize(int size) {
+    text.setCharacterSize(size);
+}
+
 std::string DialogueBox::getCurrentText() const {
     if (currentDialogue < dialogues.size()) {
         return dialogues[currentDialogue]; 

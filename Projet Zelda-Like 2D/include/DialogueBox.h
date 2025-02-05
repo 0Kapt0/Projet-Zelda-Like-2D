@@ -40,6 +40,7 @@ public:
     void setTextSound(const string& soundFile);
     void setDialogue(const vector<string>& newDialogues);
     void setPosition(float x, float y);
+    void setDialogueCharacterSize(int size);
 
     //Gestion du texte
     void wrapText();
