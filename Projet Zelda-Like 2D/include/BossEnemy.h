@@ -144,7 +144,7 @@ private:
     void launchMeteorAttack();
     void launchSummonAttack();
     void launchChargeAttack();
-    void checkPlayerCollision();
+    /*void checkPlayerCollision();*/
 };
 
 #endif

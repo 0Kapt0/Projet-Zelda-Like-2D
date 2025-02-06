@@ -164,6 +164,7 @@ sfml-system.lib
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\ThreadManager.cpp" />
+    <ClCompile Include="src\VictoryScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AlliedEntity.h" />
@@ -189,6 +190,7 @@ sfml-system.lib
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\State.h" />
     <ClInclude Include="include\ThreadManager.h" />
+    <ClInclude Include="include\VictoryScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
