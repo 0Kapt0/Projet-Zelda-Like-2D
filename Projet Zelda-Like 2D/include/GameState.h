@@ -1,6 +1,11 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <vector>
+#include <stdexcept>
 #include "State.h"
 #include "Player.h"
 #include "Merchant.h"
@@ -11,9 +16,6 @@
 #include "Map.h"
 #include "DialogueBox.h"
 #include "GameHUD.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <vector>
 #include "GameOverMenu.h"
 
 using namespace sf;
@@ -73,6 +75,7 @@ public:
     GameState(RenderWindow& window, Player& player, int gameState);
     ~GameState();
 
+    void loadFromFile(Texture texture, std::string path);
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
