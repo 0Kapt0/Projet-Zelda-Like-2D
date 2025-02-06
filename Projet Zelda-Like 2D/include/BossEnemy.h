@@ -15,7 +15,6 @@ using namespace std;
 enum class BossPattern {
     SPAWN,
     IDLE,
-    FIREBALLS,
     LASER,
     SUMMON,
     METEOR,
@@ -105,10 +104,10 @@ private:
     Music bossMusic;
 
     //Textures des différentes animations
-    Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
+    Texture idleTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
     Texture spawnTexture, deathTexture;
     Texture meteorProjectileTexture;
-
+    Texture chargeProjectileTexture;
 
     //Chargement des textures
     void loadTextures();
@@ -120,6 +119,22 @@ private:
     void handleIdlePhase();
     void handleAttackingPhase(float deltaTime);
     void handleDeathPhase();
+    void checkPlayerAttack();
+
+    Clock damageCooldown;
+    float damageCooldownTime = 0.5f;
+
+    void pushPlayerBack();
+    void applySmoothPushback(float deltaTime);
+    bool isPushingBack = false;
+    Vector2f pushbackDirection;
+    float pushbackStrength;
+    Clock pushbackClock;
+
+    RectangleShape hitbox;
+    Vector2f hitboxOffset;
+
+    void updateHitbox();
 
     //Gestion des attaques et patterns
     void changePattern();
@@ -128,6 +143,8 @@ private:
     void checkProjectileCollision();
     void launchMeteorAttack();
     void launchSummonAttack();
+    void launchChargeAttack();
+    void checkPlayerCollision();
 };
 
 #endif

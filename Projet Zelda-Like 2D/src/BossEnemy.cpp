@@ -41,6 +41,9 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     if (!meteorProjectileTexture.loadFromFile("assets/enemy/boss/meteorProjectile.png")) {
         cerr << "Erreur chargement TEXTURE PROJECTILE METEOR !" << endl;
     }
+    if (!chargeProjectileTexture.loadFromFile("assets/enemy/boss/charge.png")) {
+        cerr << "Erreur chargement TEXTURE PROJECTILE CHARGE !" << endl;
+    }
     bossNameText.setFont(bossFont);
     bossNameText.setCharacterSize(30);
     bossNameText.setScale(.3f, .3f);
@@ -65,8 +68,6 @@ void BossEnemy::loadTextures() {
         cerr << "Erreur chargement DEATH !" << endl;
     if (!idleTexture.loadFromFile("assets/enemy/boss/idle.png"))
         cerr << "Erreur chargement IDLE !" << endl;
-    if (!fireballTexture.loadFromFile("assets/enemy/boss/attack1.png"))
-        cerr << "Erreur chargement FIREBALL !" << endl;
     if (!laserTexture.loadFromFile("assets/enemy/boss/attack2.png"))
         cerr << "Erreur chargement LASER !" << endl;
     if (!summonTexture.loadFromFile("assets/enemy/boss/attack3.png"))
@@ -79,6 +80,13 @@ void BossEnemy::loadTextures() {
     if (!bossMusic.openFromFile("assets/enemy/boss/bossTheme.ogg")) {
         cerr << "Erreur chargement musique du boss !" << endl;
     }
+
+    //hitbox
+    hitbox.setSize(Vector2f(40.f, 142.5f));
+    hitbox.setFillColor(Color(255, 0, 0, 100));
+    hitbox.setOutlineColor(Color::Transparent);
+    hitbox.setOutlineThickness(0.f);
+    hitboxOffset = Vector2f(-20.f, 150.f);
 }
 
 /* ====================
@@ -112,6 +120,10 @@ void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector
     }
 
     checkProjectileCollision();
+    checkPlayerAttack();
+    checkPlayerCollision();
+    applySmoothPushback(deltaTime);
+    updateHitbox();
 
     if (Keyboard::isKeyPressed(Keyboard::N)) reduceHealth(10);
 
@@ -252,6 +264,64 @@ void BossEnemy::handleDeathPhase() {
     }
 }
 
+void BossEnemy::applySmoothPushback(float deltaTime) {
+    if (!isPushingBack) return;
+
+    float elapsed = pushbackClock.getElapsedTime().asSeconds();
+    float pushDuration = 0.5f;
+    float factor = 1.0f - (elapsed / pushDuration);
+
+    if (factor <= 0) {
+        isPushingBack = false;
+        return;
+    }
+
+    Vector2f pushStep = pushbackDirection * (pushbackStrength * factor * deltaTime);
+    player.setPosition(player.getPosition() + pushStep);
+}
+
+
+void BossEnemy::pushPlayerBack() {
+    Vector2f bossPos = getPosition();
+    Vector2f playerPos = player.getPosition();
+    Vector2f offSet = { 0, 200 };
+    bossPos = bossPos + offSet;
+    pushbackDirection = playerPos - bossPos ;
+
+    float length = sqrt(pushbackDirection.x * pushbackDirection.x + pushbackDirection.y * pushbackDirection.y);
+    if (length != 0) {
+        pushbackDirection /= length;
+    }
+
+    pushbackStrength = 300.0f;
+    isPushingBack = true;
+    pushbackClock.restart();
+}
+
+void BossEnemy::updateHitbox() {
+    hitbox.setPosition(getPosition() + hitboxOffset);
+}
+
+void BossEnemy::checkPlayerAttack() {
+    if (damageCooldown.getElapsedTime().asSeconds() < damageCooldownTime) return;
+
+    if (hitbox.getGlobalBounds().intersects(player.getAttackHitbox()) && player.playerAttacking()) {
+        reduceHealth(20);
+        pushPlayerBack();
+        cout << "Le Boss a ete touche par l'attaque du joueur !" << endl;
+        damageCooldown.restart();
+    }
+}
+
+void BossEnemy::checkPlayerCollision() {
+    if (hitbox.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+        cout << "🚨 Le joueur est entré en collision avec le Boss !" << endl;
+
+        pushPlayerBack();
+        player.reduceHealth(10);
+
+    }
+}
 
 /* ====================
     ANIMATIONS
@@ -335,15 +405,14 @@ void BossEnemy::startDeathAnimation() {
 void BossEnemy::changePattern() {
     if (isAttacking) return;
 
-    int randPattern = /*rand() % 5*/2;
+    int randPattern = rand() % 4;
     currentFrame = 0;
 
     switch (randPattern) {
-    case 0: currentPattern = BossPattern::FIREBALLS; setTexture(fireballTexture, 320, 320, 17, 0.1f); attackDuration = 1.7f; break;
-    case 1: currentPattern = BossPattern::LASER; setTexture(laserTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
-    case 2: currentPattern = BossPattern::SUMMON; setTexture(summonTexture, 320, 320, 70, 0.1f); attackDuration = 7.f; break;
-    case 3: currentPattern = BossPattern::METEOR; setTexture(meteorTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
-    case 4: currentPattern = BossPattern::CHARGE; setTexture(chargeTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
+    case 0: currentPattern = BossPattern::LASER; setTexture(laserTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
+    case 1: currentPattern = BossPattern::SUMMON; setTexture(summonTexture, 320, 320, 70, 0.1f); attackDuration = 7.f; break;
+    case 2: currentPattern = BossPattern::METEOR; setTexture(meteorTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
+    case 3: currentPattern = BossPattern::CHARGE; setTexture(chargeTexture, 320, 320, 42, 0.1f); attackDuration = 4.2f; break;
     }
 
     isAttacking = true;
@@ -355,7 +424,6 @@ void BossEnemy::executePattern(float deltaTime) {
     if (!isAttacking) return;
 
     switch (currentPattern) {
-    case BossPattern::FIREBALLS: cout << "Le Boss tire des boules de feu !" << endl; break;
     case BossPattern::LASER:
         currentPattern = BossPattern::LASER;
         launchLaserAttack();
@@ -366,7 +434,8 @@ void BossEnemy::executePattern(float deltaTime) {
     case BossPattern::METEOR:
         launchMeteorAttack();
         break;
-    case BossPattern::CHARGE: cout << "Le Boss charge vers le joueur !" << endl; break;
+    case BossPattern::CHARGE:
+        launchChargeAttack();
     }
 
     if (attackClock.getElapsedTime().asSeconds() > attackDuration) {
@@ -406,7 +475,7 @@ void BossEnemy::launchLaserAttack() {
 void BossEnemy::checkProjectileCollision() {
     for (auto it = projectiles.begin(); it != projectiles.end();) {
         if (it->shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-            cout << "Le joueur a été touché par un projectile !" << endl;
+            cout << "Le joueur a ete touché par un projectile !" << endl;
             player.reduceHealth(15);
             it = projectiles.erase(it);
         }
@@ -447,23 +516,21 @@ void BossEnemy::launchMeteorAttack() {
 }
 
 void BossEnemy::launchSummonAttack() {
-    static Clock summonWaveClock; // Timer pour espacer les vagues
+    static Clock summonWaveClock;
     static int currentWave = 0;
-    int numEnemiesPerWave = 3;  // ✅ Nombre d'ennemis par vague
-    int totalWaves = 3;         // ✅ Nombre de vagues d'invocation
+    int numEnemiesPerWave = 3;
+    int totalWaves = 3;
 
-    float spawnRadius = 100.f; // ✅ Rayon autour du boss où les ennemis vont apparaître
+    float spawnRadius = 100.f;
 
     if (summonWaveClock.getElapsedTime().asSeconds() > 1.0f && currentWave < totalWaves) {
         for (int i = 0; i < numEnemiesPerWave; ++i) {
-            // ✅ Choisir un angle aléatoire autour du boss
             float angle = (rand() % 360) * (3.14159265f / 180.f);
             float offsetX = cos(angle) * spawnRadius;
             float offsetY = sin(angle) * spawnRadius;
 
             Vector2f spawnPosition = getPosition() + Vector2f(offsetX, offsetY);
 
-            // ✅ Aléatoirement un PatternEnemy ou un ChaserEnemy
             if (rand() % 2 == 0) {
                 patternEnemies.push_back(make_unique<PatternEnemy>(
                     spawnPosition.x, spawnPosition.y + 200, 10.0f, 100.f, 0.f, player));
@@ -479,6 +546,34 @@ void BossEnemy::launchSummonAttack() {
         summonWaveClock.restart();
     }
 }
+
+void BossEnemy::launchChargeAttack() {
+    int numProjectiles = 1200;
+    float angleStep = 0.3f;
+    float speed = 300.f;
+    Vector2f spawnOffset(0, 290);
+
+
+    if (currentFrame == 38) {
+        for (int i = 0; i < numProjectiles; ++i) {
+            float angle = i * angleStep * (3.14159265f / 180.f);
+            Vector2f direction(cos(angle), sin(angle));
+
+            Vector2f projectilePosition = getPosition() + spawnOffset;
+
+            RectangleShape projectile(Vector2f(8, 8));
+            projectile.setTexture(&chargeProjectileTexture);
+            projectile.setPosition(projectilePosition);
+
+            float rotationAngle = atan2(direction.y, direction.x) * (180.f / 3.14159265f);
+            projectile.setRotation(rotationAngle);
+
+            projectiles.emplace_back(projectile, direction, speed);
+        }
+        cout << "CHARGE : 1200 projectiles lancés !" << endl;
+    }
+}
+
 
 void BossEnemy::draw(RenderWindow& window) {
     if (isDead) return;
@@ -498,6 +593,7 @@ void BossEnemy::draw(RenderWindow& window) {
         window.draw(bossHealthBar);
         window.draw(bossNameText);
     }
+    window.draw(hitbox);
 }
 
 
