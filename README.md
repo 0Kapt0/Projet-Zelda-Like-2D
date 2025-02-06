@@ -60,7 +60,7 @@ Joueur :
 
 ![Sprite du joueur](Projet%20Zelda-Like%202D/assets/player/player_for_md.png)
 
-Marchand :
+NPC :
 
 ![Sprite du marchand](Projet%20Zelda-Like%202D/assets/NPC/merchant.png)
 

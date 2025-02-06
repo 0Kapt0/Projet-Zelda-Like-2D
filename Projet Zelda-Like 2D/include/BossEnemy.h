@@ -135,6 +135,7 @@ private:
     Vector2f hitboxOffset;
 
     void updateHitbox();
+    float getBossHealth();
 
     //Gestion des attaques et patterns
     void changePattern();
