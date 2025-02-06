@@ -5,8 +5,8 @@ int main() {
     Animation* animation = new Animation(1);
     animation->Start();
     delete animation;
-    Game* game = new Game();
-    game->run();
-    delete game;
+    //Game* game = new Game();
+    //game->run();
+    //delete game;
     return 0;
 }

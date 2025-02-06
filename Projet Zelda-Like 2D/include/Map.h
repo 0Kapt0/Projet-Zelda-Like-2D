@@ -26,6 +26,7 @@ private:
 
     //item speciaux
     vector<Vector2f> potionPositions;
+    vector<Vector2f> chestPositions;
 
     //Entités du jeu
     vector<Vector2f> chaserEnemyPositions;
@@ -59,6 +60,7 @@ public:
     Vector2f getPlayerStartPosition() const { return playerStartPosition; }
     vector<Vector2f> getNpcPositions() const { return npcPositions; }
     vector<Vector2f> getPotionPositions() const { return potionPositions; }
+    vector<Vector2f> getChestPositions() const { return chestPositions; }
     int getTileAt(const Vector2f& position);
     int getItemAt(const Vector2f& position);
     int getWidth() const { return tileMap.size(); }

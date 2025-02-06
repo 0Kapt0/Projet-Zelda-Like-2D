@@ -284,7 +284,7 @@ void BossEnemy::applySmoothPushback(float deltaTime) {
 void BossEnemy::pushPlayerBack() {
     Vector2f bossPos = getPosition();
     Vector2f playerPos = player.getPosition();
-    Vector2f offSet = { 0, 200 };
+    Vector2f offSet = { 0, 100 };
     bossPos = bossPos + offSet;
     pushbackDirection = playerPos - bossPos ;
 

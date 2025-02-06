@@ -6,7 +6,7 @@ using namespace sf;
 using namespace std;
 
 Player::Player()
-    : speed(150.0f), position(400.0f, 400.0f), health(100),
+    : speed(150.0f), position(400.0f, 400.0f), health(50),
     playerDead(false), isDying(false), isDashing(false),
     canDash(true), isMoving(false), healthPotions(0),
     isPotionOnCooldown(false) {
@@ -312,9 +312,9 @@ void Player::collectHealthPotion() {
 
 //Utilisation d'une potion de soin
 void Player::useHealthPotion() {
-    if (healthPotions > 0 && health < 100 && !isPotionOnCooldown) {
+    if (healthPotions > 0 && health < 70 && !isPotionOnCooldown) {
         health += 30;
-        if (health > 100) health = 100;
+        if (health > 70) health = 70;
         healthPotions--;
         isPotionOnCooldown = true;
         potionCooldown.restart();

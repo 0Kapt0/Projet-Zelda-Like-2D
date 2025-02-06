@@ -97,9 +97,9 @@ void GameHUD::update(float deltaTime) {
     potionCountText.setString("x" + std::to_string(player.getHealthPotions()));
 
     // Ajuste la barre de vie
-    float healthPercent = player.getHealth() / 100.0f;
+    float healthPercent = player.getHealth() / 70.0f;
     healthBar.setSize(Vector2f(200 * healthPercent, 20));
-    float healthBlood = 200 - player.getHealth() * 2;
+    float healthBlood = 140 - player.getHealth() * 2;
     playerBlood.setColor(Color(255, 255, 255, healthBlood));
 }
 
