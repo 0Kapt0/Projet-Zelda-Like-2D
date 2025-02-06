@@ -38,7 +38,9 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     if (!laserProjectileTexture.loadFromFile("assets/enemy/boss/projectile.png")) {
         cerr << "Erreur chargement TEXTURE PROJECTILE LASER !" << endl;
     }
-
+    if (!meteorProjectileTexture.loadFromFile("assets/enemy/boss/meteorProjectile.png")) {
+        cerr << "Erreur chargement TEXTURE PROJECTILE METEOR !" << endl;
+    }
     bossNameText.setFont(bossFont);
     bossNameText.setCharacterSize(30);
     bossNameText.setScale(.3f, .3f);
@@ -325,7 +327,7 @@ void BossEnemy::startDeathAnimation() {
 void BossEnemy::changePattern() {
     if (isAttacking) return;
 
-    int randPattern = /*rand() % 5*/1;
+    int randPattern = /*rand() % 5*/3;
     currentFrame = 0;
 
     switch (randPattern) {
@@ -352,8 +354,12 @@ void BossEnemy::executePattern(float deltaTime) {
         attackDuration = 5.0f;
         launchLaserAttack();
         break;
-    case BossPattern::SUMMON: cout << "Le Boss invoque des ennemis !" << endl; break;
-    case BossPattern::METEOR: cout << "Le Boss fait tomber des meteores !" << endl; break;
+    case BossPattern::SUMMON: break;
+    case BossPattern::METEOR:
+        setTexture(meteorTexture, 320, 320, 42, 0.1f);
+        attackDuration = 4.2f;
+        launchMeteorAttack();
+        break;
     case BossPattern::CHARGE: cout << "Le Boss charge vers le joueur !" << endl; break;
     }
 
@@ -403,6 +409,37 @@ void BossEnemy::checkProjectileCollision() {
         }
     }
 }
+
+void BossEnemy::launchMeteorAttack() {
+    int numProjectiles = 6;
+    float angleStep = 360.f / numProjectiles;
+    float speed = 150.f;
+    Vector2f spawnOffset(0, 200);
+    static Clock meteorWaveClock;
+    static int currentWave = 0;
+
+    if (meteorWaveClock.getElapsedTime().asSeconds() > 1.f && currentWave < 3) {
+        for (int i = 0; i < numProjectiles; ++i) {
+            float angle = i * angleStep * (3.14159265f / 180.f);
+            Vector2f direction(cos(angle), sin(angle));
+
+            Vector2f projectilePosition = getPosition() + spawnOffset;
+
+            RectangleShape projectile(Vector2f(12, 12));
+            projectile.setTexture(&meteorProjectileTexture);
+            projectile.setScale(1.5f, 1.5f);
+            projectile.setPosition(projectilePosition);
+
+            float rotationAngle = atan2(direction.y, direction.x) * (180.f / 3.14159265f);
+            projectile.setRotation(rotationAngle);
+
+            projectiles.emplace_back(projectile, direction, speed);
+        }
+        currentWave++;
+        meteorWaveClock.restart();
+    }
+}
+
 
 
 void BossEnemy::draw(RenderWindow& window) {

@@ -103,6 +103,8 @@ private:
     //Textures des différentes animations
     Texture idleTexture, fireballTexture, laserTexture, summonTexture, meteorTexture, chargeTexture;
     Texture spawnTexture, deathTexture;
+    Texture meteorProjectileTexture;
+
 
     //Chargement des textures
     void loadTextures();
@@ -120,6 +122,7 @@ private:
     void executePattern(float deltaTime);
     void launchLaserAttack();
     void checkProjectileCollision();
+    void launchMeteorAttack();
 };
 
 #endif
