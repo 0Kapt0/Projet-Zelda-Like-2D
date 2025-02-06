@@ -593,7 +593,6 @@ void BossEnemy::draw(RenderWindow& window) {
         window.draw(bossHealthBar);
         window.draw(bossNameText);
     }
-    window.draw(hitbox);
 }
 
 

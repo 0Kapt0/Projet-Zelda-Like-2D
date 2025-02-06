@@ -95,7 +95,6 @@ void GameState::update(float deltaTime) {
     hud.update(deltaTime);
     updateFade(deltaTime);
 
-    //Vérifie si le joueur marche sur la tile 63
     int itemID = map.getItemAt(player.getPosition());
 
     if (itemID == -1) {
@@ -129,7 +128,7 @@ void GameState::update(float deltaTime) {
         enemy->update(deltaTime, window, player.getPosition(), map);
     }
 
-    if (boss) {  // Vérifie que le boss existe bien
+    if (boss) {
         boss->update(deltaTime, window, player.getPosition(), map);
     }
 
@@ -214,6 +213,10 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     isLoading = false;
 }
 
+bool GameState::getIsLoading() {
+    return isLoading;
+}
+
 // --- Transition fondu ---
 void GameState::updateFade(float deltaTime) {
     if (!isFading) return;
@@ -239,7 +242,6 @@ void GameState::updateFade(float deltaTime) {
 
 // --- Dessine l'état du jeu ---
 void GameState::draw() {
-
     window.setView(player.getCameraView());
 
     map.draw(window);
