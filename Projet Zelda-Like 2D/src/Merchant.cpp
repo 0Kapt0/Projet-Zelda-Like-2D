@@ -57,12 +57,12 @@ void Merchant::interact() {
         startDialogue({
             "Bonjour aventurier !",
             "Bienvenue je vais t'apprendre a utilise des potion et a te deplacer.",
-            "Tu vois la potion la haut utilise Z Q S D pour te deplacer",
-            "Maintenant appuie sur H pour utiliser ta potion",
-            "Fais attention aventurier ta potion met 10s a se recharger",
+            "Tu vois la potion la haut utilise Z Q S D pour te deplacer.",
+            "Maintenant appuie sur H pour utiliser ta potion.",
+            "Fais attention aventurier ta potion met 10s a se recharger.",
             "Aventurier attends !!",
-            "Utilise espace pour attaquer et shift pour dasher",
-            "Bonne chance aventurier que la lumiere sois avec toi",
+            "Utilise espace pour attaquer et shift pour dasher.",
+            "Bonne chance aventurier que la lumiere sois avec toi.",
             "."
             });
 

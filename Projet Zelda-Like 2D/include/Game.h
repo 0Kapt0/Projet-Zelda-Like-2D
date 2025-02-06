@@ -12,6 +12,8 @@
 #include "PauseMenu.h"
 #include "GameOverMenu.h"
 #include "Animation.h"
+#include "VictoryScreen.h"
+
 
 using namespace sf;
 using namespace std;
