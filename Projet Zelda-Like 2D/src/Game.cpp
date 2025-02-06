@@ -5,7 +5,7 @@ using namespace sf;
 using namespace std;
 
 Game::Game()
-    : window(VideoMode(1200, 900), "Zeldouille"),
+    : window(VideoMode(1200, 900), "Zeldouille", Style::None),
     player(),
     pauseMenu(window),
     gameOverMenu(window){
