@@ -93,7 +93,7 @@ void Map::loadFromFile(const string& filename) {
                     tempChaserEnemyPositions.push_back(Vector2f(x * tileSize + 80, currentY * tileSize));
                 }
                 else if (tile == 5) {   // Enemy pattern
-                    tempPatternEnemyPosition.push_back(Vector2f(x * tileSize + 80, currentY * tileSize));
+                    tempPatternEnemyPosition.push_back(Vector2f(x * tileSize+16 , currentY * tileSize));
                 }
                 else if (tile == 9) {  // ID 9 = Boss
                     bossPosition = Vector2f(x * tileSize, currentY * tileSize);
