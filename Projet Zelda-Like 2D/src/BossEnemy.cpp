@@ -574,6 +574,9 @@ void BossEnemy::launchChargeAttack() {
     }
 }
 
+float BossEnemy::getBossHealth() {
+    return health;
+}
 
 void BossEnemy::draw(RenderWindow& window) {
     if (isDead) return;

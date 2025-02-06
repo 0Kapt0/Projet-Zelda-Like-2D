@@ -13,6 +13,7 @@
 #include "GameOverMenu.h"
 #include "Animation.h"
 #include "VictoryScreen.h"
+#include "BossEnemy.h"
 
 
 using namespace sf;
@@ -22,6 +23,7 @@ class Game {
 private:
     RenderWindow window;
     Player player;
+    unique_ptr<BossEnemy> boss;
     Texture backgroundTexture;
 
     unique_ptr<State> currentState;
@@ -32,12 +34,16 @@ private:
     bool isPaused = false;
     PauseMenu pauseMenu;
     GameOverMenu gameOverMenu;
+    VictoryScreen victoryScreen;
 public:
     Game();
     ~Game();
     void run();
     void changeState(unique_ptr<State> newState);
     Player& getPlayer() { return player; }
+    BossEnemy* getBoss() {
+        return boss.get();
+    }
 };
 
 #endif
