@@ -98,7 +98,6 @@ void Player::handleInput(float deltaTime, Map& map) {
         if (Keyboard::isKeyPressed(Keyboard::D)) mouv.x += 1.0f, shape.setScale(1, 1);
         if (Keyboard::isKeyPressed(Keyboard::Z) || Keyboard::isKeyPressed(Keyboard::W)) mouv.y -= 1.0f;
         if (Keyboard::isKeyPressed(Keyboard::S)) mouv.y += 1.0f;
-        if (Keyboard::isKeyPressed(Keyboard::R)) reduceHealth(10);
         if (Keyboard::isKeyPressed(Keyboard::H)) useHealthPotion();
     }
 
