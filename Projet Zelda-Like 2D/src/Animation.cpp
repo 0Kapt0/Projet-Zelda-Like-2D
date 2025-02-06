@@ -16,7 +16,6 @@ Animation::Animation(int scene) : scene(scene), dialogue(1198, 200) {
     sprite.setPosition(280, 30);
     sprite.setScale(2.8f, 2.8f);
 
-    dialogue.setTextSound("assets/enemy/boss/bossText.wav");
     dialogue.setPosition(1, 699);
     dialogue.setDialogueCharacterSize(200);
     dialogue.setDialogue({

@@ -103,6 +103,14 @@ void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector
         }
     }
 
+    for (auto& enemy : chaserEnemies) {
+        enemy->update(deltaTime, window, player.getPosition(), map);
+    }
+
+    for (auto& enemy : patternEnemies) {
+        enemy->update(deltaTime, window, player.getPosition(), map);
+    }
+
     checkProjectileCollision();
 
     if (Keyboard::isKeyPressed(Keyboard::N)) reduceHealth(10);
@@ -327,7 +335,7 @@ void BossEnemy::startDeathAnimation() {
 void BossEnemy::changePattern() {
     if (isAttacking) return;
 
-    int randPattern = /*rand() % 5*/3;
+    int randPattern = /*rand() % 5*/2;
     currentFrame = 0;
 
     switch (randPattern) {
@@ -350,14 +358,12 @@ void BossEnemy::executePattern(float deltaTime) {
     case BossPattern::FIREBALLS: cout << "Le Boss tire des boules de feu !" << endl; break;
     case BossPattern::LASER:
         currentPattern = BossPattern::LASER;
-        setTexture(laserTexture, 320, 320, 42, 0.1f);
-        attackDuration = 5.0f;
         launchLaserAttack();
         break;
-    case BossPattern::SUMMON: break;
+    case BossPattern::SUMMON:
+        launchSummonAttack();
+        break;
     case BossPattern::METEOR:
-        setTexture(meteorTexture, 320, 320, 42, 0.1f);
-        attackDuration = 4.2f;
         launchMeteorAttack();
         break;
     case BossPattern::CHARGE: cout << "Le Boss charge vers le joueur !" << endl; break;
@@ -440,12 +446,50 @@ void BossEnemy::launchMeteorAttack() {
     }
 }
 
+void BossEnemy::launchSummonAttack() {
+    static Clock summonWaveClock; // Timer pour espacer les vagues
+    static int currentWave = 0;
+    int numEnemiesPerWave = 3;  // ✅ Nombre d'ennemis par vague
+    int totalWaves = 3;         // ✅ Nombre de vagues d'invocation
 
+    float spawnRadius = 100.f; // ✅ Rayon autour du boss où les ennemis vont apparaître
+
+    if (summonWaveClock.getElapsedTime().asSeconds() > 1.0f && currentWave < totalWaves) {
+        for (int i = 0; i < numEnemiesPerWave; ++i) {
+            // ✅ Choisir un angle aléatoire autour du boss
+            float angle = (rand() % 360) * (3.14159265f / 180.f);
+            float offsetX = cos(angle) * spawnRadius;
+            float offsetY = sin(angle) * spawnRadius;
+
+            Vector2f spawnPosition = getPosition() + Vector2f(offsetX, offsetY);
+
+            // ✅ Aléatoirement un PatternEnemy ou un ChaserEnemy
+            if (rand() % 2 == 0) {
+                patternEnemies.push_back(make_unique<PatternEnemy>(
+                    spawnPosition.x, spawnPosition.y + 200, 10.0f, 100.f, 0.f, player));
+            }
+            else {
+                chaserEnemies.push_back(make_unique<ChaserEnemy>(
+                    spawnPosition.x, spawnPosition.y + 200, 50.0f, 100, 150.0f, player));
+            }
+        }
+
+        cout << "Boss invoque " << numEnemiesPerWave << " ennemis (Vague " << currentWave + 1 << ")" << endl;
+        currentWave++;
+        summonWaveClock.restart();
+    }
+}
 
 void BossEnemy::draw(RenderWindow& window) {
     if (isDead) return;
     for (const auto& projectile : projectiles) {
         window.draw(projectile.shape);
+    }
+    for (auto& enemy : chaserEnemies) {
+        enemy->draw(window);
+    }
+    for (auto& enemy : patternEnemies) {
+        enemy->draw(window);
     }
     window.draw(shape);
     dialogue.draw(window);

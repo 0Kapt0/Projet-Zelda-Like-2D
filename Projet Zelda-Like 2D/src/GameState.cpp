@@ -214,8 +214,6 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     isLoading = false;
 }
 
-
-
 // --- Transition fondu ---
 void GameState::updateFade(float deltaTime) {
     if (!isFading) return;

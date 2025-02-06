@@ -5,6 +5,8 @@
 #include "DialogueBox.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "PatternEnemy.h"
+#include "ChaserEnemy.h"
 #include <vector>
 
 using namespace sf;
@@ -56,6 +58,8 @@ public:
     void reduceHealth(float damage);
 
     vector<BossProjectile> projectiles;
+    vector<unique_ptr<ChaserEnemy>> chaserEnemies;
+    vector<unique_ptr<PatternEnemy>> patternEnemies;
     Texture laserProjectileTexture;
 private:
     Player& player;
@@ -123,6 +127,7 @@ private:
     void launchLaserAttack();
     void checkProjectileCollision();
     void launchMeteorAttack();
+    void launchSummonAttack();
 };
 
 #endif
