@@ -22,6 +22,7 @@ private:
     Clock dialogueClock;
     bool waitingForNextDialogue = false;
     Font font;
+    Text skip;
 public:
     Animation(int scene);
     ~Animation();

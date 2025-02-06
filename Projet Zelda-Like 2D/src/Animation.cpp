@@ -1,23 +1,29 @@
 #include "../include/Animation.h"
 
 Animation::Animation(int scene) : scene(scene), dialogue(1198, 200) {
-    window.create(VideoMode(1200, 900), "Zeldouille", sf::Style::None);
+    window.create(VideoMode(1200, 900), "Zeldouille", Style::None);
 
 
     if (!texture.loadFromFile("assets/enemy/boss/boss_for_md.png")) {
         cerr << "Erreur de chargement de la texture du ChaserEnemy !" << endl;
     }
+    skip.setFont(font);
+    skip.setCharacterSize(25);
+    skip.setPosition(1070, 20);
+    skip.setString("F pour skip");
+
     sprite.setTexture(texture);
-    sprite.setPosition(100, 100);
-    //sprite.setScale(1, 1);
+    sprite.setPosition(280, 30);
+    sprite.setScale(2.8f, 2.8f);
 
     dialogue.setTextSound("assets/enemy/boss/bossText.wav");
     dialogue.setPosition(1, 699);
     dialogue.setDialogueCharacterSize(200);
     dialogue.setDialogue({
-        "Il y a longtemps, un monde paisible et prospère fut dévasté par une force inconcevable : le Void. " 
-        "Ce mal sombre et insidieux a corrompu chaque recoin de la terre, plongeant les royaumes dans une ère de ténèbres. " 
-        "Les paysages autrefois florissants sont désormais des ruines, et l'espoir s'effrite à chaque souffle du vent. "
+        "Il y a longtemps, un monde paisible et prospere fut devaste par une force inconcevable 'le Void'. " ,
+        "Ce mal sombre et insidieux a corrompu chaque recoin de la terre, plongeant les royaumes dans une ere de tenebres. " ,
+        "Les paysages autrefois florissants sont desormais des ruines, et l'espoir s'effrite a chaque souffle du vent. ",
+        "sauras-tu sauver ce monde du desespoir ?",
         });
 
     if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
@@ -68,7 +74,7 @@ void Animation::Start() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (event.type == Event::KeyPressed) {
+            if (Keyboard::isKeyPressed(Keyboard::F) || (dialogue.isDialogueFinished())) {
                 window.close();
             }
         }
@@ -102,7 +108,7 @@ void Animation::handlefirstSceneDialogue() {
         waitingForNextDialogue = true;
     }
 
-    if (waitingForNextDialogue && dialogueClock.getElapsedTime().asSeconds() > 5.0f) {
+    if (waitingForNextDialogue && dialogueClock.getElapsedTime().asSeconds() > 1.0f) {
         dialogue.advanceDialogue();
         waitingForNextDialogue = false;
     }
@@ -111,6 +117,7 @@ void Animation::handlefirstSceneDialogue() {
 }
 
 void Animation::draw(int scene) {
+    window.draw(skip);
     switch (scene) {
     case 1:
         window.draw(sprite);
