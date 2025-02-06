@@ -74,6 +74,6 @@ Chaser Enemy :
 
 Boss :
 
-![Sprite du boss](Projet%20Zelda-Like%202D/assets/enemy/boss/boss_for_md.png)
+![Sprite du boss](Projet%20Zelda-Like%202D/ForReadMe/Agis_idle.gif)
 
 Nous avons pris nos sprites sur [itch.io](https://itch.io/).
