@@ -1,28 +1,42 @@
 #include "../include/Animation.h"
 
-Animation::Animation(int scene) : scene(scene), dialogue(1198, 200) {
+Animation::Animation(int scene) : 
+    scene(scene),
+    dialogue(498, 100),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
+    corruptedMap("assets/maps/corruptedLobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
+    view(sf::FloatRect(0, 0, 500, 500)) {
+
     window.create(VideoMode(1200, 900), "Zeldouille", Style::None);
+    window.setView(view);
 
-
-    if (!texture.loadFromFile("assets/enemy/boss/boss_for_md.png")) {
+    if (!bossTexture.loadFromFile("assets/enemy/boss/boss_for_md.png")) {
         cerr << "Erreur de chargement de la texture du ChaserEnemy !" << endl;
     }
     skip.setFont(font);
-    skip.setCharacterSize(25);
+    skip.setCharacterSize(15);
     skip.setPosition(1070, 20);
     skip.setString("F pour skip");
 
-    sprite.setTexture(texture);
-    sprite.setPosition(280, 30);
-    sprite.setScale(2.8f, 2.8f);
+    bossSprite.setTexture(bossTexture);
+    bossSprite.setPosition(280, 30);
+    bossSprite.setScale(2.8f, 2.8f);
 
-    dialogue.setPosition(1, 699);
-    dialogue.setDialogueCharacterSize(200);
+    zoomFactor = 1.0f;
+    originalViewSize = view.getSize();
+
+    //fadeOverlay.setSize(sf::Vector2f(5000, 5000));
+    //fadeOverlay.setPosition(0, 0);
+    //fadeOverlay.setFillColor(sf::Color(0, 0, 0, 0));
+
+    dialoguePosX = 1;
+    dialoguePosY = 399;
+    dialogue.setPosition(dialoguePosX, dialoguePosY);
+    dialogue.setDialogueCharacterSize(100);
     dialogue.setDialogue({
         "Il y a longtemps, un monde paisible et prospere fut devaste par une force inconcevable 'le Void'. " ,
         "Ce mal sombre et insidieux a corrompu chaque recoin de la terre, plongeant les royaumes dans une ere de tenebres. " ,
-        "Les paysages autrefois florissants sont desormais des ruines, et l'espoir s'effrite a chaque souffle du vent. ",
-        "sauras-tu sauver ce monde du desespoir ?",
+        "Mais une prophetie ancienne parlait d'un heros qui, un jour, se dresserait contre lui et sauverait ce monde englouti par les tenebres...  "
         });
 
     if (!font.loadFromFile("assets/fonts/American_Captain.ttf")) {
@@ -41,29 +55,20 @@ void Animation::update(float updateTime) {
     switch (scene) {
     case 1:
         firstScene();
-        handlefirstSceneDialogue();
+        handleSceneDialogue();
         break;
     case 2:
         secondScene();
+        handleSceneDialogue();
         break;
     case 3:
         thirdScene();
+        handleSceneDialogue();
         break;
     default:
         break;
     }
-}
-
-void Animation::updateDialogue(int scene) {
-    if (scene == 1) {
-
-    }
-    else if (scene == 2) {
-
-    }
-    else if (scene == 3) {
-
-    }
+    window.setView(view);
 }
 
 void Animation::Start() {
@@ -80,7 +85,6 @@ void Animation::Start() {
 
         float updateTime = clock.restart().asSeconds();
 
-        updateDialogue(scene);
         update(updateTime);
 
         window.clear();
@@ -90,26 +94,40 @@ void Animation::Start() {
 }
 
 void Animation::firstScene() {
-
+    view.move(0.01f, 0.01f);
+    dialogue.setPosition(dialoguePosX += 0.01f, dialoguePosY += 0.01f);
 }
 
 void Animation::secondScene() {
-
+    view.move(0.01f, 0.01f);
+    dialogue.setPosition(dialoguePosX += 0.01f, dialoguePosY += 0.01f);
+    if (zoomFactor < 1.5f) {
+        zoomFactor *= 1.000025f;
+        view.setSize(originalViewSize * zoomFactor);
+    }
 }
 
 void Animation::thirdScene() {
-
+    view.move(0.01f, 0.01f);
+    dialogue.setPosition(dialoguePosX += 0.01f, dialoguePosY += 0.01f);
 }
 
-void Animation::handlefirstSceneDialogue() {
+void Animation::handleSceneDialogue() {
     if (!dialogue.isCurrentlyTyping() && !waitingForNextDialogue && !dialogue.isDialogueFinished()) {
         dialogueClock.restart();
         waitingForNextDialogue = true;
     }
 
-    if (waitingForNextDialogue && dialogueClock.getElapsedTime().asSeconds() > 1.0f) {
+    if (waitingForNextDialogue && dialogueClock.getElapsedTime().asSeconds() > 3.0f) {
         dialogue.advanceDialogue();
         waitingForNextDialogue = false;
+        scene += 1;
+        view.setCenter(250, 250);
+        dialoguePosX = 1;
+        dialoguePosY = 399;
+        dialogue.setPosition(dialoguePosX, dialoguePosY);
+        view.reset(sf::FloatRect(0, 0, 500, 500));
+
     }
 
     dialogue.update();
@@ -119,14 +137,17 @@ void Animation::draw(int scene) {
     window.draw(skip);
     switch (scene) {
     case 1:
-        window.draw(sprite);
-        dialogue.draw(window);
+        map.draw(window);
         break;
     case 2:
+        corruptedMap.draw(window);
+        window.draw(bossSprite);
         break;
     case 3:
+        corruptedMap.draw(window);
         break;
     default:
         break;
     }
+    dialogue.draw(window);
 }
