@@ -32,6 +32,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     if (!chestClosedTexture.loadFromFile("assets/chests/chest_closed.png")) {
         cerr << "Erreur de chargement de la texture des potions\n";
     }
+
     if (!chestOpenTexture.loadFromFile("assets/chests/chest_open.png")) {
         cerr << "Erreur de chargement de la texture des potions\n";
     }
@@ -68,6 +69,11 @@ GameState::~GameState() {
     ambientSound.stop();
 }
 
+void GameState::loadFromFile(Texture texture, std::string path) {
+    if (!texture.loadFromFile(path)) {
+        throw std::runtime_error("Erreur : Mauvais chemin pour la texture !");
+    }
+}
 // --- Génère les ennemis ---
 void GameState::spawnEnemies() {
     boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
