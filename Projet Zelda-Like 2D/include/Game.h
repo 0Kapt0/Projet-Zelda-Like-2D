@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAME_H
 #define GAME_H
 
@@ -9,7 +10,7 @@
 #include "GameState.h"
 #include "Map.h"
 #include "PauseMenu.h"
-#include "Animation.h"
+#include "GameOverMenu.h"
 
 using namespace sf;
 using namespace std;
@@ -24,14 +25,16 @@ private:
 
     Clock clock;
 
+    bool isGameOver = false;
     bool isPaused = false;
     PauseMenu pauseMenu;
-
+    GameOverMenu gameOverMenu;
 public:
     Game();
     ~Game();
     void run();
     void changeState(unique_ptr<State> newState);
+    Player& getPlayer() { return player; }
 };
 
 #endif

@@ -9,7 +9,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 }),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
     gameState(gameState),
     lobby(true),
     hud(player) {
@@ -119,7 +119,7 @@ void GameState::update(float deltaTime) {
     }
 
     if (itemID == 63) { //TP vers le donjon
-        changeMap("assets/maps/dungeon.txt", false);
+        changeMap("assets/maps/room_2.txt", false);
     }
 
     if (itemID == 60) { //Retour au lobby
@@ -129,11 +129,11 @@ void GameState::update(float deltaTime) {
 
     if (itemID == 61) { //TP vers la map principale
         lobby = false;
-        changeMap("assets/maps/map.txt", false);
+        changeMap("assets/maps/room_1.txt", false);
     }
 
     if (itemID == 51) { //TP vers la map principale (alternatif)
-        changeMap("assets/maps/map.txt", true);
+        changeMap("assets/maps/room_1.txt", true);
     }
 
     for (auto& enemy : chaserEnemies) {
@@ -284,6 +284,7 @@ void GameState::updateFade(float deltaTime) {
 
 // --- Dessine l'état du jeu ---
 void GameState::draw() {
+
     window.setView(player.getCameraView());
 
     map.draw(window);
