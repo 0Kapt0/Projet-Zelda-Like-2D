@@ -121,7 +121,6 @@ void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector
 
     checkProjectileCollision();
     checkPlayerAttack();
-    checkPlayerCollision();
     applySmoothPushback(deltaTime);
     updateHitbox();
 
@@ -284,7 +283,7 @@ void BossEnemy::applySmoothPushback(float deltaTime) {
 void BossEnemy::pushPlayerBack() {
     Vector2f bossPos = getPosition();
     Vector2f playerPos = player.getPosition();
-    Vector2f offSet = { 0, 200 };
+    Vector2f offSet = { 0, 100 };
     bossPos = bossPos + offSet;
     pushbackDirection = playerPos - bossPos ;
 
@@ -310,16 +309,6 @@ void BossEnemy::checkPlayerAttack() {
         pushPlayerBack();
         cout << "Le Boss a ete touche par l'attaque du joueur !" << endl;
         damageCooldown.restart();
-    }
-}
-
-void BossEnemy::checkPlayerCollision() {
-    if (hitbox.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-        cout << "🚨 Le joueur est entré en collision avec le Boss !" << endl;
-
-        pushPlayerBack();
-        player.reduceHealth(10);
-
     }
 }
 
