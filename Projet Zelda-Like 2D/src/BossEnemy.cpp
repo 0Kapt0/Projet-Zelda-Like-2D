@@ -35,6 +35,9 @@ BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
     if (!bossFont.loadFromFile("assets/fonts/American_Captain.ttf")) {
         cerr << "Erreur : Impossible de charger la police du Boss !" << endl;
     }
+    if (!laserProjectileTexture.loadFromFile("assets/enemy/boss/projectile.png")) {
+        cerr << "Erreur chargement TEXTURE PROJECTILE LASER !" << endl;
+    }
 
     bossNameText.setFont(bossFont);
     bossNameText.setCharacterSize(30);
@@ -86,6 +89,19 @@ void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector
         checkPlayerEntry();
         return;
     }
+
+    for (auto it = projectiles.begin(); it != projectiles.end();) {
+        it->update(deltaTime);
+
+        if (!map.isWalkable(it->shape.getPosition(), Vector2f(10, 10), it->shape.getGlobalBounds())) {
+            it = projectiles.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+
+    checkProjectileCollision();
 
     if (Keyboard::isKeyPressed(Keyboard::N)) reduceHealth(10);
 
@@ -309,7 +325,7 @@ void BossEnemy::startDeathAnimation() {
 void BossEnemy::changePattern() {
     if (isAttacking) return;
 
-    int randPattern = rand() % 5;
+    int randPattern = /*rand() % 5*/1;
     currentFrame = 0;
 
     switch (randPattern) {
@@ -330,7 +346,12 @@ void BossEnemy::executePattern(float deltaTime) {
 
     switch (currentPattern) {
     case BossPattern::FIREBALLS: cout << "Le Boss tire des boules de feu !" << endl; break;
-    case BossPattern::LASER:cout << "Le Boss tire un laser !" << endl; break;
+    case BossPattern::LASER:
+        currentPattern = BossPattern::LASER;
+        setTexture(laserTexture, 320, 320, 42, 0.1f);
+        attackDuration = 5.0f;
+        launchLaserAttack();
+        break;
     case BossPattern::SUMMON: cout << "Le Boss invoque des ennemis !" << endl; break;
     case BossPattern::METEOR: cout << "Le Boss fait tomber des meteores !" << endl; break;
     case BossPattern::CHARGE: cout << "Le Boss charge vers le joueur !" << endl; break;
@@ -345,9 +366,50 @@ void BossEnemy::executePattern(float deltaTime) {
     }
 }
 
-void BossEnemy::draw(RenderWindow& window) {
-    if (isDead) return; //Ne dessine plus le boss après sa disparition
+void BossEnemy::launchLaserAttack() {
+    int numProjectiles = 10;
+    float angleStep = 360.f / numProjectiles;
+    float speed = 200.f;
+    Vector2f spawnOffset(0, 200);
 
+    for (int wave = 0; wave < 5; ++wave) {
+        for (int i = 0; i < numProjectiles; ++i) {
+            float angle = i * angleStep * (3.14159265f / 180.f);
+            Vector2f direction(cos(angle), sin(angle));
+
+            Vector2f projectilePosition = getPosition() + spawnOffset;
+            RectangleShape projectile(Vector2f(10, 10));
+
+            projectile.setTexture(&laserProjectileTexture);
+            projectile.setPosition(projectilePosition);
+
+            float rotationAngle = atan2(direction.y, direction.x) * (180.f / 3.14159265f);
+
+            projectile.setRotation(rotationAngle);
+            projectiles.emplace_back(projectile, direction, speed);
+        }
+    }
+}
+
+void BossEnemy::checkProjectileCollision() {
+    for (auto it = projectiles.begin(); it != projectiles.end();) {
+        if (it->shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+            cout << "Le joueur a été touché par un projectile !" << endl;
+            player.reduceHealth(15);
+            it = projectiles.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+}
+
+
+void BossEnemy::draw(RenderWindow& window) {
+    if (isDead) return;
+    for (const auto& projectile : projectiles) {
+        window.draw(projectile.shape);
+    }
     window.draw(shape);
     dialogue.draw(window);
     if (bossHealthBarVisible) {

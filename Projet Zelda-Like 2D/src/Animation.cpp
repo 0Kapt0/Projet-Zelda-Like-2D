@@ -103,7 +103,7 @@ void Animation::thirdScene() {
 }
 
 void Animation::handlefirstSceneDialogue() {
-    if (!dialogue.isCurrentlyTyping() && !waitingForNextDialogue) {
+    if (!dialogue.isCurrentlyTyping() && !waitingForNextDialogue && !dialogue.isDialogueFinished()) {
         dialogueClock.restart();
         waitingForNextDialogue = true;
     }

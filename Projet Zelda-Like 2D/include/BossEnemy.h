@@ -30,6 +30,19 @@ enum class BossPhase {
     DEAD
 };
 
+struct BossProjectile {
+    RectangleShape shape;
+    Vector2f direction;
+    float speed;
+
+    BossProjectile(const RectangleShape& _shape, Vector2f _direction, float _speed)
+        : shape(_shape), direction(_direction), speed(_speed) {}
+
+    void update(float deltaTime) {
+        shape.move(direction * speed * deltaTime);
+    }
+};
+
 class BossEnemy : public Enemy {
 public:
     BossEnemy(float x, float y, float _detectionRange, Player& _player);
@@ -42,6 +55,8 @@ public:
     void startSpawnAnimation();
     void reduceHealth(float damage);
 
+    vector<BossProjectile> projectiles;
+    Texture laserProjectileTexture;
 private:
     Player& player;
     BossPattern currentPattern;
@@ -103,6 +118,8 @@ private:
     //Gestion des attaques et patterns
     void changePattern();
     void executePattern(float deltaTime);
+    void launchLaserAttack();
+    void checkProjectileCollision();
 };
 
 #endif
