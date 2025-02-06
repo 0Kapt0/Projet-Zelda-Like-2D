@@ -9,7 +9,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     : State(window),
     player(player),
     merchant(450, 190),
-    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, {65}, { 72, 73, 80, 81, 88, 89 }),
+    map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
     gameState(gameState),
     lobby(true),
     hud(player) {
@@ -242,6 +242,7 @@ void GameState::updateFade(float deltaTime) {
 
 // --- Dessine l'état du jeu ---
 void GameState::draw() {
+
     window.setView(player.getCameraView());
 
     map.draw(window);

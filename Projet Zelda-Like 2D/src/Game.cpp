@@ -7,7 +7,8 @@ using namespace std;
 Game::Game()
     : window(VideoMode(1200, 900), "Zeldouille"),
     player(),
-    pauseMenu(window) {
+    pauseMenu(window),
+    gameOverMenu(window){
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     currentState = make_unique<MenuState>(window);
@@ -34,6 +35,14 @@ void Game::run() {
             else {
                 currentState->handleInput();
             }
+            if (isGameOver) {
+                gameOverMenu.handleInput();
+            }
+        }
+
+        if (player.getHealth() <= 0 && !isGameOver) {
+            isGameOver = true;
+            gameOverMenu.triggerGameOver();
         }
 
         float updateTime = clock.restart().asSeconds();
@@ -52,13 +61,22 @@ void Game::run() {
 
         currentState->draw();
 
+        if (isGameOver) {
+            gameOverMenu.draw();
+
+        }
         if (isPaused) {
             pauseMenu.draw(window);
         }
 
-        window.display();
+        if (!isGameOver) {
+            window.display();
+        }
+
     }
 }
+
+
 
 
 

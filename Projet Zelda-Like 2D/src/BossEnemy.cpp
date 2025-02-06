@@ -121,7 +121,7 @@ void BossEnemy::update(float deltaTime, const RenderWindow& window, const Vector
 
     checkProjectileCollision();
     checkPlayerAttack();
-    checkPlayerCollision();
+    /*checkPlayerCollision();*/
     applySmoothPushback(deltaTime);
     updateHitbox();
 
@@ -313,15 +313,15 @@ void BossEnemy::checkPlayerAttack() {
     }
 }
 
-void BossEnemy::checkPlayerCollision() {
-    if (hitbox.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-        cout << "🚨 Le joueur est entré en collision avec le Boss !" << endl;
-
-        pushPlayerBack();
-        player.reduceHealth(10);
-
-    }
-}
+//void BossEnemy::checkPlayerCollision() {
+//    if (hitbox.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+//        cout << "🚨 Le joueur est entré en collision avec le Boss !" << endl;
+//
+//        pushPlayerBack();
+//        player.reduceHealth(10);
+//
+//    }
+//}
 
 /* ====================
     ANIMATIONS
