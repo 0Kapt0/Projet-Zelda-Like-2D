@@ -78,7 +78,7 @@ Pour la musique du menu, elle est générée par IA, et pendant la game, on a un
 on n'avait pas vraiment de répartition des rôles, chacun prévenais ce qu'il voulait faire et on s'organisait comme cela donc au final :
 Lucas, c'est occupé de la MAP et des item donc ".txt, tileset" etc (à ajouter)
 Lorenzo a fait le boss, le joueur, le découpeur de tileset, l'encapsulation, l'HUD, les menues, les musiques (sound design), les dialogue box, les NPCs......
-Aurel, c'est occuper les cinématiques, les ennemies, de faire le premier lobby, ainsi que le lore (à ajouter)
+Aurel, c'est occuper les cinématiques, les ennemies, de faire le premier lobby, ainsi que le lore et les collisions (à ajouter)
 ### 6.3. Planning et échéances
 On avait donc 1 semaine pour réaliser le projet et nous pensons que nous avons rendu un projet quasiment fini
 ## 7. Conclusion et Perspectives
