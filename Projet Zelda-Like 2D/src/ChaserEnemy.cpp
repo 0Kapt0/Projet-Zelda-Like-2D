@@ -95,10 +95,13 @@ void ChaserEnemy::update(float deltaTime, const RenderWindow& window, const Vect
     if (distance < detectionRange) {
         Vector2f newPosition = getPosition() + (direction * currentSpeed * deltaTime);
 
-        if (map.isWalkable(newPosition, shape.getSize(), shape.getGlobalBounds())) {
+        position = newPosition;
+        shape.setPosition(position);
+
+        /*if (map.isWalkable(newPosition, shape.getSize(), shape.getGlobalBounds())) {
             position = newPosition;
             shape.setPosition(position);
-        }
+        }*/
     }
 
     //Gestion de l'attaque

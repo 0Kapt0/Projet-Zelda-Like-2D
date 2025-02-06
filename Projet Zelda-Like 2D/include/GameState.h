@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
+#include "GameOverMenu.h"
 
 using namespace sf;
 using namespace std;
@@ -60,6 +61,9 @@ private:
     int gameState;  //1: lobby, 2: salle 1, etc...
     Clock textCD;
 
+    // Gestion du Game Over
+    bool isGameOver = false;
+
     // --- Fonctions internes ---
     void spawnEnemies();
     void spawnNPCs();
@@ -74,6 +78,7 @@ public:
     void draw() override;
 
     bool getIsLoading();
+    bool getisGameOver();
 };
 
 #endif

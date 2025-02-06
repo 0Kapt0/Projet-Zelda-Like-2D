@@ -151,6 +151,7 @@ sfml-system.lib
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameHUD.cpp" />
+    <ClCompile Include="src\GameOverMenu.cpp" />
     <ClCompile Include="src\GameState.cpp" />
     <ClCompile Include="src\HUD.cpp" />
     <ClCompile Include="src\Map.cpp" />
@@ -174,6 +175,7 @@ sfml-system.lib
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameHUD.h" />
+    <ClInclude Include="include\GameOverMenu.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\HUD.h" />
     <ClInclude Include="include\main.h" />

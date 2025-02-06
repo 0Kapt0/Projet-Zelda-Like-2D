@@ -13,9 +13,12 @@ using namespace std;
 
 class Animation {
 private:
+    RectangleShape Joseph;
     RenderWindow window;    
     Texture bossTexture;
+    Texture playerTexture;
     Sprite bossSprite;
+    Sprite playerSprite;
     float speed;
     int scene;
     Clock clock;
