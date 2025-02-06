@@ -119,7 +119,7 @@ void GameState::update(float deltaTime) {
     }
 
     if (itemID == 63) { //TP vers le donjon
-        changeMap("assets/maps/dungeon.txt", false);
+        changeMap("assets/maps/room_2.txt", false);
     }
 
     if (itemID == 60) { //Retour au lobby
@@ -129,11 +129,11 @@ void GameState::update(float deltaTime) {
 
     if (itemID == 61) { //TP vers la map principale
         lobby = false;
-        changeMap("assets/maps/map.txt", false);
+        changeMap("assets/maps/room_1.txt", false);
     }
 
     if (itemID == 51) { //TP vers la map principale (alternatif)
-        changeMap("assets/maps/map.txt", true);
+        changeMap("assets/maps/room_1.txt", true);
     }
 
     for (auto& enemy : chaserEnemies) {
