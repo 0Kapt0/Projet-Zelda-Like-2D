@@ -70,14 +70,14 @@ GameHUD::GameHUD(Player& player) : player(player) {
     playerIconOutline.setPosition(playerIcon.getPosition().x, playerIcon.getPosition().y);
 
     //Contour de la barre de vie
-    healthBarOutline.setSize(Vector2f(200, 20));
+    healthBarOutline.setSize(Vector2f(300, 20));
     healthBarOutline.setFillColor(Color::Transparent);
     healthBarOutline.setOutlineColor(Color(139, 124, 46, 255));
     healthBarOutline.setOutlineThickness(2);
     healthBarOutline.setPosition(160, 20);
 
     //Barre de vie
-    healthBar.setSize(Vector2f(200, 20));
+    healthBar.setSize(Vector2f(300, 20));
     healthBar.setFillColor(Color(100, 0, 0, 255));
     healthBar.setPosition(160, 20);
 }
@@ -98,7 +98,7 @@ void GameHUD::update(float deltaTime) {
 
     // Ajuste la barre de vie
     float healthPercent = player.getHealth() / 70.0f;
-    healthBar.setSize(Vector2f(200 * healthPercent, 20));
+    healthBar.setSize(Vector2f(300 * healthPercent, 20));
     float healthBlood = 140 - player.getHealth() * 2;
     playerBlood.setColor(Color(255, 255, 255, healthBlood));
 }
