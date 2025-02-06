@@ -14,3 +14,5 @@ the last layer, called "# Entity Layer" use the Following
 4 : map exit
 5 : patrol enemy
 9 : boss
+
+the file "corrupted lobby" is used for the starting cutscene
