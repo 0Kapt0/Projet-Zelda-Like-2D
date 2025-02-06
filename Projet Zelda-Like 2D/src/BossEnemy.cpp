@@ -6,7 +6,7 @@ using namespace sf;
 using namespace std;
 
 BossEnemy::BossEnemy(float x, float y, float _detectionRange, Player& _player)
-    : Enemy(x, y, 0.0f, 200), detectionRange(_detectionRange), player(_player),
+    : Enemy(x, y, 0.0f, 1000), detectionRange(_detectionRange), player(_player),
     isAttacking(false), playerEnteredArena(false), hasDoneIntroAttack(false),
     dialogue(130, 30), isSpawning(false), isDying(false) {
 
@@ -284,7 +284,7 @@ void BossEnemy::applySmoothPushback(float deltaTime) {
 void BossEnemy::pushPlayerBack() {
     Vector2f bossPos = getPosition();
     Vector2f playerPos = player.getPosition();
-    Vector2f offSet = { 0, 100 };
+    Vector2f offSet = { 0, 200 };
     bossPos = bossPos + offSet;
     pushbackDirection = playerPos - bossPos ;
 
@@ -293,7 +293,7 @@ void BossEnemy::pushPlayerBack() {
         pushbackDirection /= length;
     }
 
-    pushbackStrength = 300.0f;
+    pushbackStrength = 150.0f;
     isPushingBack = true;
     pushbackClock.restart();
 }

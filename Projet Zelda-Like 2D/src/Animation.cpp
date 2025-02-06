@@ -152,8 +152,8 @@ void Animation::draw(int scene) {
         break;
     case 2:
         corruptedMap.draw(window);
-        window.draw(bossSprite);
         window.draw(Joseph);
+        window.draw(bossSprite);
         break;
     case 3:
         map.draw(window);
