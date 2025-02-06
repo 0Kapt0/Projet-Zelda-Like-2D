@@ -80,6 +80,10 @@ void Map::loadFromFile(const string& filename) {
                     potionPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
                     cout << "Potion ajoutee à la position (" << x << ", " << currentY << ")" << endl;
                 }
+                if (tile == 64) {
+                    chestPositions.push_back(Vector2f(x * tileSize, currentY * tileSize));
+                    cout << "chest added to (" << x << ", " << currentY << ")" << endl;
+                }
             }
             else if (layer == 2) {  // Entity Layer
                 if (tile == 1) {  // Spawn normal

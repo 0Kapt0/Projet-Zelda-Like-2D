@@ -29,6 +29,13 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
         cerr << "Erreur de chargement de la texture des potions\n";
     }
 
+    if (!chestClosedTexture.loadFromFile("assets/chests/chest_closed.png")) {
+        cerr << "Erreur de chargement de la texture des potions\n";
+    }
+    if (!chestOpenTexture.loadFromFile("assets/chests/chest_open.png")) {
+        cerr << "Erreur de chargement de la texture des potions\n";
+    }
+
     //Génère les potions sur la carte
     for (const auto& pos : map.getPotionPositions()) {
         Sprite potionSprite;
@@ -36,6 +43,15 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
         potionSprite.setPosition(pos);
         potionSprite.setScale(1.f, 1.f);
         potions.push_back(potionSprite);
+    }
+
+    //generate chests
+    for (const auto& pos : map.getChestPositions()) {
+        Sprite chestSprite;
+        chestSprite.setTexture(chestClosedTexture);
+        chestSprite.setPosition(pos);
+        chestSprite.setScale(1.f, 1.f);
+        chest_closed.push_back(chestSprite);
     }
 
     //Fade chargement
@@ -57,10 +73,10 @@ void GameState::spawnEnemies() {
     boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
 
     for (const auto& pos : map.getChaserEnemyPositions()) {
-        chaserEnemies.push_back(make_unique<ChaserEnemy>(pos.x, pos.y+16, 50.0f, 100, 150.0f, player));
+        chaserEnemies.push_back(make_unique<ChaserEnemy>(pos.x-80, pos.y, 50.0f, 100, 150.0f, player));
     }
     for (const auto& pos : map.getPatternEnemyPositions()) {
-        patternEnemies.push_back(make_unique<PatternEnemy>(pos.x, pos.y+16, 10.0f, 100.f, 0.f, player));
+        patternEnemies.push_back(make_unique<PatternEnemy>(pos.x, pos.y+8, 10.0f, 100.f, 0.f, player));
     }
 }
 
@@ -147,6 +163,22 @@ void GameState::update(float deltaTime) {
             ++it;
         }
     }
+    for (auto it = chest_closed.begin(); it != chest_closed.end();) {
+        if (player.getShape().getGlobalBounds().intersects(it->getGlobalBounds()) && player.playerAttacking()) {
+                player.collectHealthPotion();
+                player.collectHealthPotion();
+                Vector2f chestPosition = it->getPosition();
+                it = chest_closed.erase(it);
+                Sprite chestSprite;
+                chestSprite.setTexture(chestOpenTexture);
+                chestSprite.setPosition(chestPosition);
+                chestSprite.setScale(1.f, 1.f);
+                chest_open.push_back(chestSprite);
+        }
+        else {
+            ++it;
+        }
+    }
 
     merchant.update(deltaTime, window, player.getPosition(), map);
     merchant.checkCollisionWithPlayer(player);
@@ -200,6 +232,16 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
         potionSprite.setPosition(pos);
         potionSprite.setScale(1.f, 1.f);
         potions.push_back(potionSprite);
+    }
+
+    chest_closed.clear();
+    chest_open.clear();
+    for (const auto& pos : map.getChestPositions()) {
+        Sprite ChestSprite;
+        ChestSprite.setTexture(chestClosedTexture);
+        ChestSprite.setPosition(pos);
+        ChestSprite.setScale(1.f, 1.f);
+        chest_closed.push_back(ChestSprite);
     }
 
     cout << "Changement de carte termine !" << endl;
@@ -263,6 +305,14 @@ void GameState::draw() {
 
     for (auto& potion : potions) {
         window.draw(potion);
+    }
+
+    for (auto& chest : chest_closed) {
+        window.draw(chest);
+    }
+
+    for (auto& chest : chest_open) {
+        window.draw(chest);
     }
 
     boss->draw(window);

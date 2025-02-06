@@ -34,7 +34,11 @@ private:
     vector<unique_ptr<PatternEnemy>> patternEnemies;
     unique_ptr<BossEnemy> boss;
     vector<Sprite> potions;
+    vector<Sprite> chest_closed;
+    vector<Sprite> chest_open;
     Texture potionTexture;
+    Texture chestOpenTexture;
+    Texture chestClosedTexture;
 
     // --- Transition fondu ---
     RectangleShape fadeOverlay;
