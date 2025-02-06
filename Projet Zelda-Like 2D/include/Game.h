@@ -11,6 +11,7 @@
 #include "Map.h"
 #include "PauseMenu.h"
 #include "GameOverMenu.h"
+#include "Animation.h"
 
 using namespace sf;
 using namespace std;
