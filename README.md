@@ -41,6 +41,29 @@ on est sûr du rogue 32x un design asse anciens qui peut rappeler des vieux jeux
 ### 4.1. Style visuel et inspirations
 ### 4.2. Modélisation et animations
 Pour les animations, on est sûr des spriteSheet découper en code puis animer dans le code
+
+Joueur :
+
+![Sprite du joueur](Projet%20Zelda-Like%202D/assets/player/player_for_md.gif)
+
+NPC :
+
+![Sprite du marchand](Projet%20Zelda-Like%202D/assets/NPC/merchant.png)
+
+Pattern enemy :
+
+![Sprite du pattern enemy](Projet%20Zelda-Like%202D/assets/enemy/slime/slime_for_md.gif)
+
+Chaser Enemy :
+
+![Sprite du chaser enemy](Projet%20Zelda-Like%202D/assets/enemy/necro/necro_for_md.gif)
+
+Boss :
+
+![Sprite du boss](Projet%20Zelda-Like%202D/assets/enemy/boss/boss_for_md.gif)
+
+Nous avons pris nos sprites sur [itch.io](https://itch.io/).
+
 ### 4.3. Effets visuels et shaders
 on a aucun shader mais une cinématique au début du jeu et un zoom sur la mort du joueur
 ## 5. Music et Sound Design
@@ -66,36 +89,3 @@ Nous avons au final obtenu un résultat plus que satisfaisant pour le temps impa
 finir de corriger les bugs, rajouter du knockback lors de l'attaque d'ennemies ainsi que de rajouter des Gold et un marché.
 ### 7.3. Possibilités d'évolution du projet
 
-test
-L'ambassadrice Zeldouille s'est perdue sur le chemin de… Vous incarnez El Linké, qui part à la recherche de Zeldouille. Mais les monstres de la grotte en ont décidé autrement.
-
-## Entrées
-Le jeu se joue au clavier.
-* ZQSD : pour se déplacer dans 8 directions différentes
-	* WASD : se déplacer aussi avec un clavier américain
-* Espace : pour donner un coup d'épée et infliger des dégâts sur les ennemis
-* E : intéragir avec les différents PNG
-* H : utiliser une potion de heal
-
-## Sprites
-Joueur :
-
-![Sprite du joueur](Projet%20Zelda-Like%202D/assets/player/player_for_md.png)
-
-NPC :
-
-![Sprite du marchand](Projet%20Zelda-Like%202D/assets/NPC/merchant.png)
-
-Pattern enemy :
-
-![Sprite du pattern enemy](Projet%20Zelda-Like%202D/assets/enemy/slime/slime_for_md.png)
-
-Chaser Enemy :
-
-![Sprite du chaser enemy](Projet%20Zelda-Like%202D/assets/enemy/necro/necro_for_md.png)
-
-Boss :
-
-![Sprite du boss](Projet%20Zelda-Like%202D/assets/enemy/boss/boss_for_md.png)
-
-Nous avons pris nos sprites sur [itch.io](https://itch.io/).
