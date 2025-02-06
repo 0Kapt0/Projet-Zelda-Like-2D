@@ -8,7 +8,8 @@ Game::Game()
     : window(VideoMode(1200, 900), "Zeldouille", Style::None),
     player(),
     pauseMenu(window),
-    gameOverMenu(window){
+    gameOverMenu(window),
+    victoryScreen(window){
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     currentState = make_unique<MenuState>(window);
@@ -48,6 +49,14 @@ void Game::run() {
             gameOverMenu.triggerGameOver();
         }
 
+        /*if (auto gameState = dynamic_cast<GameState*>(currentState.get())) {
+            if (gameState->getBoss() && gameState->getBoss()->getBossHealth() <= 0) {
+                cout << "Le Boss est mort, passage à l'écran de victoire !" << endl;
+                changeState(make_unique<VictoryScreen>(window));
+            }
+        }*/
+
+
         float updateTime = clock.restart().asSeconds();
 
         if (!isPaused) {
@@ -59,6 +68,7 @@ void Game::run() {
                 }
             }
         }
+
 
         window.clear();
 
