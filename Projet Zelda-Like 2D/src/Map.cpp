@@ -204,7 +204,7 @@ bool Map::isWalkable(Vector2f position, Vector2f playerSize, FloatRect hitboxBou
     }
     //Vérifie la collision avec les items bloquants (mais PAS les `99`)
     for (const auto& item : blockedItemTiles) {
-        FloatRect itemBounds(item.x * tileSize, item.y * tileSize, tileSize, tileSize);
+        FloatRect itemBounds(item.x * tileSize-6, item.y * tileSize, tileSize, tileSize);
         if (hitboxBounds.intersects(itemBounds)) {
             return false;
         }
