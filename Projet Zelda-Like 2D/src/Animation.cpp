@@ -5,14 +5,21 @@ Animation::Animation(int scene) :
     dialogue(498, 100),
     map("assets/maps/lobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
     corruptedMap("assets/maps/corruptedLobby.txt", "assets/tilesets/Tileset_Grass.png", "assets/tilesets/items.png", 32, { 65 }, { 72, 73, 80, 81, 88, 89 }),
-    view(sf::FloatRect(0, 0, 500, 500)) {
+    view(sf::FloatRect(0, 0, 500, 500)),
+    Joseph(Vector2f(5000, 5000)) {
 
     window.create(VideoMode(1200, 900), "Zeldouille", Style::None);
     window.setView(view);
 
     if (!bossTexture.loadFromFile("assets/enemy/boss/boss_for_md.png")) {
-        cerr << "Erreur de chargement de la texture du ChaserEnemy !" << endl;
+        cerr << "Erreur de chargement de la texture du boss !" << endl;
     }
+    if (!playerTexture.loadFromFile("assets/player/player_for_md.png")) {
+        cerr << "Erreur de chargement de la texture du player !\n";
+    }
+
+    Joseph.setFillColor(Color(0, 0, 0, 175));
+
     skip.setFont(font);
     skip.setCharacterSize(15);
     skip.setPosition(1070, 20);
@@ -21,6 +28,10 @@ Animation::Animation(int scene) :
     bossSprite.setTexture(bossTexture);
     bossSprite.setPosition(280, 30);
     bossSprite.setScale(2.8f, 2.8f);
+
+    playerSprite.setTexture(playerTexture);
+    playerSprite.setPosition(475, 300);
+    playerSprite.setScale(5, 5);
 
     zoomFactor = 1.0f;
     originalViewSize = view.getSize();
@@ -108,8 +119,8 @@ void Animation::secondScene() {
 }
 
 void Animation::thirdScene() {
-    view.move(0.01f, 0.01f);
-    dialogue.setPosition(dialoguePosX += 0.01f, dialoguePosY += 0.01f);
+    view.setCenter(550, 450);
+    dialogue.setPosition(301, 599);
 }
 
 void Animation::handleSceneDialogue() {
@@ -142,9 +153,11 @@ void Animation::draw(int scene) {
     case 2:
         corruptedMap.draw(window);
         window.draw(bossSprite);
+        window.draw(Joseph);
         break;
     case 3:
-        corruptedMap.draw(window);
+        map.draw(window);
+        window.draw(playerSprite);
         break;
     default:
         break;

@@ -9,6 +9,7 @@
 #include "GameState.h"
 #include "Map.h"
 #include "PauseMenu.h"
+#include "Animation.h"
 
 using namespace sf;
 using namespace std;

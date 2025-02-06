@@ -28,12 +28,6 @@ DialogueBox::DialogueBox(float width, float height) : currentDialogue(0), charIn
     text.setFillColor(Color::White);
 }
 
-#include "../include/DialogueBox.h"
-#include <iostream>
-
-using namespace sf;
-using namespace std;
-
 //Définit le son du texte
 void DialogueBox::setTextSound(const string& soundFile) {
     if (!textBuffer.loadFromFile(soundFile)) {
