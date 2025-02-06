@@ -19,6 +19,9 @@ Game::~Game() {
 }
 
 void Game::run() {
+    Animation* animation = new Animation(1);
+    animation->Start();
+    delete animation;
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
