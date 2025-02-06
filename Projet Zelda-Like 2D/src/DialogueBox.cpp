@@ -35,7 +35,7 @@ using namespace sf;
 using namespace std;
 
 //Définit le son du texte
-void DialogueBox::setTextSound(const std::string& soundFile) {
+void DialogueBox::setTextSound(const string& soundFile) {
     if (!textBuffer.loadFromFile(soundFile)) {
         cerr << "Error loading sound file: " << soundFile << "\n";
     }
@@ -166,7 +166,11 @@ int DialogueBox::getDialogueSize() const {
     return dialogues.size();
 }
 
-std::string DialogueBox::getCurrentText() const {
+void DialogueBox::setDialogueCharacterSize(int size) {
+    text.setCharacterSize(size);
+}
+
+string DialogueBox::getCurrentText() const {
     if (currentDialogue < dialogues.size()) {
         return dialogues[currentDialogue]; 
     }

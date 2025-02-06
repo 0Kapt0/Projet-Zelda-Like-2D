@@ -360,9 +360,9 @@ int Player::getHealthPotions() const {
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
     window.draw(hitbox);
-    if (isAttacking) {
+    /*if (isAttacking) {
         window.draw(attackHitbox);
-    }
+    }*/
 }
 
 /* ============================

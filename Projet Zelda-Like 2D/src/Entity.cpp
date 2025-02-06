@@ -32,7 +32,7 @@ void Entity::animate(float deltaTime) {
                 currentFrame++;
             }
             else {
-                std::cout << "Animation terminée, blocage sur la dernière frame." << std::endl;
+                cout << "Animation terminée, blocage sur la dernière frame." << std::endl;
                 return;
             }
         }

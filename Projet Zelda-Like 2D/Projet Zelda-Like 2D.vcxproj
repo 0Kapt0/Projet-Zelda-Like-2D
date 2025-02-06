@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SFML-2.6.2\include;C:\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SFML-2.6.2\lib;C:\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>
@@ -143,6 +143,7 @@ sfml-system.lib
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\AlliedEntity.cpp" />
+    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\BossEnemy.cpp" />
     <ClCompile Include="src\ChaserEnemy.cpp" />
     <ClCompile Include="src\DialogueBox.cpp" />
@@ -165,6 +166,7 @@ sfml-system.lib
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AlliedEntity.h" />
+    <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\BossEnemy.h" />
     <ClInclude Include="include\ChaserEnemy.h" />
     <ClInclude Include="include\DialogueBox.h" />

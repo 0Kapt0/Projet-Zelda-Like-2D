@@ -17,7 +17,7 @@ GameState::GameState(RenderWindow& window, Player& player, int gameState)
     Merchant::loadMerchantTexture("assets/NPC/merchant.png");
 
     if (!ambientSound.openFromFile("assets/music/dungeon_ambient_1.ogg")) {
-        std::cerr << "Erreur de chargement du son d'ambiance !\n";
+        cerr << "Erreur de chargement du son d'ambiance !\n";
     }
     else {
         ambientSound.setLoop(true);
@@ -57,10 +57,10 @@ void GameState::spawnEnemies() {
     boss = make_unique<BossEnemy>(map.getBossPosition().x, map.getBossPosition().y, 200.0f, player);
 
     for (const auto& pos : map.getChaserEnemyPositions()) {
-        chaserEnemies.push_back(std::make_unique<ChaserEnemy>(pos.x, pos.y+16, 50.0f, 100, 150.0f, player));
+        chaserEnemies.push_back(make_unique<ChaserEnemy>(pos.x, pos.y+16, 50.0f, 100, 150.0f, player));
     }
     for (const auto& pos : map.getPatternEnemyPositions()) {
-        patternEnemies.push_back(std::make_unique<PatternEnemy>(pos.x, pos.y+16, 10.0f, 100.f, player));
+        patternEnemies.push_back(make_unique<PatternEnemy>(pos.x, pos.y+16, 10.0f, 100.f, 0.f, player));
     }
 }
 
@@ -95,7 +95,6 @@ void GameState::update(float deltaTime) {
     hud.update(deltaTime);
     updateFade(deltaTime);
 
-    //Vérifie si le joueur marche sur la tile 63
     int itemID = map.getItemAt(player.getPosition());
 
     if (itemID == -1) {
@@ -129,7 +128,7 @@ void GameState::update(float deltaTime) {
         enemy->update(deltaTime, window, player.getPosition(), map);
     }
 
-    if (boss) {  // Vérifie que le boss existe bien
+    if (boss) {
         boss->update(deltaTime, window, player.getPosition(), map);
     }
 
@@ -214,7 +213,9 @@ void GameState::changeMap(const string& newMapPath, bool useAlternativeSpawn) {
     isLoading = false;
 }
 
-
+bool GameState::getIsLoading() {
+    return isLoading;
+}
 
 // --- Transition fondu ---
 void GameState::updateFade(float deltaTime) {
@@ -241,7 +242,6 @@ void GameState::updateFade(float deltaTime) {
 
 // --- Dessine l'état du jeu ---
 void GameState::draw() {
-
     window.setView(player.getCameraView());
 
     map.draw(window);

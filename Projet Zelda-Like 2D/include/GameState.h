@@ -60,6 +60,7 @@ private:
     void spawnEnemies();
     void spawnNPCs();
 
+    Clock pClock;
 public:
     GameState(RenderWindow& window, Player& player, int gameState);
     ~GameState();
@@ -67,6 +68,8 @@ public:
     void handleInput() override;
     void update(float deltaTime) override;
     void draw() override;
+
+    bool getIsLoading();
 };
 
 #endif

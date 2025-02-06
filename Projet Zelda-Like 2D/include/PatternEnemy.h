@@ -9,7 +9,7 @@ private:
     Vector2f direction;
 public:
     Player& player;
-    PatternEnemy(float x, float y, float speed, float health, Player& player);
+    PatternEnemy(float x, float y, float speed, float health, float detectionRange, Player& player);
 
     void update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) override;
     void draw(RenderWindow& window) override;
@@ -37,6 +37,10 @@ private:
     Clock attackCooldown;
     float attackCooldownTime;
     Clock hitClock;
+
+    Clock spawnClock;
+    float spawnDelay = 0.1f;
+    bool isSpawning = true;
 };
 
 #endif

@@ -2,6 +2,7 @@
 
 ## Plot
 
+test
 L'ambassadrice Zeldouille s'est perdue sur le chemin de ... Vous incarnez El Linké, qui part à la recherche de Zeldouille. Mais les monstres de la grotte en ont décidé autrement.
 
 ## Entrées

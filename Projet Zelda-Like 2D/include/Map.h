@@ -14,9 +14,9 @@ using namespace std;
 class Map {
 private:
     //Calques de la carte
-    vector<vector<int>> tileMap;      // Calque des tuiles
-    vector<vector<int>> itemMap;      // Calque des objets
-    vector<vector<int>> entityMap;    // Calque des entités
+    vector<vector<int>> tileMap; 
+    vector<vector<int>> itemMap;
+    vector<vector<int>> entityMap;
 
     //Blocages (collision)
     vector<int> blockedTileValues;

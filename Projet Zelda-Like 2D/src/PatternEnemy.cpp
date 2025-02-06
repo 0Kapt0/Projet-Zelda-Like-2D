@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player& _player)
+PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, float _detectionRange, Player& _player)
     : Enemy(x, y, _speed, _health), player(_player), isAttacking(false) {
     speed = _speed;
     originalSpeed = _speed;
@@ -10,20 +10,19 @@ PatternEnemy::PatternEnemy(float x, float y, float _speed, float _health, Player
     attackCooldownTime = 1.0f;
 
     if (!texture.loadFromFile("assets/enemy/slime/slime_walk.png")) {
-        std::cerr << "Erreur de chargement de la texture du PatternEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture du PatternEnemy !" << endl;
     }
     if (!death.loadFromFile("assets/enemy/slime/slime_death.png")) {
-        std::cerr << "Erreur de chargement de la texture de mort du PatternEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture de mort du PatternEnemy !" << endl;
     }
     if (!attack.loadFromFile("assets/enemy/slime/slime_attack.png")) {
-        std::cerr << "Erreur de chargement de la texture de mort du PatternEnemy !" << std::endl;
+        cerr << "Erreur de chargement de la texture de mort du PatternEnemy !" << endl;
     }
     else {
         shape.setTexture(&texture);
         setTexture(texture, 32, 16, 7, 0.1f);
     }
 
-    //Positionne l'ennemi au bon endroit
     setPosition(Vector2f(x, y));
 
     direction.x = -10;
@@ -34,7 +33,7 @@ void PatternEnemy::checkPlayerAttack() {
 
     if (shape.getGlobalBounds().intersects(player.getAttackHitbox()) && player.playerAttacking()) {
         reduceHealth(20);
-        std::cout << "L'ennemi a ete touche par l'attaque du joueur !" << std::endl;
+        cout << "L'ennemi a ete touche par l'attaque du joueur !" << endl;
         damageCooldown.restart();
     }
 
@@ -66,6 +65,17 @@ void PatternEnemy::handleDeath() {
 }
 
 void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vector2f& playerPosition, Map& map) {
+    if (isDead) return;
+
+    if (isSpawning) {
+        if (spawnClock.getElapsedTime().asSeconds() < spawnDelay) {
+            return;
+        }
+        else {
+            isSpawning = false;
+        }
+    }
+
     if (isDying) {
         updateHealthBar();
         handleDeath();
@@ -73,16 +83,13 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
     }
 
     updateHealthBar();
-
     checkPlayerAttack();
 
-    float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
+    float distance = sqrt(direction.x * direction.x + direction.y * direction.y);
     Vector2f newPosition = getPosition() + (direction * speed * deltaTime);
-
     float currentSpeed = isAttacking ? speedDuringAttack : originalSpeed;
 
-    //Vérification de la collision
+    //collision
     if (map.isWalkable(newPosition, shape.getSize(), shape.getGlobalBounds())) {
         position = newPosition;
         shape.setPosition(position);
@@ -129,13 +136,17 @@ void PatternEnemy::update(float deltaTime, const RenderWindow& window, const Vec
             shape.move(0, -16);
         }
     }
-    //std::cout << isAttacking << std::endl;
+
     animate(deltaTime);
 }
+
+
 
 void PatternEnemy::draw(RenderWindow& window) {
     if (isDead) return;
     window.draw(shape);
+
     window.draw(healthBarOutline);
     window.draw(healthBar);
+
 }
